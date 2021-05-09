@@ -1,0 +1,309 @@
+﻿@model AdminLteMvc.Models.WEBSales.EIROutLD
+@{
+    ViewBag.Title = "EIR (PULL OUT OF LADEN CONVAN)";
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+}
+
+@{
+    var data = ViewBag.EIROUT;
+}
+
+<div class="box box-success">
+    <div class="box-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h4>
+                        <b>KARGAMINE TOO, INC.</b>
+                    </h4>
+                    <span style="font-size:10px;">
+                        Unit A4-B Las Buesnas Bldg., #37 Industrial Avenue, Potrero, Malabon<br />
+                        Tel No: 8788-9396   &nbsp;&nbsp;  Fax: 7799-604
+                    </span>
+                    <br />
+
+                </div>
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <h4>
+                        <b>
+                            <i>Equipment Interchange Receipt</i> <br />
+                            <span style="font-size:20px;">EIR Out No:</span>
+                            @Html.EditorFor(model => model.eirldno, new { htmlAttributes = new { @class = "form-control", id = "eirldno", @Value = data.eirldno, @readonly = true } })
+                        </b>
+                    </h4>
+                </div>
+            </div>
+        </div>
+        <br />
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td>
+                        <b>ISSUE DATE:</b>
+                        @Html.EditorFor(model => model.eirldidate, new { htmlAttributes = new { @type = "date", @class = "form-control", id = "eirldidate" } })
+                    </td>
+                    <td>
+                        <b>ISSUE TIME:</b>
+                        @Html.EditorFor(model => model.eirlditime, new { htmlAttributes = new { @class = "form-control", id = "eirlditime", @Value = data.eirlditime, @readonly = true } })
+                    </td>
+                    <td>
+                        <b>SERVICE TYPE:</b>
+                        @Html.EditorFor(model => model.eirldservicetype, new { htmlAttributes = new { @class = "form-control", id = "eirldservicetype", @Value = data.eirldservicetype, @readonly = true } })
+                    </td>
+                    <td>
+                        <b>TRANSACTION NO:</b> @Html.EditorFor(model => model.eirldtransactionno, new { htmlAttributes = new { @class = "form-control", id = "eirldtransactionno", @Value = data.eirldtransactionno, @readonly = true } })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>CONVAN NO:</b>
+                        @Html.EditorFor(model => model.eirldconvanno, new { htmlAttributes = new { @class = "form-control", id = "eirldconvanno", @Value = data.eirldconvanno, @readonly = true } })
+                        <br />
+                        <b>SHIPPER:</b>
+                        @Html.EditorFor(model => model.eirldshipper, new { htmlAttributes = new { @class = "form-control", id = "eirldshipper", @Value = data.eirldshipper, @readonly = true } })
+                    </td>
+                    <td>
+                        <b>CONVAN STATUS:</b>
+                        @Html.EditorFor(model => model.eirldconvanstatus, new { htmlAttributes = new { @class = "form-control", id = "eirldconvanstatus", @Value = data.eirldconvanstatus, @readonly = true } })
+                        <br />
+                        <b>TRUCKER DESTINATION:</b>
+                        @Html.EditorFor(model => model.eirldtruckerdestination, new { htmlAttributes = new { @class = "form-control", id = "eirldtruckerdestination" } })
+                    </td>
+                    <td>
+                        <b>CONVAN SIZE:</b>
+                        @Html.EditorFor(model => model.eirldconvansize, new { htmlAttributes = new { @class = "form-control", id = "eirldconvansize", @Value = data.eirldconvansize, @readonly = true } })
+                        <br />
+                        <b>DRIVER'S NAME:</b>
+                        @Html.EditorFor(model => model.eirlddriversname, new { htmlAttributes = new { @class = "form-control", id = "eirlddriversname", @Value = data.eirlddriversname } })
+                    </td>
+                    <td>
+                        <b>CONSIGNEE:</b> @*@ViewBag.Consignee*@
+                        @*@Html.TextArea("eirldconsignee", @data.eirldconsignee, new { @class = "form-control", @readonly = true })*@
+                        @*@Html.TextAreaFor(model => model.EIROConsignee, new { htmlAttributes = new { @class = "form-control", id = "eiroconsignee", @readonly = true } })*@
+                        @*@Html.TextAreaFor(model => model.eirldconsignee, new { id = "eirldconsignee", @class = "form-control", style = " rows=20, columns=40", @Value = data.eirldconsignee, @readonly = true })*@
+                        @*@Html.TextAreaFor(model => model.eirldconsignee, data.eirldconsignee, new { id = "eirldconsignee", @class = "form-control", style = " rows=20, columns=40", @readonly = true })*@
+                        @Html.EditorFor(model => model.eirldconsignee, new { htmlAttributes = new { @class = "form-control", id = "eirldconsignee", @Value = data.eirldconsignee, @readonly = true } })
+
+
+                        <br />
+                        <b>PLATE NO:</b>
+                        @Html.EditorFor(model => model.eirldplateno, new { htmlAttributes = new { @class = "form-control", id = "eirldplateno", @Value = data.eirldplateno } })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>RELAY PORT:</b>
+                        @Html.EditorFor(model => model.eirldrelayport, new { htmlAttributes = new { @class = "form-control", id = "eirldrelayport", @Value = data.eirldrelayport, @readonly = true } })
+                    </td>
+                    <td>
+                        <b>VESSEL:</b>
+                        @Html.EditorFor(model => model.eirldvessel, new { htmlAttributes = new { @class = "form-control", id = "eirldvessel", @Value = data.eirldvessel, @readonly = true } })
+                    </td>
+                    <td>
+                        <b>VOYAGE NO:</b>
+                        @Html.EditorFor(model => model.eirldvoyageno, new { htmlAttributes = new { @class = "form-control", id = "eirldvoyageno", @Value = data.eirldvoyageno, @readonly = true } })
+                    </td>
+                    <td>
+                        <b>SEAL NO:</b>
+                        @Html.EditorFor(model => model.eirldsealno, new { htmlAttributes = new { @class = "form-control", id = "eirldsealno", @Value = data.eirldsealno, @readonly = true } })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>SEAL STATUS:</b>
+                        <select id="eirldsealstatus" class="form-control">
+                            @{
+                                foreach (var item in ViewBag.SealStatusList)
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }
+                            }
+                        </select>
+                        @*@Html.EditorFor(model => model.eirldsealstatus, new { htmlAttributes = new { @class = "form-control", id = "eirldsealstatus", @Value = data.eirldsealstatus } })*@
+                    </td>
+                    <td>
+                        <b>PORT OF ORIGIN:</b>
+                        @Html.EditorFor(model => model.eirldportoforigin, new { htmlAttributes = new { @class = "form-control", id = "eirldportoforigin", @Value = data.eirldportoforigin, @readonly = true } })
+                    </td>
+                    <td>
+                        <b>PORT OF DESTINATION:</b>
+                        @Html.EditorFor(model => model.eirldportofdestination, new { htmlAttributes = new { @class = "form-control", id = "eirldportofdestination", @Value = data.eirldportofdestination, @readonly = true } })
+                    </td>
+                    <td>
+                        <b>WEIGHT:</b>
+                        @Html.EditorFor(model => model.eirldweight, new { htmlAttributes = new { @class = "form-control", id = "eirldweight", @Value = data.eirldweight, @readonly = true } })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>VOLUME:</b>
+                        @Html.EditorFor(model => model.eirldvolume, new { htmlAttributes = new { @class = "form-control", id = "eirldvolume", @Value = data.eirldvolume, @readonly = true } })
+                    </td>
+                    <td>
+                        <b>CHECKER DESTINATION:</b>
+                        @Html.EditorFor(model => model.eirldcheckerdestination, new { htmlAttributes = new { @class = "form-control", id = "eirldcheckerdestination" } })
+                    </td>
+                    <td>
+                        <b>TRIP TYPE:</b>
+                        @Html.EditorFor(model => model.eirldtotriptype, new { htmlAttributes = new { @class = "form-control", id = "eirldtotriptype", @Value = data.eirldtotriptype, @readonly = true } })
+                    </td>
+                    <td>
+                        <b>SHIPPING COMPANY REPRESENTATIVE:</b>
+                        @Html.EditorFor(model => model.eirldscr, new { htmlAttributes = new { @class = "form-control", id = "eirldscr", @Value = data.eirldscr, @readonly = true } })
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered">
+            <tr>
+                <td>
+
+                    <b>DAMAGES CODES:</b> <br />
+                    <select id="damagecodes" class="form-control" multiple="multiple">
+                        @{
+                            foreach (var item in ViewBag.DamageList)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        }
+                    </select> <br /><br />
+                    <b>REMARKS:</b><br />
+                    @Html.TextAreaFor(model => model.eirldremarks, new { id = "eirldremarks", @class = "form-control", style = " rows=20, columns=40" })
+
+                </td>
+                <td>
+                    <img src="~/AppFiles/Images/container.PNG" />
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="box-footer">
+        <button type="button" class="btn btn-primary" id="submit"> <i class="fa fa-pencil fa-1x"></i> Pull Out </button>
+        <button type="button" class="btn btn-default" onclick="location.href='@Url.Action("BL", "BOL")'"> <i class="fa fa-cancel fa-1x"></i> Cancel</button>
+    </div>
+</div>
+
+<link href="~/Content/bootstrap-toggle.css" rel="stylesheet" />
+<script src="~/Scripts/bootstap-toggle.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/jqueryui")
+
+    <script type="text/javascript">
+        $("#damagecodes").chosen();
+
+    var icodes = @Html.Raw(Json.Encode(ViewBag.damages));
+    var arrRequire = icodes.split(',');
+    $("#damagecodes").val(arrRequire).trigger("chosen:updated");
+
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1;
+    var yyyy = today.getFullYear();
+    if (dd < 10) {
+        dd = '0' + dd
+    }
+    if (mm < 10) {
+        mm = '0' + mm
+    }
+
+    today = yyyy + '-' + mm + '-' + dd;
+    document.getElementById("eirldidate").value = today;
+
+    $('#submit').click(function () {
+        var isAllValid = true;
+        if ($('#eirldidate').val().trim() == '') {
+                $.notify("Issue Date is required.", "error");
+                isAllValid = false;
+            }
+        if ($('#eirlddriversname').val().trim() == '') {
+                $.notify("Driver's Name is required.", "error");
+                isAllValid = false;
+            }
+        if ($('#eirldtruckerdestination').val().trim() == '') {
+                $.notify("Trucker is required.", "error");
+                isAllValid = false;
+            }
+        if ($('#eirldplateno').val().trim() == '') {
+                $.notify("Plate No is required.", "error");
+                isAllValid = false;
+            }
+        var e = document.getElementById("eirldsealstatus");
+            var sealstatselected = e.options[e.selectedIndex].text;
+
+            if (sealstatselected.trim() == '' || sealstatselected == "-- Select --") {
+                $.notify("Seal Status is required.", "error");
+                isAllValid = false;
+            }
+
+            if ($('#damagecodes').val() == '' || $('#damagecodes').val() == null) {
+                $.notify("Damage Codes is required.", "error");
+                isAllValid = false;
+            }
+
+        if (isAllValid) {
+            var tempcode = $('#damagecodes').val().join();
+            var dmgcds = tempcode.toString();
+
+            var pullData = {
+                eirldno : $('#eirldno').val(),
+                eirldstatus: "Pulled",
+                eirldidate: $('#eirldidate').val(),
+                eirlditime: $('#eirlditime').val(),
+                eirldservicetype: $('#eirldservicetype').val(),
+                eirldtransactionno: $('#eirldtransactionno').val(),
+                eirldconvanno: $('#eirldconvanno').val(),
+                eirldconvanstatus: $('#eirldconvanstatus').val(),
+                eirldconvansize: $('#eirldconvansize').val(),
+                eirldconsignee: $('#eirldconsignee').val(),
+                eirldshipper: $('#eirldshipper').val(),
+                eirldtruckerdestination: $('#eirldtruckerdestination').val(),
+                eirlddriversname: $('#eirlddriversname').val(),
+                eirldplateno: $('#eirldplateno').val(),
+                eirldrelayport: $('#eirldrelayport').val(),
+                eirldvessel: $('#eirldvessel').val(),
+                eirldvoyageno: $('#eirldvoyageno').val(),
+                eirldsealno: $('#eirldsealno').val(),
+                eirldsealstatus: $('#eirldsealstatus').val(),
+                eirldportoforigin: $('#eirldportoforigin').val(),
+                eirldportofdestination: $('#eirldportofdestination').val(),
+                eirldweight: $('#eirldweight').val(),
+                eirldvolume: $('#eirldvolume').val(),
+                eirlddamagescode: dmgcds,
+                eirldscr: $('#eirldscr').val(),
+                eirldremarks: $('#eirldremarks').val(),
+                eirldcheckerdestination: $('#eirldcheckerdestination').val(),
+                eirldtotriptype: $('#eirldtotriptype').val()
+            };  
+            console.log(pullData);
+
+            $.ajax({
+                        type: 'POST',
+                        url: '../../../EIRD/SavePull',
+                        data: JSON.stringify(pullData),
+                        contentType: 'application/json',
+                success: function (pullData) {
+                            if (pullData.status) {
+                                $.notify("Operation successfully posted.", "success");
+                                var url = '@Url.Action("IndexOutLD", "EIRD")';
+                                    window.location.href = url;
+                            }
+                            else {
+                                $.notify("Operation failed to post.", "error");
+                            }
+                        },
+                        error: function (error) {
+                            console.log(error);
+                            $('#submit').text('Save');
+                        }
+                    });
+        }
+        });
+    </script>
+}
+
+

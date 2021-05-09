@@ -1,0 +1,163 @@
+﻿
+@{
+    ViewBag.Title = "Bill of lading";
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+}
+
+<div class="box box-success">
+    <div class="box-header with-border">
+        <h3 class="box-title">
+            @Html.Awe().TextBox("txtsearch").Placeholder("Search").CssClass("searchtxt")
+        </h3>
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body">
+
+        <div id="demoContent">
+            @(Html.Awe().Grid("ApiDemoGrid")
+                .Mod(o => o.PageInfo().PageSize().ColumnsSelector())
+                .Columns(new[]{
+
+                        new Column{Bind = "billofladingNo",Header = "Bill of lading No."},
+                        new Column{Bind = "bookingNo",Header = "Booking No."},
+                        new Column{Bind = "transactionNo",Header = "Transaction No."},
+                        new Column{Bind = "vesselVoyage",Header = "Vessel Voyage"},
+                        new Column{Bind = "shipperName",Header = "Shipper Name"},
+                        new Column{Bind = "shipperAdd",Header = "Shipper Address"},
+                        new Column{Bind = "consigneeName",Header = "Consignee Name"},
+                        new Column{Bind = "consigneeAdd",Header = "Consignee Address"},
+                        new Column{Bind = "notifypartName",Header = "Notify Part Name"},
+                        new Column{Bind = "notifypartAdd",Header = "Notify Part Address"},
+                        new Column{Bind = "origin",Header = "Origin"},
+                        new Column{Bind = "portoforigin",Header = "Port of Origin"},
+                        new Column{Bind = "relayPort",Header = "Relay Port"},
+                        new Column{Bind = "portofDestination",Header = "Port of Destination"},
+                        new Column{Bind = "vesselName",Header = "Vessel Name"},
+                        new Column{Bind = "voyageNumber",Header = "Voyage Number"},
+                        new Column{Bind = "serviceMode",Header = "Service Mode"},
+                        new Column{Bind = "cargoTypeorcontent",Header = "Cargo Type / Content"}
+
+
+                })
+                .Resizable()
+                .Reorderable(true)
+                .Height(350)
+                .Groupable(false)
+                .Selectable(SelectionType.Single)
+                .Parent("txtsearch", "search")
+                .Url(Url.Action("getBL", "BOL")))
+        </div>
+    </div>
+    <div class="box-footer">
+        <a type="button" id="addnew" class="btn btn-primary" href='@Url.Action("BillofLading","Proforma")'> <i class="fa fa-plus-circle fa-1x"></i> New </a>
+        <button type="button" class="btn btn-default" id="view">  View Details </button>
+        <button type="button" class="btn btn-default" id="pullLD">  EIR Pull-Out (LD) </button>
+        <button type="button" class="btn btn-danger" id="cancel" style=" display:none;"> <i class="fa fa-close fa-1x"></i> Cancel </button>
+    </div>
+</div>
+
+<input id="counter" name="counter" type="hidden" value="5" />
+<link href="~/Content/bootstrap-toggle.css" rel="stylesheet" />
+@section Scripts{
+    <script src="~/Scripts/bootstap-toggle.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#ApiDemoGrid').on('awerender', function () {
+                $(this).find(".checkbox-toggle").bootstrapToggle();
+            });
+            $('#txtsearch').keyup(function () {
+                $('#ApiDemoGrid').data('api').load();
+            });
+            var lastSelectedId;
+            $('#ApiDemoGrid').on('aweselect', function () {
+
+                lastSelectedID = $.map($(this).data('api').getSelection(), function (val) { return val.billID; });
+                lastSelectedStatus = $.map($(this).data('api').getSelection(), function (val) { return val.BillStatus; });
+                lastSelectedEIRIn = $.map($(this).data('api').getSelection(), function (val) { return val.eirinNo; });
+                console.log(lastSelectedID);
+            });
+            var toggleButton = function (model, prop) {
+                var checked = model[prop] ? 'checked = "checked"' : '';
+                return '<input disabled="disabled" type="checkbox" ' + checked + ' class="checkbox-toggle" data-toggle="toggle" data-on="Yes" data-off="No" data-size="small">';
+            };
+
+            $('#view').click(function () {
+                if (lastSelectedID != null) {
+                    if (lastSelectedID.length != 0) {
+                        window.location.href = '/BOL/DisplayFbReport?billID=' + lastSelectedID;
+                    }
+                    else {
+                        $.notify("Please select a bill to view.", "error");
+                    }
+                }
+                else {
+                    $.notify("Please select a bill to view.", "error");
+                }
+            });
+
+
+            $('#pullLD').click(function () {
+
+                if (lastSelectedID != null) {
+                    if (lastSelectedID.length != 0) {
+
+                        $.ajax({
+                            type: "POST",
+                            url: "/BOL/getPULLOUTFULLCONVAN",
+                            data: { Id: lastSelectedID },
+                            success: function (result) {
+                                if (result.cnt == 0) {
+                                    $.notify("Selected transaction is required CRO! To proceed this this transaction make sure that this is approved!", "error");
+                                }
+                                else
+                                    window.location.href = '/EIRD/Pull/?ID=' + lastSelectedID + '&eirinno=' + lastSelectedEIRIn;
+                            }
+                        })
+                        //window.location.href = '/EIRD/Pull/' + lastSelectedID;
+
+                    }
+                    else {
+                        $.notify("Please select billed transaction to pull-out.", "error");
+                    }
+                }
+                else {
+                    $.notify("Please select billed transaction to pull-out.", "error");
+                }
+            });
+
+        });
+    </script>
+}
+<style>
+    td {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .boldh .awe-col, .boldh {
+        color: blue;
+    }
+
+    .bluev {
+        color: blueviolet;
+    }
+
+    .pinkb {
+        background: pink !important;
+    }
+
+    .greenb {
+        background: #f0f9f7 !important;
+    }
+
+    .box {
+        position: relative;
+        border-radius: 3px;
+        background: #ffffff;
+        border-top: 3px solid #d2d6de;
+        margin-bottom: 20px;
+        width: 100%;
+        box-shadow: 0 0px 0px rgb(0 0 0 / 10%);
+    }
+</style>

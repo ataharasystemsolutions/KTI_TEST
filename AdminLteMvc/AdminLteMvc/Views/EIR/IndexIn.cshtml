@@ -1,0 +1,362 @@
+﻿@model AdminLteMvc.Models.WEBSales.EIRIn
+@{
+    ViewBag.Title = "List of Returned EIR";
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+}
+<div class="box box-success">
+    <div class="box-header with-border">
+        <h3 class="box-title">@Html.Awe().TextBox("txtsearch").Placeholder("Search").CssClass("searchtxt")</h3>
+    </div>
+    <div class="box-body">
+        <div id="demoContent">
+
+            @(Html.Awe().Grid("ApiDemoGrid")
+          .Mod(o => o.PageInfo().PageSize().ColumnsSelector())
+          .Columns(new[]{
+              new Column{Bind = "EIRINo", Header = "EIR No"},
+              new Column{Bind = "EIRIReferenceNo", Header = "EIR Reference No"},
+            new Column{Bind = "EIRIStatus", Header = "EIR Status"},
+            new Column{Bind = "EIRIDate", Header = "Issue Date"},
+            new Column{Bind = "EIRITime", Header = "Issue Time"},
+            new Column{Bind = "EIRIServiceType", Header = "Service Type"},
+            new Column{Bind = "EIRIConvanStatus", Header = "ConVanStatus"},
+            new Column{Bind = "EIRITransactionNo", Header = "Transaction No"},
+            new Column{Bind = "EIRIVessel", Header = "Vessel"},
+            new Column{Bind = "EIRIVoyageNo", Header = "Voyage No"},
+            new Column{Bind = "EIRIPortOfOrigin", Header = "Port of Origin"},
+            new Column{Bind = "EIRIRelayPort", Header = "Relay Port"},
+            new Column{Bind = "EIRIPortOfDestination", Header = "Port of Destination"},
+            new Column{Bind = "EIRIConvanNo", Header = "ConVan No"},
+            new Column{Bind = "EIRISealNo", Header = "Seal No"},
+            new Column{Bind = "EIRISealStatus", Header = "Seal Status"},
+            new Column{Bind = "EIRIConvanSize", Header = "ConVan Size"},
+            new Column{Bind = "EIRIWeight", Header = "Weight"},
+            new Column{Bind = "EIRIVolume", Header = "Volume"},
+            new Column{Bind = "EIRIShipper", Header = "Shipper"},
+            new Column{Bind = "EIRIConsignee", Header = "Consignee"},
+            new Column{Bind = "EIRITrucker", Header = "Trucker"},
+            new Column{Bind = "EIRIPlateNo", Header = "Plate No"},
+            new Column{Bind = "EIRIDriversName", Header = "Driver's Name"},
+            new Column{Bind = "EIRIDamagesCode", Header = "Damages Code"},
+            new Column{Bind = "EIRISCR", Header = "Shipping Company Representative"}
+          })
+              .Resizable()
+              .Reorderable()
+              .Height(350)
+              .Groupable(false)
+              .Selectable(SelectionType.Single)
+              .Parent("txtsearch", "search")
+              .Url(Url.Action("GetItemsIn", "EIR")))
+
+        </div>
+    </div>
+    <div class="box-footer">
+        @*<button type="button" class="btn btn-default" id="print"> <i class="fa fa-paper-plane-o fa-1x"></i>View Form and Proceed for Print</button>*@
+        @*<button type="button" class="btn btn-success" id="FinalBL" data-toggle="modal" data-target="#modal-add">Bill of Lading </button>*@
+        <button type="button" class="btn btn-default" id="viewdtls">View Details</button>
+        @*<button type="button" class="btn btn-primary" onclick="location.href = '@Url.Action("IndexOut", "EIR")'"> <i class="fa fa-paper-plane-o fa-1x"></i>List for Return</button>*@
+    </div>
+</div>
+<!-- /.modal -->
+<div class="modal fade" data-backdrop="static" id="modal-add" >
+    <div class="modal-dialog modal-lg">
+            <!-- Main content -->
+        <section class="invoice">
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <h2 class="page-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <i class="fa fa-globe"></i> Bill of Lading.
+                    </h2>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- info row -->
+            <div class="row invoice-info">
+                <div class="col-sm-3 invoice-col">
+                    <div class="form-group">
+                        <label for="dNum">Bill of Lading No.</label>
+                        <input id="blNo" type="text" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="dNum">Booking No.</label>
+                        <input id="bookingNo" type="text" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="dNum">Transaction No.</label>
+                        <input id="trnNumber" type="text" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="dNum">Vessel Voyage</label>
+                        <select id="vesselvoyage" class="form-control">
+                            <option>Select</option>
+                            <option>Test</option>
+                        </select>
+                        @*<input id="vesselvoyage" type="text" class="form-control" />*@
+                    </div>
+                    <div class="form-group">
+                        <label for="dNum">Shipper Name</label>
+                        <input id="shipper" type="text" class="form-control" />
+                    </div>
+
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-3 invoice-col">
+                    <div class="form-group">
+                        <label for="dNum">Shipper Address</label>
+                        <input id="shipperadd" type="text" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="dNum">Consignee Name</label>
+                        <input id="Consignee" type="text" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="dNum">Consignee Address</label>
+                        <input id="Consigneeadd" type="text" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="dNum">Notify Part</label>
+                        <input id="notifypart" type="text" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="dNum">Notify Part Address</label>
+                        <input id="notifypartadd" type="text" class="form-control" />
+                    </div>
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-3 invoice-col">
+                    <div class="form-group">
+                        <label for="dNum">Origin</label>
+                        <input id="origin" type="text" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="dNum">Port of Origin</label>
+                        <input id="portoforigin" type="text" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="dNum">Relay Port</label>
+                        <select id="relayport" class="form-control">
+                            <option>Select</option>
+                            <option>Test</option>
+                        </select>
+                        @*<input id="relayport" type="text" class="form-control" />*@
+                    </div>
+                    <div class="form-group">
+                        <label for="dNum">Port of Destination</label>
+                        <select id="portofdestination" class="form-control">
+                            <option>Select</option>
+                            <option>Test</option>
+                        </select>
+                        @*<input id="portofdestination" type="text" class="form-control" />*@
+                    </div>
+                    <div class="form-group">
+                        <label for="dNum">Final Destination</label>
+                        <input id="finaldestination" type="text" class="form-control" />
+                    </div>
+                  
+
+
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-3 invoice-col">
+                    <div class="form-group">
+                        <label for="dNum">Vessel Name</label>
+                        <input id="vesselname" type="text" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="dNum">Voyage Number</label>
+                        <input id="voyagename" type="text" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="dNum">Service Mode</label>
+                        <input id="servicemode" type="text" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="dNum">Cargo Type / Content</label>
+                        <select id="cargotypecontent" class="form-control">
+                            <option>Select</option>
+                            <option>Test</option>
+                        </select>
+                        @*<input id="cargotypecontent" type="text" class="form-control" />*@
+                    </div>
+
+
+
+                </div>
+                <!-- /.col -->
+            </div>
+            <div class="row invoice-info">
+                <div class="col-sm-3 invoice-col">
+                    <div class="form-group">
+                        <label for="dNum">Issued By</label>
+                        <input id="issuedby" type="text" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-sm-3 invoice-col">
+                    <div class="form-group">
+                        <label for="dNum">Date Issued</label>
+                        <input id="dateissued" type="text" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-sm-3 invoice-col">
+                    <div class="form-group">
+                        <label for="dNum">Time Issued</label>
+                        <input id="timeissued" type="text" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-sm-3 invoice-col">
+                    <div class="form-group">
+                        <label for="dNum">Place Issued</label>
+                        <input id="placeissued" type="text" class="form-control" />
+                    </div>
+                    </div>
+
+                </div>
+                <!-- /.row -->
+                <!-- Table row -->
+                <div class="row">
+                    <div class="col-xs-12 table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Mark</th>
+                                    <th>Quantity</th>
+                                    <th>No. & Kind of Packages</th>
+                                    <th>Description of Goods & Packages</th>
+                                    <th>Declared Value</th>
+                                    <th>Gross Weight (Ton)</th>
+                                    <th>Measurement (CBM)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Call of Duty</td>
+                                    <td>455-981-221</td>
+                                    <td>El</td>
+                                    <td>$64.50</td>
+                                    <td>$64.50</td>
+                                    <td>$64.50</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+                <!-- this row will not appear when printing -->
+                <div class="row no-print">
+                    <div class="col-xs-12">
+                        <a href="invoice-print.html" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a>
+                        <button type="button" class="btn btn-success pull-right">
+                            <i class="fa fa-credit-card"></i> Submit Payment
+                        </button>
+                        <button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;">
+                            <i class="fa fa-download"></i> Generate PDF
+                        </button>
+                    </div>
+                </div>
+</section>
+            <!-- /.content -->
+            <div class="clearfix"></div>
+
+        </div>
+        <link href="~/Content/bootstrap-toggle.css" rel="stylesheet" />
+        @section Scripts{
+            <script src="~/Scripts/bootstap-toggle.js"></script>
+
+            <script type="text/javascript">
+
+                $(function () {
+
+                    $('#ApiDemoGrid').on('awerender', function () {
+                        $(this).find(".checkbox-toggle").bootstrapToggle();
+                    });
+
+                    $('#txtsearch').keyup(function () {
+                        $('#ApiDemoGrid').data('api').load();
+                    });
+
+                    $('#ApiDemoGrid').on('aweload', function (e, data, rd) {
+                        $('#log').prepend('aweload handled,\n data: ' + JSON.stringify(data) + "\n request data" + JSON.stringify(rd) + '\n\n');
+                    }).on('awebeginload', function (e, data) {
+                        $('#log').prepend('awebeginload handled,\n request data: ' + JSON.stringify(data) + '\n\n');
+                    });
+
+                    var lastSelectedIds;
+                    var lastSelectedEIRINo;
+                    $('#ApiDemoGrid').on('aweselect', function () {
+                        lastSelectedIds = $.map($(this).data('api').getSelection(), function (val) { return val.EIRIID; });
+                        lastSelectedEIRINo = $.map($(this).data('api').getSelection(), function (val) { return val.EIRINo; });
+                        console.log(lastSelectedIds);
+                        lastSelectedIdStat = $.map($(this).data('api').getSelection(), function (val) { return val.EIRIStatus; });
+                        console.log(lastSelectedIds);
+                    })
+
+                    $('#print').click(function () {
+
+                        if (lastSelectedIds != null) {
+                            if (lastSelectedIds.length != 0) {
+                                window.location.href = '/EIR/ReturnPrint/' + lastSelectedIds;
+                            }
+                            else {
+                                $.notify("Please select eir to print.", "error");
+                            }
+                        }
+                        else {
+                            $.notify("Please select eir to print.", "error");
+                        }
+                    });
+                    $('#eirin').click(function () {
+
+                        if (lastSelectedIds != null) {
+                            if (lastSelectedIds.length != 0) {
+                                window.location.href = '/EIR/EIRReturn/' + lastSelectedIds;
+                            }
+                            else {
+                                $.notify("Please select eir for EIR Return.", "error");
+                            }
+                        }
+                        else {
+                            $.notify("Please select eir for EIR Return.", "error");
+                        }
+                    });
+
+                    $('#viewdtls').click(function () {
+
+                        if (lastSelectedEIRINo != null) {
+                            if (lastSelectedEIRINo.length != 0) {
+                                window.location.href = '/EIR/EIRIViewDetails?eirNo=' + lastSelectedEIRINo;
+                            }
+                            else {
+                                $.notify("Please select eir to print.", "error");
+                            }
+                        }
+                        else {
+                            $.notify("Please select eir to print.", "error");
+                        }
+                    });
+                });
+
+                function setContent(o) {
+                    $('#ApiDemoGrid').data('api').clearpersist();
+                    $('#demoContent').html(o);
+                };
+
+                var toggleButton = function (model, prop) {
+                    var checked = model[prop] ? 'checked = "checked"' : '';
+                    return '<input disabled="disabled" type="checkbox" ' + checked + ' class="checkbox-toggle" data-toggle="toggle" data-on="Yes" data-off="No" data-size="small">';
+                };
+
+            </script>
+        }
+        <style>
+            td {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        </style>

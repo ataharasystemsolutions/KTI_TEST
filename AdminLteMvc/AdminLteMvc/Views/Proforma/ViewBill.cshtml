@@ -1,0 +1,90 @@
+﻿@model AdminLteMvc.Models.WEBSales.ProformaBills
+@{
+    ViewBag.Title = "View Bill";
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+}
+
+<div class="box box-success">
+    <div class="box-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <span style="font-size:30px;"><b>KARGAMINE TOO, INC.</b></span><br/><br/>
+                    <span style="font-size:25px;"><b>PROFORMA BILL OF LADING</b></span>
+                </div>
+                <div class="col-md-4"></div>
+            </div>
+        </div>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td><b>DATE:</b> @Model.proformaBillDate</td>
+                    <td><b>SHIPPER:</b>  @Model.proformaBillShipper</td>
+                    <td><b>CONSIGNEE:</b> @Model.proformaBillConsignee</td>
+                </tr>
+                <tr>
+                    <td><b>VESSEL NAME:</b> @Model.proformaBillVesselName</td>
+                    <td><b>SHIPPER'S ADDRESS:</b> @Model.proformaBillShippersAddress</td>
+                    <td><b>CONSIGNEE'S ADDRESS:</b> @Model.proformaBillConsigneesAddress</td>
+                </tr>
+                <tr>
+                    <td><b>VOYAGE NO:</b> @Model.proformaBillVoyageNo</td>
+                    <td><b>SHIPPER'S TEL. NO:</b> @Model.proformaBillShippersTelNo</td>
+                    <td><b>CONSIGNEE'S TEL. NO:</b> @Model.proformaBillConsigneesTelNo</td>
+                </tr>
+                <tr>
+                    <td><b>DESTINATION:</b> @Model.proformaBillDescriptionOfCargo</td>
+                    <td><b>SERVICE TYPE:</b> @Model.proformaBillServiceType</td>
+                    <td><b>B/L NO:</b> @Model.proformaBillNo</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered">
+            <tr>
+                <th>MARKS</th>
+                <th>QUANTITY</th>
+                <th>UNIT</th>
+                <th>DESCRIPTION OF CARGO</th>
+                <th>VALUE</th>
+                <th>WEIGHT</th>
+                <th>MEASUREMENT</th>
+            </tr>
+            <tr>
+                <td>@Model.proformaBillMarks</td>
+                <td>@Model.proformaBillQty</td>
+                <td>@Model.proformaBillUnit</td>
+                <td>@Model.proformaBillDescriptionOfCargo</td>
+                <td>@Model.proformaBillValue</td>
+                <td>@Model.proformaBillWeight</td>
+                <td>@Model.proformaBillMeasurement</td>
+            </tr>
+        </table>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td><b>REMARKS:</b> @Model.proformaBillRemarks</td>
+                    <td><b>MEASURED BY:</b> @Model.proformaBillMeasuredBy</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td><b>TRUCKER'S NAME:</b> @Model.proformaBillTruckersName</td>
+                    <td><b>SHIPPER'S NAME:</b> @Model.proformaBillShippersName</td>
+                    <td><b>SHIPPER'S SIGNATURE:</b></td>
+                </tr>
+            </tbody>
+        </table> <br/>
+        <span style="font-size:12px;"><b><i>“SHIPPER/CONSIGNEE WARRANTS AND GUARANTEES THAT SHIPMENT DOES NOT CONTAIN DANGEROUS/HAZARDOUS GOODS.”</i></b></span>
+    </div>
+    <div class="box-footer">
+        <button type="button" class="btn btn-default" onclick="location.href='@Url.Action("Index", "Proforma")"> <i class="fa fa-trash fa-1x"></i> Back</button>
+    </div>
+</div>
+<link href="~/Content/bootstrap-toggle.css" rel="stylesheet" />
+<script src="~/Scripts/bootstap-toggle.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>

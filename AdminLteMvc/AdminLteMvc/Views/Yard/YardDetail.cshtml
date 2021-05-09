@@ -1,0 +1,120 @@
+﻿@model AdminLteMvc.Models.WEBSales.Yard
+@{
+    ViewBag.Title = "YardDetail";
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="box box-success">
+        <div class="box-body">
+            <table class="table table-responsive">
+                <tr>
+                    <td>ATW Booking No.</td>
+                    <td>
+                        @Html.EditorFor(model => model.yardATWBkNo, new { htmlAttributes = new { @class = "form-control", id = "atwbkno", @readonly = true, @required = "required" } })
+                    </td>
+                    <td>ConVan No</td>
+                    <td>
+                        @Html.EditorFor(model => model.yardConVanNo, new { htmlAttributes = new { @class = "form-control", id = "convanno", @required = "required", @readonly = true } })
+                    </td>
+                </tr>
+                <tr>
+                    <td>Transaction No.</td>
+                    <td>
+                        @Html.EditorFor(model => model.yardTrnNo, new { htmlAttributes = new { @class = "form-control", id = "bkNo", @required = "trnno", @readonly = true } })
+                    </td>
+                    <td>Assigned By</td>
+                    <td>
+                        @Html.EditorFor(model => model.yardAssignedBy, new { htmlAttributes = new { @class = "form-control", id = "assignedby", @required = "required", @readonly = true } })
+                    </td>
+                </tr>
+            </table>
+            <div id="demoContent">
+
+                @(Html.Awe().Grid("ApiDemoGrid")
+          .Mod(o => o.PageInfo().PageSize().ColumnsSelector())
+          .Columns(new[]{
+              new Column{Bind = "transactionNo", Header = "Transaction No"},
+              new Column{Bind = "transactionDate", Header = "Date of Transaction"},
+              new Column{Bind = "priceList", Header = "Price List"},
+              new Column{Bind = "origin",Header = "Origin"},
+              new Column{Bind = "destination",Header = "Destination"},
+              new Column{Bind = "consignee",Header = "Consignee"},
+              new Column{Bind = "consigneeAdd",Header = "Consignee Address"},
+              new Column{Bind = "cargoType",Header = "Cargo Type"},
+              new Column{Bind = "conClass",Header = "Container Class"},
+              new Column{Bind = "conRqrmnts",Header = "ConVan Requirements"},
+              new Column{Bind = "payMode",Header = "Payment Mode"},
+              new Column{Bind = "cyEPO",Header = "CY - Empty Pull Out"},
+              new Column{Bind = "cySA",Header = "CY - Stuffing Activity"},
+              new Column{Bind = "cyLD",Header = "CY - Laden Delivery"},
+              new Column{Bind = "remarks",Header = "Remarks"}
+          })
+
+              .Resizable()
+              .Sortable(true)
+              .Reorderable()
+              .Height(350)
+              .Groupable(false)
+              .Selectable(SelectionType.Single)
+              .Parent("txtsearch", "search")
+              .Url(Url.Action("GetYardDetails", "Yard", new { atwBkNo = @Model.yardATWBkNo, trns = Model.yardTrnNo })))
+
+            </div>
+            <div class="box-footer">
+                <button type="button" class="btn btn-success" id="backMn" onclick="location.href = '@Url.Action("Index", "Yard")'"> <i class="fa fa-arrow-left fa-1x"></i> Back to Main</button>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts{
+    <script src="~/Scripts/bootstap-toggle.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#trnnos").chosen();
+        });
+
+        $(function () {
+            $('#ApiDemoGrid').on('awerender', function () {
+                $(this).find(".checkbox-toggle").bootstrapToggle();
+            });
+
+            $('#txtsearch').keyup(function () {
+                $('#ApiDemoGrid').data('api').load();
+            });
+
+            $('#ApiDemoGrid').on('aweload', function (e, data, rd) {
+                $('#log').prepend('aweload handled,\n data: ' + JSON.stringify(data) + "\n request data" + JSON.stringify(rd) + '\n\n');
+            }).on('awebeginload', function (e, data) {
+                $('#log').prepend('awebeginload handled,\n request data: ' + JSON.stringify(data) + '\n\n');
+            });
+
+            var lastSelectedIds;
+            $('#ApiDemoGrid').on('aweselect', function () {
+                lastSelectedIds = $.map($(this).data('api').getSelection(), function (val) { return val.tranID; });
+                console.log(lastSelectedIds);
+            })
+        });
+
+        function setContent(o) {
+            $('#ApiDemoGrid').data('api').clearpersist();
+            $('#demoContent').html(o);
+        };
+
+        var toggleButton = function (model, prop) {
+            var checked = model[prop] ? 'checked = "checked"' : '';
+            return '<input disabled="disabled" type="checkbox" ' + checked + ' class="checkbox-toggle" data-toggle="toggle" data-on="Yes" data-off="No" data-size="small">';
+        };
+    </script>
+}
+
+<style>
+    td {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>

@@ -1,0 +1,162 @@
+﻿@model AdminLteMvc.Models.WEBSales.TransactionDetails
+@{
+    ViewBag.Title = "ForPrint";
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+    var requirements = Model.conRqrmnts.Split(',');
+}
+
+<div class="box box-success">
+    <div class="box-body">
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4 text-center">
+                <h4>
+                    <b>
+                        <span style="font-size:25px;">
+                            KARGAMINE TOO, INC.
+                        </span>
+                        <br /><br />
+                        <span style="font-size:18px;">
+                            AUTHORITY TO WITHDRAW (ATW)
+                        </span>
+                    </b>
+                </h4>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td><b>AUTHORIZED TRUCKER:</b>@ViewBag.Trucker</td>
+                    <td><b>ATW BOOKING NO:</b> @ViewBag.ATWBookingNo</td>
+                </tr>
+                <tr>
+                    <td><b>AUTHORIZED DRIVER:</b> @ViewBag.Driver</td>
+                    <td><b>TRUCK PLATE NO:</b> @ViewBag.PlateNo</td>
+                </tr>
+                <tr>
+                    <td><b>COMPANY/SHIPPER:</b> @ViewBag.Shipper</td>
+                    <td><b>BOOKING NO:</b> @ViewBag.BookingNo</td>
+                </tr>
+                <tr>
+                    <td><b>CONTACT PERSON:</b> @ViewBag.ContactPerson</td>
+                    <td><b>ISSUE DATE:</b>@ViewBag.IssueDate</td>
+                </tr>
+                <tr>
+                    <td><b>CONSIGNEE:</b> @Model.consignee</td>
+                    <td><b>EXPIRY DATE:</b>@ViewBag.ExpiryDate</td>
+                </tr>
+                <tr>
+                    <td><b>CARGO:</b> @Model.cargoType</td>
+                    <td><b>SERVICE MODE:</b>@Model.serviceType</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>CY - Pull-Out of Empty ConVan</th>
+                    <th>CY - Stuffing/Stripping Area</th>
+                    <th>CY - Delivery of Laden ConVan</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@Model.cyEPO</td>
+                    <td>@Model.cySA</td>
+                    <td>@Model.cyLD</td>
+                </tr>
+            </tbody>
+        </table>
+        <span id="conreq">CONVAN REQUIREMENTS</span>
+        <div class="row" id="conrequirements">
+            <div class="col-md-3">
+                <input type="checkbox" value="Food Grade">Food Grade
+                <br />
+                <input type="checkbox" value="With No Major Dents">With No Major Dents
+            </div>
+            <div class="col-md-3">
+                <input type="checkbox" value="With No Pinholes">With No Pinholes
+                <br />
+                <input type="checkbox" value="With No Bad Odor">With No Bad Odor
+            </div>
+            <div class="col-md-3">
+                <input type="checkbox" value="Close Van">Close Van
+                <br />
+                <input type="checkbox" value="Open Van">Open Van
+            </div>
+            <div class="col-md-3">
+                <input type="checkbox" value="Repairable">Repairable
+                <br />
+                <input type="checkbox" value="Motorcycle Van">Motorcycle Van
+            </div>
+        </div>
+        <span id="conreq">TRANSACTION DETAILS</span>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Transaction No.</th>
+                    <th>ConVan Size</th>
+                    <th>ConVan Status</th>
+                    <th>Origin</th>
+                    <th>Destination</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@Model.transactionNo</td>
+                    <td>@ViewBag.ConvanSize</td>
+                    <td>@ViewBag.ConvanStatus</td>
+                    <td>@Model.origin</td>
+                    <td>@Model.destination</td>
+                </tr>
+            </tbody>
+        </table>
+        <span id="conreq">REMARKS:</span> @Model.remarks
+        <br/>
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <span id="conreq">Issued By:</span>  _______________________________<br/>
+                <span style="font-size:12px; padding-left:110px;">Customer Service Representative</span>
+            </div>
+        </div>
+    </div>
+</div>
+<link href="~/Content/bootstrap-toggle.css" rel="stylesheet" />
+<script src="~/Scripts/bootstap-toggle.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+@section Scripts{
+    <script src="~/Scripts/bootstap-toggle.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var requirementsArray = @Html.Raw(Json.Encode(requirements));
+            console.log(requirementsArray);
+            $('#conrequirements input[type=checkbox]').attr('disabled', 'true');
+            $('#conrequirements input[type=checkbox]').each(function () {
+                //alert($(this).val());
+                var arraycontains = (requirementsArray.indexOf($(this).val()) > -1);
+                if (arraycontains) {
+                    $(this).prop("checked",true);
+                }
+            });
+        });
+    </script>
+}
+
+<style>
+    #conreq {
+        font - family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    div.col-md-3 {
+        padding - left:65px;
+    }
+</style>

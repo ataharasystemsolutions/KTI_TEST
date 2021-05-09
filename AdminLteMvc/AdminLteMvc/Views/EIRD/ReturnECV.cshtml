@@ -1,0 +1,370 @@
+﻿@model AdminLteMvc.Models.WEBSales.EIROutLD
+@{
+    ViewBag.Title = "EIR IN (RETURN OF EMPTY CV)";
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+}
+
+<div class="box box-success">
+    <div class="box-body">
+        <div class="row">
+            <div class="col-md-4">
+                <h4>
+                    <b>
+                        <span style="font-size:20px;">
+                            KARGAMINE TOO, INC.
+                        </span> <br />
+                        <span style="font-size:15px;">EIR In No:</span> <span style="color:red; font-size: 13px;">@ViewBag.EIRINo</span><br />
+                        <span style="font-size:15px;">Reference No:</span> <span style="color:red; font-size:13px;">@Model.eirldno</span>
+                    </b>
+                </h4>
+            </div>
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <h4>
+                    <b>
+                        <i>Equipment Interchange Receipt</i> <br />
+                    </b>
+                </h4>
+            </div>
+        </div>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td>
+                        <b>SCR:</b>
+                        @*@Html.EditorFor(model => model.eirldscr, new { htmlAttributes = new { @class = "form-control", id = "eirldscr" } })*@
+                        @Model.eirldscr
+                    </td>
+                    <td>
+                        <b>RETURN TIME:</b>
+                        @*@Html.EditorFor(model => model.eirlditime, new { htmlAttributes = new { @class = "form-control", id = "eirlditime", @readonly = true } })*@
+                        @ViewBag.TimeToday
+                    </td>
+
+                    <td>
+                        <b>SERVICE TYPE:</b>
+                        @Model.eirldservicetype
+                        @*@Html.EditorFor(model => model.eirldservicetype, new { htmlAttributes = new { @class = "form-control", id = "eirldservicetype", @readonly = true } })*@
+                    </td>
+                    <td>
+                        <b>TRANSACTION NO:</b>
+                        @Model.eirldtransactionno Return
+                        @*@Html.EditorFor(model => model.eirldtransactionno, new { htmlAttributes = new { @class = "form-control", id = "eirldtransactionno", @readonly = true } })*@
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>CONVAN NO:</b>
+                        @*@Html.EditorFor(model => model.eirldconvanno, new { htmlAttributes = new { @class = "form-control", id = "eirldconvanno", @readonly = true } })*@
+                        @Model.eirldconvanno
+                    </td>
+                    <td>
+                        <b>CONVAN STATUS:</b>
+                        Empty
+                        @*@Html.EditorFor(model => model.eirldconvanstatus, new { htmlAttributes = new { @class = "form-control", id = "eirldconvanstatus", @readonly = true } })*@
+                    </td>
+                    <td>
+                        <b>CONVAN SIZE:</b>
+                        @*@Html.EditorFor(model => model.eirldconvansize, new { htmlAttributes = new { @class = "form-control", id = "eirldconvansize", @readonly = true } })*@
+                        @Model.eirldconvansize
+                    </td>
+                    <td>
+                        <b>CONSIGNEE:</b>
+                        @*@Html.EditorFor(model => model.eirldconsignee, new { htmlAttributes = new { @class = "form-control", id = "eirldconsignee", @readonly = true } })
+                        @Model.eirldconsignee*@
+                        KCTSI
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>SHIPPER:</b> @*@Model.eirldshipper*@ KCTSI</td>
+                    <td><b>TRUCKER:</b> @Model.eirldtruckerdestination</td>
+                    <td><b>DRIVER'S NAME:</b> @Model.eirlddriversname</td>
+                    <td><b>PLATE NO:</b> @Model.eirldplateno</td>
+                </tr>
+                <tr>
+                    <td><b>VESSEL:</b> @*@Model.eirldvessel*@
+                        <select id="vessel" class="form-control">
+                            @{
+                                foreach (var item in ViewBag.VesselList)
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }
+                            }
+                        </select>    
+                    </td>
+                    <td>
+                        <b>VOYAGE NO:</b>
+                        @*<input type="text" class="form-control" id="voyno" placeholder="Enter voyage no.">*@
+                        @Html.EditorFor(model => model.eirldvoyageno, new { htmlAttributes = new { @class = "form-control", id = "eirldvoyageno"} })
+
+                    </td>
+                    <td><b>SEAL NO:</b>
+                        @*<input type="text" class="form-control" id="slno" placeholder="Enter seal no.">*@
+                    @Model.eirldsealno
+                    </td>
+                    <td><b>SEAL STATUS:</b>
+                        @*<select id="sealstat" class="form-control">
+                            @{
+                                foreach (var item in ViewBag.SealStatList)
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }
+                            }
+                        </select>*@
+                    @Model.eirldsealstatus
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>RELAY PORT:</b> @*@Model.eirldrelayport*@
+                        @Html.EditorFor(model => model.eirldrelayport, new { htmlAttributes = new { @class = "form-control", id = "eirldrelayport"} })
+
+                    </td>
+                    <td><b>PORT OF ORIGIN:</b>
+                        @*<select id="poo" class="form-control">
+                            @{
+                                foreach (var item in ViewBag.PooList)
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }
+                            }
+                        </select>*@
+                    @Model.eirldportoforigin
+                    </td>
+                    <td>
+                        <b>PORT OF DESTINATION:</b>
+                        @*<select id="pod" class="form-control">
+            @{
+                foreach (var item in ViewBag.PodList)
+                {
+                    <option value="@item.Value">@item.Text</option>
+                }
+            }
+        </select>*@
+                        Frabelle Bauan Port
+                    </td>
+                    <td>
+                        <b>WEIGHT:</b> 2 tons<br />
+                        <b>VOLUME:</b> 33 cbm
+                    </td>
+                </tr>
+                @*note:required feild*@
+                <tr>
+                    <td>
+                        <b>Trucker Origin - Trip Type:</b>
+                        <select id="ddl_trip" class="form-control">
+                            <option value="0">Select</option>
+                            <option value="Regular">Regular</option>
+                            <option value="Special">Special</option>
+                            <option value="Foul">Foul</option>
+                        </select>
+                    </td>
+                    <td colspan="2">
+                        <b>Trucker Origin - WayBill No.:</b>
+                        <input class="form-control" id="txt_waybillno" />
+                    </td>
+                    <td>
+                        <b>WayBill Attachment:</b>
+
+                        <input type="file" id="files" name="ImageFile" multiple />
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered">
+            <tr>
+                <td>
+                    <b>RETURN DATE:</b> <br /><input type="date" class="form-control" id="returndate">
+                    <br />
+                    <b>DAMAGES CODES:</b> <br />
+                    <select id="damagecodes" class="form-control" multiple="multiple">
+                        @{
+                            foreach (var item in ViewBag.DamageList)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        }
+                    </select>
+                    <br /><br />
+                    <b>REMARKS:</b>
+                    @*@Html.TextBoxFor("EIRORemarks", new { htmlAttributes = new { @Value = "", @class = "form-control", id = "remarks" } })*@
+                    <textarea class="form-control" id="remarks" style=" resize:none;" aria-label="REMARKS"></textarea>
+                </td>
+                <td>
+                    <img src="~/AppFiles/Images/container.PNG" />
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="box-footer">
+        <button type="button" class="btn btn-primary" id="return"> <i class="fa fa-pencil fa-1x"></i> RETURN </button>
+        <button type="button" class="btn btn-default" onclick="location.href='@Url.Action("IndexOutLD", "EIRD")'"> <i class="fa fa-cancel fa-1x"></i> Back to list of EIR</button>
+    </div>
+</div>
+<link href="~/Content/bootstrap-toggle.css" rel="stylesheet" />
+<script src="~/Scripts/bootstap-toggle.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/jqueryui")
+
+<script type="text/javascript">
+        $("#damagecodes").chosen();
+        $("#vessel").chosen();
+        $("#poo").chosen();
+        $("#pod").chosen();
+    var icodes = @Html.Raw(Json.Encode(Model.eirlddamagescode));
+    var arrRequire = icodes.split(',');
+    $("#damagecodes").val(arrRequire).trigger("chosen:updated");
+
+        $('#return').click(function () {
+            var isAllValid = true;
+
+            if ($('#returndate').val().trim() == '') {
+                $.notify("EIR Return Date is required.", "error");
+                isAllValid = false;
+            }
+
+            if ($('#damagecodes').val() == '' || $('#damagecodes').val() == null) {
+                $.notify("Damage Codes is required.", "error");
+                isAllValid = false;
+            }
+            if ($('#remarks').val().trim() == '') {
+                $.notify("Remarks is required.", "error");
+                isAllValid = false;
+            }
+
+            var isAllValid = true;
+            var mnem = document.getElementById("ddl_trip");
+            var mnemselected = mnem.options[mnem.selectedIndex].text;
+            if (mnemselected.trim() == '' || mnemselected == "Select") {
+                $.notify("Trip Type is required.", "error");
+                isAllValid = false;
+            }
+            if ($('#txt_waybillno').val().trim() == '') {
+                $.notify("Waybill Number is required.", "error");
+                isAllValid = false;
+            }
+            if ($("#files").get(0).files.length === 0) {
+                $.notify("Waybill Attachment is required.", "error");
+                isAllValid = false;
+            }
+            if (isAllValid) {
+
+                var tempcode = $('#damagecodes').val().join();
+                var dmgcds = tempcode.toString();
+
+                var IDpassed = @Html.Raw(Json.Encode(ViewBag.IDFromOut));
+
+                var eirinno =@Html.Raw(Json.Encode(@ViewBag.EIRINo));
+                var refno = @Html.Raw(Json.Encode(@Model.eirldno));
+
+                var a = @Html.Raw(Json.Encode(@ViewBag.TimeToday));
+                var c= @Html.Raw(Json.Encode(@Model.eirldservicetype));
+                var d= @Html.Raw(Json.Encode(@Model.eirldtransactionno));
+                var e= @Html.Raw(Json.Encode(@Model.eirldconvanno));
+
+                var g= @Html.Raw(Json.Encode(@Model.eirldconvansize));
+                var h= @Html.Raw(Json.Encode(@Model.eirldconsignee));
+                var j= @Html.Raw(Json.Encode(@Model.eirldtruckerdestination));
+                var k = @Html.Raw(Json.Encode(@Model.eirlddriversname));
+                var b= @Html.Raw(Json.Encode(@Model.eirldplateno));
+                var m= @Html.Raw(Json.Encode(@Model.eirldvessel));
+                var o= @Html.Raw(Json.Encode(@Model.eirldsealno));
+                var p= @Html.Raw(Json.Encode(@Model.eirldsealstatus));
+                var q= @Html.Raw(Json.Encode(@Model.eirldportoforigin));
+                var r= @Html.Raw(Json.Encode(@Model.eirldportofdestination));
+                var s= @Html.Raw(Json.Encode(@Model.eirldscr));
+
+                var eirData = {
+                    eirinecvno: eirinno,
+                    eirinecvreferenceno: refno,
+                    eirinecvstatus: "Returned",
+                    eirinecvidate: $('#returndate').val(),
+                    eirinecvitime: a,
+                    eirinecvservicetype: c,
+                    eirinecvtransactionno: d,
+                    eirinecvconvanno: e,
+                    eirinecvconvanstatus: "Empty",
+                    eirinecvconvansize: g,
+                    eirinecvconsignee: "KCTSI",
+                    eirinecvshipper: "KCTSI",
+                    eirinecvtrucker: j,
+                    eirinecvdriversname: k,
+                    eirinecvplateno: b,
+                    eirinecvrelayport: $('#eirldrelayport').val(),
+                    eirinecvvessel: m,
+                    eirinecvvoyageno: $('#eirldvoyageno').val(),
+                    eirinecvsealno: o,
+                    eirinecvsealstatus: p,
+                    eirinecvportoforigin: q,
+                    eirinecvportofdestination: r,
+                    eirinecvweight: "2 tons",
+                    eirinecvvolume: "33 cbm",
+                    eirinecvdamagescode: dmgcds,
+                    eirinecvscr: s,
+                    eirinecvremarks: $('#remarks').val(),
+                    eirinecvtriptype: mnemselected,
+                    eirinecvwaybillno: $('#txt_waybillno').val()
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    url: '../../../EIRD/SaveReturnECV',
+                    data: JSON.stringify({ data: eirData, ID: IDpassed}),
+                    contentType: 'application/json',
+                    success: function (data) {
+                        alert(data);
+                        if (data.status) {
+                            getfile(data.ff);
+                            $.notify("Operation successfully posted.", "success");
+                            var url = '@Url.Action("IndexInECV", "EIRD")';
+                            window.location.href = url;
+                        }
+                        else {
+                            $.notify("Operation failed to post.", "error");
+                        }
+                    },
+                    error: function (error) {
+                        // error.responseText;
+                        alert(error.responseText);
+                    }
+                });
+            }
+        });
+
+    function getfile(fl) {
+        if (window.FormData !== undefined) {
+            var fileUpload = $("#files").get(0);
+            var files = fileUpload.files;
+            var fileData = new FormData();
+            for (var i = 0; i < files.length; i++) {
+                fileData.append(files[i].name, files[i]);
+            }
+            alert(fl);
+            fileData.append('fl', fl);
+            var hh = "test";
+            $.ajax({
+                url: '/EIRD/Uploads',
+                type: "POST",
+                contentType: false,
+                processData: false,
+                data: fileData,
+                success: function (result) {
+                    alert(result);
+                },
+                error: function (err) {
+                    alert(err.statusText);
+                }
+            });
+        } else {
+            alert("FormData is not supported in the browser.");
+        }
+    }
+</script>
+}
+

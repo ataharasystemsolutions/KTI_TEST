@@ -1,0 +1,1033 @@
+﻿@model AdminLteMvc.Models.WEBSales.TransactionDetails
+@{
+    ViewBag.Title = "Add Transaction Detail";
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+}
+<div class="box box-success">
+    <div class="box-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="dNum" class="col-sm-3 col-form-label">Transaction No.</label>
+                        <div class="col-sm-9    ">
+                            @Html.EditorFor(model => model.transactionNo, new { htmlAttributes = new { @Value = ViewBag.TrnValue, @class = "form-control", id = "transactionno", @readonly = true } })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="transactionDate" class="col-sm-3 col-form-label">Transaction Date</label>
+                        <div class="col-sm-9    ">
+                            @Html.EditorFor(model => model.transactionDate, new { htmlAttributes = new { @type = "date", @class = "form-control", id = "transactionDate" } })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="servicetype" class="col-sm-3 col-form-label">Service Type</label>
+                        <div class="col-sm-9    ">
+                            <select id="servicetype" class="form-control">
+                                <option value="0">-- Select below --</option>
+                                @{
+                                    foreach (var item in ViewBag.ServiceTypeList)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="quantity" class="col-sm-3 col-form-label">Quantity</label>
+                        <div class="col-sm-9    ">
+                            @Html.EditorFor(model => model.quantity, new { htmlAttributes = new { @Value = "1", @class = "form-control", id = "quantity" } })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="consize" class="col-sm-3 col-form-label">ConVan Size</label>
+                        <div class="col-sm-9    ">
+                            @Html.EditorFor(model => model.consize, new { htmlAttributes = new { @Value = ViewBag.CSIZE, @class = "form-control", id = "consize", @readonly=true } })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="containerclass" class="col-sm-3 col-form-label">ConVan Class</label>
+                        <div class="col-sm-9    ">
+                            <select id="containerclass" class="form-control">
+                                <option value="0">-- Select below --</option>
+                                @{
+                                    foreach (var item in ViewBag.ContainerClassList)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="conrequirements" class="col-sm-3 col-form-label">ConVan Requirements</label>
+                        <div class="col-sm-9    ">
+                            <select id="conrequirements" class="form-control" multiple="multiple">
+                                @{
+                                    foreach (var item in ViewBag.ConVanRequirementList)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="origin" class="col-sm-3 col-form-label">Origin</label>
+                        <div class="col-sm-9    ">
+                            <select id="origin" class="form-control">
+                                <option value="0">-- Select below --</option>
+                                @{
+                                    foreach (var item in ViewBag.OriginList)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="destination" class="col-sm-3 col-form-label">Destination</label>
+                        <div class="col-sm-9    ">
+                            <select id="destination" class="form-control">
+                                <option value="0">-- Select below --</option>
+                                @{
+                                    foreach (var item in ViewBag.DestinationList)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="cyepo" class="col-sm-3 col-form-label">CY - Empty Pull Out</label>
+                        <div class="col-sm-9    ">
+                            <select id="cyepo" class="form-control">
+                                <option value="0">-- Select below --</option>
+                                @{
+                                    foreach (var item in ViewBag.EPOList)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="cysa" class="col-sm-3 col-form-label">CY - Stuffing Activity </label>
+                        <div class="col-sm-9    ">
+                            <select id="cysa" class="form-control">
+                                <option value="0">-- Select below --</option>
+                                @{
+                                    foreach (var item in ViewBag.SAList)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="consize" class="col-sm-3 col-form-label">CY - Laden Delivery</label>
+                        <div class="col-sm-9    ">
+                            <select id="cyld" class="form-control">
+                                <option value="0">-- Select below --</option>
+                                @{
+                                    foreach (var item in ViewBag.LDList)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="rmrks" class="col-sm-3 col-form-label">Remarks</label>
+                        <div class="col-sm-9    ">
+                            @Html.TextAreaFor(m => m.remarks, new { @class = "form-control", id = "rmrks" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="consignee" class="col-sm-3 col-form-label">
+                            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#consigneeList">Consignee List</button>
+                        </label>
+                        <div class="modal fade" id="consigneeList" role="dialog">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h2 class="modal-title">CONSIGNEES</h2>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p><i>Select up to 10 consignees.</i></p>
+                                        <div class="row">
+                                            <div class="col-md-3"></div>
+                                            <div class="col-md-3"></div>
+                                            <div class="col-md-3">
+                                                <h5><b>Consignee Address</b></h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <h5><b>Consignee Contact Number</b></h5>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3">Consignee 1</div>
+                                            <div class="col-md-3">
+                                                <select id="consignee1" class="form-control">
+                                                    <option value="">-- Select below --</option>
+                                                    @{
+                                                        foreach (var item in ViewBag.ConsigneeList)
+                                                        {
+                                                            <option value="@item.Value">@item.Text</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.EditorFor(model => model.consigneeAdd1, new { htmlAttributes = new { @class = "form-control", id = "consigneeaddress1", @readonly = true } })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.EditorFor(model => model.consigneetelno1, new { htmlAttributes = new { @class = "form-control", id = "consigneetelno1", @readonly = true } })
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-md-3">Consignee 2</div>
+                                            <div class="col-md-3">
+                                                <select id="consignee2" class="form-control">
+                                                    <option value="">-- Select below --</option>
+                                                    @{
+                                                        foreach (var item in ViewBag.ConsigneeList)
+                                                        {
+                                                            <option value="@item.Value">@item.Text</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.EditorFor(model => model.consigneeAdd2, new { htmlAttributes = new { @class = "form-control", id = "consigneeaddress2", @readonly = true } })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.EditorFor(model => model.consigneetelno2, new { htmlAttributes = new { @class = "form-control", id = "consigneetelno2", @readonly = true } })
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-md-3">Consignee 3</div>
+                                            <div class="col-md-3">
+                                                <select id="consignee3" class="form-control">
+                                                    <option value="">-- Select below --</option>
+                                                    @{
+                                                        foreach (var item in ViewBag.ConsigneeList)
+                                                        {
+                                                            <option value="@item.Value">@item.Text</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.EditorFor(model => model.consigneeAdd3, new { htmlAttributes = new { @class = "form-control", id = "consigneeaddress3", @readonly = true } })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.EditorFor(model => model.consigneetelno3, new { htmlAttributes = new { @class = "form-control", id = "consigneetelno3", @readonly = true } })
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-md-3">Consignee 4</div>
+                                            <div class="col-md-3">
+                                                <select id="consignee4" class="form-control">
+                                                    <option value="">-- Select below --</option>
+                                                    @{
+                                                        foreach (var item in ViewBag.ConsigneeList)
+                                                        {
+                                                            <option value="@item.Value">@item.Text</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.EditorFor(model => model.consigneeAdd4, new { htmlAttributes = new { @class = "form-control", id = "consigneeaddress4", @readonly = true } })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.EditorFor(model => model.consigneetelno4, new { htmlAttributes = new { @class = "form-control", id = "consigneetelno4", @readonly = true } })
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-md-3">Consignee 5</div>
+                                            <div class="col-md-3">
+                                                <select id="consignee5" class="form-control">
+                                                    <option value="">-- Select below --</option>
+                                                    @{
+                                                        foreach (var item in ViewBag.ConsigneeList)
+                                                        {
+                                                            <option value="@item.Value">@item.Text</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.EditorFor(model => model.consigneeAdd5, new { htmlAttributes = new { @class = "form-control", id = "consigneeaddress5", @readonly = true } })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.EditorFor(model => model.consigneetelno5, new { htmlAttributes = new { @class = "form-control", id = "consigneetelno5", @readonly = true } })
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-md-3">Consignee 6</div>
+                                            <div class="col-md-3">
+                                                <select id="consignee6" class="form-control">
+                                                    <option value="">-- Select below --</option>
+                                                    @{
+                                                        foreach (var item in ViewBag.ConsigneeList)
+                                                        {
+                                                            <option value="@item.Value">@item.Text</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.EditorFor(model => model.consigneeAdd6, new { htmlAttributes = new { @class = "form-control", id = "consigneeaddress6", @readonly = true } })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.EditorFor(model => model.consigneetelno6, new { htmlAttributes = new { @class = "form-control", id = "consigneetelno6", @readonly = true } })
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-md-3">Consignee 7</div>
+                                            <div class="col-md-3">
+                                                <select id="consignee7" class="form-control">
+                                                    <option value="">-- Select below --</option>
+                                                    @{
+                                                        foreach (var item in ViewBag.ConsigneeList)
+                                                        {
+                                                            <option value="@item.Value">@item.Text</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.EditorFor(model => model.consigneeAdd7, new { htmlAttributes = new { @class = "form-control", id = "consigneeaddress7", @readonly = true } })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.EditorFor(model => model.consigneetelno7, new { htmlAttributes = new { @class = "form-control", id = "consigneetelno7", @readonly = true } })
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-md-3">Consignee 8</div>
+                                            <div class="col-md-3">
+                                                <select id="consignee8" class="form-control">
+                                                    <option value="">-- Select below --</option>
+                                                    @{
+                                                        foreach (var item in ViewBag.ConsigneeList)
+                                                        {
+                                                            <option value="@item.Value">@item.Text</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.EditorFor(model => model.consigneeAdd8, new { htmlAttributes = new { @class = "form-control", id = "consigneeaddress8", @readonly = true } })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.EditorFor(model => model.consigneetelno8, new { htmlAttributes = new { @class = "form-control", id = "consigneetelno8", @readonly = true } })
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-md-3">Consignee 9</div>
+                                            <div class="col-md-3">
+                                                <select id="consignee9" class="form-control">
+                                                    <option value="">-- Select below --</option>
+                                                    @{
+                                                        foreach (var item in ViewBag.ConsigneeList)
+                                                        {
+                                                            <option value="@item.Value">@item.Text</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.EditorFor(model => model.consigneeAdd9, new { htmlAttributes = new { @class = "form-control", id = "consigneeaddress9", @readonly = true } })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.EditorFor(model => model.consigneetelno9, new { htmlAttributes = new { @class = "form-control", id = "consigneetelno9", @readonly = true } })
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-md-3">Consignee 10</div>
+                                            <div class="col-md-3">
+                                                <select id="consignee10" class="form-control">
+                                                    <option value="">-- Select below --</option>
+                                                    @{
+                                                        foreach (var item in ViewBag.ConsigneeList)
+                                                        {
+                                                            <option value="@item.Value">@item.Text</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.EditorFor(model => model.consigneeAdd10, new { htmlAttributes = new { @class = "form-control", id = "consigneeaddress10", @readonly = true } })
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.EditorFor(model => model.consigneetelno10, new { htmlAttributes = new { @class = "form-control", id = "consigneetelno10", @readonly = true } })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @*<div class="form-group row">
+            <label for="consignee" class="col-sm-3 col-form-label">Consignee</label>
+            <div class="col-sm-9    ">
+                <select id="consignee" class="form-control">
+                    <option value="0">-- Select below --</option>
+                    @{
+                        foreach (var item in ViewBag.ConsigneeList)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="consigneeaddress" class="col-sm-3 col-form-label">Consignee Address</label>
+            <div class="col-sm-9    ">
+                @Html.EditorFor(model => model.consigneeAdd, new { htmlAttributes = new { @class = "form-control", id = "consigneeaddress", @readonly = true } })
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="consigneetelno" class="col-sm-3 col-form-label">Consignee Contact No.</label>
+            <div class="col-sm-9    ">
+                @Html.EditorFor(model => model.consigneetelno, new { htmlAttributes = new { @class = "form-control", id = "consigneetelno", @readonly = true } })
+            </div>
+        </div>*@
+                    @*<div class="form-group row">
+                        <label for="convanno" class="col-sm-3 col-form-label">ConVan No</label>
+                        <div class="col-sm-9    ">
+                            <select id="convanno" class="form-control">
+                                <option value="0">-- Select below --</option>
+                                @{
+                                    foreach (var item in ViewBag.ConVanNoList)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>*@
+                    <div class="form-group row">
+                        <label for="booktype" class="col-sm-3 col-form-label">Booking Type</label>
+                        <div class="col-sm-9    ">
+                            <select id="booktype" class="form-control">
+                                <option value="0">-- Select below --</option>
+                                @{
+                                    foreach (var item in ViewBag.BookingType)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="chargee" class="col-sm-3 col-form-label">Chargee</label>
+                        <div class="col-sm-9    ">
+                            <select id="chargee" class="form-control">
+                                <option value="0">-- Select below --</option>
+                                <option value="Shipper">Shipper</option>
+                                <option value="Consignee">Consignee</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="paymode" class="col-sm-3 col-form-label">Payment Mode</label>
+                        <div class="col-sm-9    ">
+                            <select id="paymode" class="form-control">
+                                <option value="0">-- Select below --</option>
+                                @{
+                                    foreach (var item in ViewBag.PaymentMode)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+       @* @Html.EditorFor(model => model.trnInputtedDate, new { htmlAttributes = new { @class = "form-control", id = "inputteddate", @readonly = true } })*@
+    </div>
+</div>
+<div class="box-footer">
+    <button type="button" class="btn btn-primary" id="submit"> <i class="fa fa-pencil fa-1x"></i> Submit </button>
+    <button type="button" class="btn btn-default" onclick="location.href='@Url.Action("TrnDetails", "Booking", new { ViewBag.ID })'"> <i class="fa fa-trash fa-1x"></i> Cancel</button>
+</div>
+<link href="~/Content/bootstrap-toggle.css" rel="stylesheet" />
+<script src="~/Scripts/bootstap-toggle.js"></script>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/jqueryui")
+
+<script type="text/javascript">
+        $(document).ready(function () {
+            //document.getElementById("submit").disabled = true;
+
+            $("#plist").chosen();
+            $("#origin").chosen();
+            $("#destination").chosen();
+            $("#consignee1").chosen({ width: "200px" });
+            $("#consignee2").chosen({ width: "200px" });
+            $("#consignee3").chosen({ width: "200px" });
+            $("#consignee4").chosen({ width: "200px" });
+            $("#consignee5").chosen({ width: "200px" });
+            $("#consignee6").chosen({ width: "200px" });
+            $("#consignee7").chosen({ width: "200px" });
+            $("#consignee8").chosen({ width: "200px" });
+            $("#consignee9").chosen({ width: "200px" });
+            $("#consignee10").chosen({ width: "200px" });
+            $("#servicetype").chosen();
+            $("#chargeto").chosen();
+            $("#booktype").chosen();
+
+            $("#convanno").chosen();
+            $("#chargee").chosen();
+            $("#paymode").chosen();
+
+            $("#containerclass").chosen();
+            $("#cargotype").chosen();
+            $("#conrequirements").chosen();
+            $("#cyepo").chosen();
+            $("#cysa").chosen();
+            $("#cyld").chosen();
+
+            $('#transactionDate').on("change", function () {
+                var trndate = document.getElementById("transactionDate").value;
+                var bookingdate = @Html.Raw(Json.Encode(ViewBag.BookingDate));
+
+                var date1 = new Date(trndate);
+                var date2 = new Date(bookingdate);
+                console.log(date1);
+                console.log(date2);
+                console.log(date1 < date2);
+
+                if (date1 < date2) {
+                    $.notify("Transaction Date must not be before the booking date.", "error");
+                }
+
+            });
+
+        //$('#modalSave').on("click", function () {
+        //    document.getElementById("submit").disabled = false;
+        //    var preq = $('#conrequirements').val();
+        //});
+
+        //$("#inputteddate").css("display", "none");
+
+        //var today = new Date();
+        //var dd = today.getDate();
+        //var mm = today.getMonth() + 1;
+        //var yyyy = today.getFullYear();
+        //if (dd < 10) {
+        //    dd = '0' + dd
+        //}
+        //if (mm < 10) {
+        //    mm = '0' + mm
+        //}
+
+        //today = yyyy + '-' + mm + '-' + dd;
+        //    document.getElementById("transactionDate").value = today;
+
+        //var isdate = new Date();
+        //isdate.setDate(isdate.getDate());
+
+        //var issuedDate = ('0' + isdate.getDate()).slice(-2) + '-'
+        //    + ('0' + (isdate.getMonth() + 1)).slice(-2) + '-'
+        //    + isdate.getFullYear();
+
+        //console.log(issuedDate);
+        //    //document.getElementById("inputteddate").value = issuedDate;
+
+            $('#consignee1').on("change", function () {
+
+                var consigneeValue = document.getElementById("consignee1").value;
+
+                $.ajax({
+                    url: '../../../Booking/BindConsignee',
+                    type: 'GET',
+                    data: { consigneeValue: consigneeValue },
+                    contentType: "application/json",
+                    success: function (consigneedata) {
+                        document.getElementById("consigneeaddress1").value = consigneedata.cadd;
+                        document.getElementById("consigneetelno1").value = consigneedata.cnum;
+                    },
+                });
+            });
+
+            $('#consignee2').on("change", function () {
+
+                var consigneeValue = document.getElementById("consignee2").value;
+
+                $.ajax({
+                    url: '../../../Booking/BindConsignee',
+                    type: 'GET',
+                    data: { consigneeValue: consigneeValue },
+                    contentType: "application/json",
+                    success: function (consigneedata) {
+                        document.getElementById("consigneeaddress2").value = consigneedata.cadd;
+                        document.getElementById("consigneetelno2").value = consigneedata.cnum;
+                    },
+                });
+            });
+
+            $('#consignee3').on("change", function () {
+
+                var consigneeValue = document.getElementById("consignee3").value;
+
+                $.ajax({
+                    url: '../../../Booking/BindConsignee',
+                    type: 'GET',
+                    data: { consigneeValue: consigneeValue },
+                    contentType: "application/json",
+                    success: function (consigneedata) {
+                        document.getElementById("consigneeaddress3").value = consigneedata.cadd;
+                        document.getElementById("consigneetelno3").value = consigneedata.cnum;
+                    },
+                });
+            });
+
+            $('#consignee4').on("change", function () {
+
+                var consigneeValue = document.getElementById("consignee4").value;
+
+                $.ajax({
+                    url: '../../../Booking/BindConsignee',
+                    type: 'GET',
+                    data: { consigneeValue: consigneeValue },
+                    contentType: "application/json",
+                    success: function (consigneedata) {
+                        document.getElementById("consigneeaddress4").value = consigneedata.cadd;
+                        document.getElementById("consigneetelno4").value = consigneedata.cnum;
+                    },
+                });
+            });
+
+            $('#consignee5').on("change", function () {
+
+                var consigneeValue = document.getElementById("consignee5").value;
+
+                $.ajax({
+                    url: '../../../Booking/BindConsignee',
+                    type: 'GET',
+                    data: { consigneeValue: consigneeValue },
+                    contentType: "application/json",
+                    success: function (consigneedata) {
+                        document.getElementById("consigneeaddress5").value = consigneedata.cadd;
+                        document.getElementById("consigneetelno5").value = consigneedata.cnum;
+                    },
+                });
+            });
+
+            $('#consignee6').on("change", function () {
+
+                var consigneeValue = document.getElementById("consignee6").value;
+
+                $.ajax({
+                    url: '../../../Booking/BindConsignee',
+                    type: 'GET',
+                    data: { consigneeValue: consigneeValue },
+                    contentType: "application/json",
+                    success: function (consigneedata) {
+                        document.getElementById("consigneeaddress6").value = consigneedata.cadd;
+                        document.getElementById("consigneetelno6").value = consigneedata.cnum;
+                    },
+                });
+            });
+
+            $('#consignee7').on("change", function () {
+
+                var consigneeValue = document.getElementById("consignee7").value;
+
+                $.ajax({
+                    url: '../../../Booking/BindConsignee',
+                    type: 'GET',
+                    data: { consigneeValue: consigneeValue },
+                    contentType: "application/json",
+                    success: function (consigneedata) {
+                        document.getElementById("consigneeaddress7").value = consigneedata.cadd;
+                        document.getElementById("consigneetelno7").value = consigneedata.cnum;
+                    },
+                });
+            });
+
+            $('#consignee8').on("change", function () {
+
+                var consigneeValue = document.getElementById("consignee8").value;
+
+                $.ajax({
+                    url: '../../../Booking/BindConsignee',
+                    type: 'GET',
+                    data: { consigneeValue: consigneeValue },
+                    contentType: "application/json",
+                    success: function (consigneedata) {
+                        document.getElementById("consigneeaddress8").value = consigneedata.cadd;
+                        document.getElementById("consigneetelno8").value = consigneedata.cnum;
+                    },
+                });
+            });
+
+            $('#consignee9').on("change", function () {
+
+                var consigneeValue = document.getElementById("consignee9").value;
+
+                $.ajax({
+                    url: '../../../Booking/BindConsignee',
+                    type: 'GET',
+                    data: { consigneeValue: consigneeValue },
+                    contentType: "application/json",
+                    success: function (consigneedata) {
+                        document.getElementById("consigneeaddress9").value = consigneedata.cadd;
+                        document.getElementById("consigneetelno9").value = consigneedata.cnum;
+                    },
+                });
+            });
+
+            $('#consignee10').on("change", function () {
+
+                var consigneeValue = document.getElementById("consignee10").value;
+
+                $.ajax({
+                    url: '../../../Booking/BindConsignee',
+                    type: 'GET',
+                    data: { consigneeValue: consigneeValue },
+                    contentType: "application/json",
+                    success: function (consigneedata) {
+                        document.getElementById("consigneeaddress10").value = consigneedata.cadd;
+                        document.getElementById("consigneetelno10").value = consigneedata.cnum;
+                    },
+                });
+            });
+
+            $('#submit').click(function () {
+                var isAllValid = true;
+
+                var trndate = document.getElementById("transactionDate").value;
+                var bookingdate = @Html.Raw(Json.Encode(ViewBag.BookingDate));
+
+                var date1 = new Date(trndate);
+                var date2 = new Date(bookingdate);
+                console.log(date1);
+                console.log(date2);
+                console.log(date1 < date2);
+
+                if (date1 < date2) {
+                    $.notify("Transaction Date must not be before the booking date.", "error");
+                    isAllValid = false;
+                }
+
+                if ($('#transactionno').val().trim() == '') {
+                    $.notify("Transaction No is required.", "error");
+                    isAllValid = false;
+                }
+
+                var a = document.getElementById("origin");
+                var originselected = a.options[a.selectedIndex].text;
+
+                if (originselected.trim() == '' || originselected == "-- Select below --") {
+                    $.notify("Origin is required.", "error");
+                    isAllValid = false;
+                }
+
+                //var cvno = document.getElementById("convanno");
+                //var cvnoselected = cvno.options[cvno.selectedIndex].text;
+
+                //if (cvnoselected.trim() == '' || cvnoselected == "-- Select below --") {
+                //    $.notify("ConVan No is required.", "error");
+                //    isAllValid = false;
+                //}
+
+                var c1 = document.getElementById("consignee1");
+                var consigneeselected1 = c1.options[c1.selectedIndex].text;
+                var c2 = document.getElementById("consignee2");
+                var consigneeselected2 = c2.options[c2.selectedIndex].text;
+                var c3 = document.getElementById("consignee3");
+                var consigneeselected3 = c3.options[c3.selectedIndex].text;
+                var c4 = document.getElementById("consignee4");
+                var consigneeselected4 = c4.options[c4.selectedIndex].text;
+                var c5 = document.getElementById("consignee5");
+                var consigneeselected5 = c5.options[c5.selectedIndex].text;
+                var c6 = document.getElementById("consignee6");
+                var consigneeselected6 = c6.options[c6.selectedIndex].text;
+                var c7 = document.getElementById("consignee7");
+                var consigneeselected7 = c7.options[c7.selectedIndex].text;
+                var c8 = document.getElementById("consignee8");
+                var consigneeselected8 = c8.options[c8.selectedIndex].text;
+                var c9 = document.getElementById("consignee9");
+                var consigneeselected9 = c9.options[c9.selectedIndex].text;
+                var c10 = document.getElementById("consignee10");
+                var consigneeselected10 = c10.options[c10.selectedIndex].text;
+
+                if (consigneeselected1 == "-- Select below --" && consigneeselected2 == "-- Select below --" && consigneeselected3 == "-- Select below --" && consigneeselected4 == "-- Select below --" && consigneeselected5 == "-- Select below --" && consigneeselected6 == "-- Select below --" && consigneeselected7 == "-- Select below --" && consigneeselected8 == "-- Select below --" && consigneeselected9 == "-- Select below --" && consigneeselected10 == "-- Select below --") {
+                    $.notify("At least 1 Consignee is required.", "error");
+                    isAllValid = false;
+                }
+                if ($('#transactionDate').val().trim() == '') {
+                    $.notify("Transaction Date is required.", "error");
+                    isAllValid = false;
+                }
+
+                var c = document.getElementById("destination");
+                var destinationselected = c.options[c.selectedIndex].text;
+
+                if (destinationselected.trim() == '' || destinationselected == "-- Select below --") {
+                    $.notify("Destination is required.", "error");
+                    isAllValid = false;
+                }
+
+                //if ($('#consigneeaddress').val().trim() == '') {
+                //    $.notify("Consignee Address is required.", "error");
+                //    isAllValid = false;
+                //}
+
+                //var d = document.getElementById("plist");
+                //var plistselected = d.options[d.selectedIndex].text;
+
+                //if (plistselected.trim() == '' || plistselected == "-- Select below --") {
+                //    $.notify("Price List is required.", "error");
+                //    isAllValid = false;
+                //}
+
+                //if ($('#price').val().trim() == '') {
+                //    $.notify("Price is required.", "error");
+                //    isAllValid = false;
+                //}
+
+                var d = document.getElementById("servicetype");
+                var servicetypeselected = d.options[d.selectedIndex].text;
+
+                if (servicetypeselected.trim() == '' || servicetypeselected == "-- Select below --") {
+                    $.notify("Service Type is required.", "error");
+                    isAllValid = false;
+                }
+
+                var e = document.getElementById("chargee");
+                var chargetoselected = e.options[e.selectedIndex].text;
+
+                if (chargetoselected.trim() == '' || chargetoselected == "-- Select below --") {
+                    $.notify("Chargee is required.", "error");
+                    isAllValid = false;
+                }
+                //if ($('#consigneetelno').val().trim() == '') {
+                //    $.notify("Consignee Contact No is required.", "error");
+                //    isAllValid = false;
+                //}
+
+                var bktype = document.getElementById("booktype");
+                var bktypeselected = bktype.options[bktype.selectedIndex].text;
+
+                if (bktypeselected.trim() == '' || bktypeselected == "-- Select below --") {
+                    $.notify("Book Type is required.", "error");
+                    isAllValid = false;
+                }
+
+
+
+                //var ct = document.getElementById("cargotype");
+                var cc = document.getElementById("containerclass");
+                var epo = document.getElementById("cyepo");
+                var sa = document.getElementById("cysa");
+                var ld = document.getElementById("cyld");
+
+                //var ctselected = ct.options[ct.selectedIndex].text;
+                var ccselected = cc.options[cc.selectedIndex].text;
+                var eposelected = epo.options[epo.selectedIndex].text;
+                var saselected = sa.options[sa.selectedIndex].text;
+                var ldselected = ld.options[ld.selectedIndex].text;
+
+                //if (ctselected.trim() == '' || ctselected == "-- Select below --") {
+                //    $.notify("Cargo Type is required. Please check.", "error");
+                //    isAllValid = false;
+                //}
+
+                if (ccselected.trim() == '' || ccselected == "-- Select below --") {
+                    $.notify("Container Class is required. Please check.", "error");
+                    isAllValid = false;
+                }
+
+                if (eposelected.trim() == '' || eposelected == "-- Select below --") {
+                    $.notify("CY - Empty Pull Out is required. Please check.", "error");
+                    isAllValid = false;
+                }
+
+                if (saselected.trim() == '' || saselected == "-- Select below --") {
+                    $.notify("CY - Stuffing Activity is required. Please check.", "error");
+                    isAllValid = false;
+                }
+
+                if (ldselected.trim() == '' || ldselected == "-- Select below --") {
+                    $.notify("CY - Laden Delivery is required. Please check.", "error");
+                    isAllValid = false;
+                }
+
+                if ($('#quantity').val().trim() == '') {
+                    $.notify("Quantity is required. Please check.", "error");
+                    isAllValid = false;
+                }
+
+                //if ($('#unitofmeasurement').val().trim() == '') {
+                //    $.notify("Unit of Measurement is required. Please check.", "error");
+                //    isAllValid = false;
+                //}
+
+                if ($('#paymode').val().trim() == '') {
+                    $.notify("Paymode is required. Please check.", "error");
+                    isAllValid = false;
+                }
+
+                var pm = document.getElementById("paymode");
+                var pmselected = pm.options[pm.selectedIndex].text;
+
+                if (pmselected.trim() == '' || pmselected == "-- Select below --") {
+                    $.notify("Payment Mode is required.", "error");
+                    isAllValid = false;
+                }
+
+                if ($('#conrequirements').val() == null) {
+                    $.notify("ConVan Requirements is required.", "error");
+                    isAllValid = false;
+                }
+                if (isAllValid) {
+                    console.log("IM HERE");
+                    var tempreq = $('#conrequirements').val().join();
+                    var requirements = tempreq.toString();
+                    var documentNumber = @Html.Raw(Json.Encode(ViewBag.docNumber));
+                    var cnmshipper = @Html.Raw(Json.Encode(ViewBag.CnameShipper));
+
+                    var data = {
+
+                        transactionID: @ViewBag.ID,
+                        documentID: @ViewBag.docuID.ToString(),
+                        docNumber: documentNumber,
+                        dtlStatus: "For Withdrawal",
+                        transactionNo: $('#transactionno').val(),
+                        transactionDate: $('#transactionDate').val(),
+                        serviceType: $('#servicetype').val(),
+                        quantity: $('#quantity').val(),
+                        consize: $('#consize').val(),
+                        conClass: $('#containerclass').val(),
+                        convanno: "***",
+                        conRqrmnts: requirements,
+                        origin: $('#origin').val(),
+                        destination: $('#destination').val(),
+                        cyEPO: $('#cyepo').val(),
+                        cySA: $('#cysa').val(),
+                        cyLD: $('#cyld').val(),
+                        remarks: $('#rmrks').val(),
+                        consignee1: $('#consignee1').val(),
+                        consignee2: $('#consignee2').val(),
+                        consignee3: $('#consignee3').val(),
+                        consignee4: $('#consignee4').val(),
+                        consignee5: $('#consignee5').val(),
+                        consignee6: $('#consignee6').val(),
+                        consignee7: $('#consignee7').val(),
+                        consignee8: $('#consignee8').val(),
+                        consignee9: $('#consignee9').val(),
+                        consignee10: $('#consignee10').val(),
+                        cnameshipper: cnmshipper,
+                        consigneeAdd1: $('#consigneeaddress1').val(),
+                        consigneeAdd2: $('#consigneeaddress2').val(),
+                        consigneeAdd3: $('#consigneeaddress3').val(),
+                        consigneeAdd4: $('#consigneeaddress4').val(),
+                        consigneeAdd5: $('#consigneeaddress5').val(),
+                        consigneeAdd6: $('#consigneeaddress6').val(),
+                        consigneeAdd7: $('#consigneeaddress7').val(),
+                        consigneeAdd8: $('#consigneeaddress8').val(),
+                        consigneeAdd9: $('#consigneeaddress9').val(),
+                        consigneeAdd10: $('#consigneeaddress10').val(),
+                        consigneetelno1: $('#consigneetelno1').val(),
+                        consigneetelno2: $('#consigneetelno2').val(),
+                        consigneetelno3: $('#consigneetelno3').val(),
+                        consigneetelno4: $('#consigneetelno4').val(),
+                        consigneetelno5: $('#consigneetelno5').val(),
+                        consigneetelno6: $('#consigneetelno6').val(),
+                        consigneetelno7: $('#consigneetelno7').val(),
+                        consigneetelno8: $('#consigneetelno8').val(),
+                        consigneetelno9: $('#consigneetelno9').val(),
+                        consigneetelno10: $('#consigneetelno10').val(),
+                        booktype: $('#booktype').val(),
+                        chargee: $('#chargee').val(),
+                        payMode: $('#paymode').val()
+                    }
+                    console.log(data);
+                    $.ajax({
+                        type: 'POST',
+                        url: '../../../Booking/SaveNewDetail',
+                        data: JSON.stringify(data),
+                        contentType: 'application/json',
+                        success: function (data) {
+                            if (data.status) {
+                                $.notify("Operation successfully posted.", "success");
+                                alert(data.next);
+                                if (data.next == 1) {
+                                    var r = confirm("Would like to add more details?");
+                                    if (r == true) {
+                                        var bkID = @Html.Raw(Json.Encode(ViewBag.ID));
+                                        var url = '@Url.Action("AddDetail", "Booking")?ID=' + bkID;
+                                        window.location.href = url;
+                                    }
+                                    else
+                                    {
+                                        var url = '@Url.Action("TrnDetails", "Booking", new { ViewBag.ID })';
+                                        window.location.href = url;
+                                    }
+                                }
+                                if (data.next == 0) {
+                                    $.notify("Transaction Completed", "success");
+                                     var url = '@Url.Action("TrnDetails", "Booking", new { ViewBag.ID })';
+                                     window.location.href = url;
+                                }
+                            }
+                            else {
+                                $.notify("Operation failed to post.", "error");
+                            }
+                            $('#submit').text('Save');
+                        },
+                        error: function (error) {
+                            console.log(error);
+                            $('#submit').text('Save');
+                        }
+                    });
+                }
+
+            });//end
+
+        });
+</script>
+}
+
+<style>
+
+    #price {
+        visibility: hidden;
+    }
+
+</style>

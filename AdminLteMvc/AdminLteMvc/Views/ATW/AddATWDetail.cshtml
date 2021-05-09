@@ -1,0 +1,148 @@
+﻿@model AdminLteMvc.Models.WEBSales.ATW
+@{
+    ViewBag.Title = "Add Details";
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="box box-success">
+        <div class="box-header with-border">
+            <h3 class="box-title">@Model.atwBkNo</h3>
+        </div>
+        <div class="box-body">
+            <table class="table table-responsive">
+                <tr>
+                    <td>ATW Booking No.</td>
+                    <td>
+                        @Html.EditorFor(model => model.atwBkNo, new { htmlAttributes = new { @class = "form-control", id = "atwBkNo", @readonly = true, @required = "required" } })
+                    </td>
+                    <td>Company/Shipper</td>
+                    <td>
+                        @Html.EditorFor(model => model.cShipper, new { htmlAttributes = new { @class = "form-control", id = "cShipper", @required = "required", @readonly = true } })
+                    </td>
+                    <td>Booking No.</td>
+                    <td>
+                        @Html.EditorFor(model => model.bkNo, new { htmlAttributes = new { @class = "form-control", id = "bkNo", @required = "required", @readonly = true } })
+                    </td>
+                    <td>Contact Person</td>
+                    <td>
+                        @Html.EditorFor(model => model.conPerson, new { htmlAttributes = new { @class = "form-control", id = "conPerson", @required = "required", @readonly = true } })
+                    </td>
+                </tr>
+                <tr>
+                    <td>Issue Date</td>
+                    <td>
+                        @Html.EditorFor(model => model.iDate, new { htmlAttributes = new { @class = "form-control", id = "iDate", @type = "date", @required = "required", @readonly = true } })
+                    </td>
+                    <td>Consignee</td>
+                    <td>
+                        @Html.EditorFor(model => model.consignee, new { htmlAttributes = new { @class = "form-control", id = "consignee", @required = "required", @readonly = true } })
+                    </td>
+                    <td>Expiry Date</td>
+                    <td>
+                        @Html.EditorFor(model => model.eDate, new { htmlAttributes = new { @class = "form-control", id = "eDate", @readonly = true, @required = "required" } })
+                    </td>
+                    <td>Cargo</td>
+                    <td>
+                        @Html.EditorFor(model => model.cargo, new { htmlAttributes = new { @class = "form-control", id = "cargo", @required = "required", @readonly = true } })
+                    </td>
+                </tr>
+                <tr>
+                    <td>Authorized Trucker</td>
+                    <td>
+                        @Html.EditorFor(model => model.aTrucker, new { htmlAttributes = new { @class = "form-control", id = "aTrucker", @required = "required", @readonly = true } })
+                    </td>
+                    <td>Service Mode</td>
+                    <td>
+                        @Html.EditorFor(model => model.serviceMode, new { htmlAttributes = new { @class = "form-control", id = "serviceMode", @required = "required", @readonly = true } })
+                    </td>
+                    <td>Authorized Driver</td>
+                    <td>
+                        @Html.EditorFor(model => model.aDriver, new { htmlAttributes = new { @class = "form-control", id = "aDriver", @required = "required", @readonly = true } })
+                    </td>
+                    <td>Remarks</td>
+                    <td>
+                        @Html.TextAreaFor(model => model.remarks, new { @class = "form-control", id = "remarks", @required = "required", @readonly = true })
+                    </td>
+                </tr>
+            </table>
+            @*@{Html.RenderAction("CreateDetailTrn", "Booking");}*@
+        </div>
+        <div class="box-footer">
+            <button type="button" class="btn btn-primary" id="submit"> <i class="fa fa-pencil fa-1x"></i> Save </button>
+            <button type="button" class="btn btn-default" onclick="location.href='@Url.Action("TrnDetails", "Booking", new { @Model.atwID})'"> <i class="fa fa-trash fa-1x"></i> Cancel</button>
+        </div>
+    </div>
+}
+<link href="~/Content/bootstrap-toggle.css" rel="stylesheet" />
+<script src="~/Scripts/bootstap-toggle.js"></script>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/jqueryui")
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $('#submit').click(function () {
+                var isAllValid = true;
+                console.log("IM IN");
+                if (isAllValid) {
+                    console.log("IM HERE");
+
+                    var data = {
+
+                        transactionNo: $('#tranNum').val(),
+                        transactionID: @Model.atwID.ToString(),
+                        dtlStatus: "Active",
+                        priceList: $('#plist').val(),
+                        origin: $('#orgin').val(),
+                        destination: $('#destntn').val(),
+                        consignee: $('#cnsgnee').val(),
+                        consigneeAdd: $('#cnsgneeAdd').val(),
+                        cargoType: $('#crgoType').val(),
+                        conClass: $('#conClass').val(),
+                        conRqrmnts: $('#crqr').val(),
+                        payMode: $('#pmode').val(),
+                        cyEPO: $('#cyepo').val(),
+                        cySA: $('#cysa').val(),
+                        cyLD: $('#cyld').val(),
+                        remarks: $('#rmrks').val()
+                    }
+
+                    console.log(data);
+
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '../../../Booking/SaveNewDetail',
+                        data: JSON.stringify(data),
+                        contentType: 'application/json',
+                        success: function (data) {
+                            if (data.status) {
+                                //alert('Successfully saved');
+                                $.notify("Operation successfully posted.", "success");
+
+                                var url = '@Url.Action("TrnDetails", "Booking", new { @Model.atwID})';
+                                window.location.href = url;
+
+                            }
+                            else {
+                                //alert('Error');
+                                $.notify("Operation failed to post.", "error");
+                            }
+                            $('#submit').text('Save');
+                        },
+                        error: function (error) {
+                            console.log(error);
+                            $('#submit').text('Save');
+                        }
+                    });
+                }
+
+            });//end
+
+        });
+    </script>
+}

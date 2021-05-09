@@ -1,0 +1,439 @@
+﻿@model AdminLteMvc.Models.WEBSales.Booking
+
+@{
+    ViewBag.Title = "Booking";
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+}
+
+<div class="box box-success">
+    <div class="box-body">
+        <div class="container">
+            @*<div class="row" id="kargalogo">
+            <img src="~/Content/logo/kargaminelogo.png" />
+        </div>
+        <br/>*@
+            <form>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label for="dNum" class="col-sm-3 col-form-label">Booking Number</label>
+                            <div class="col-sm-9    ">
+                                @Html.EditorFor(model => model.docNum, new { htmlAttributes = new { @class = "form-control", id = "dNum", @readonly = true } })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="ddate" class="col-sm-3 col-form-label">Booking Date</label>
+                            <div class="col-sm-9    ">
+                                @Html.EditorFor(model => model.docDate, new { htmlAttributes = new { @class = "form-control", @type = "date", id = "ddate" } })
+                            </div>
+                        </div>
+                        @*<div class="form-group row">
+                            <label for="inhousedate" class="col-sm-3 col-form-label">In-House Booking Date</label>
+                            <div class="col-sm-9    ">
+                                @Html.EditorFor(model => model.inhouseBookingDate, new { htmlAttributes = new { @class = "form-control", @type = "date", id = "inhousedate" } })
+                            </div>
+                        </div>*@
+                        <div class="form-group row">
+                            <label for="mnemonic" class="col-sm-3 col-form-label">Mnemonic</label>
+                            <div class="col-sm-9    ">
+                                <select id="mnemonic" class="form-control">
+                                    <option value="0">-- Select mnemonic --</option>
+                                    @{
+                                        foreach (var item in ViewBag.MnemonicList)
+                                        {
+                                            <option value="@item.Value">@item.Text</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="cnmshpr" class="col-sm-3 col-form-label">Customer/Shipper Name</label>
+                            <div class="col-sm-9    ">
+                                <select id="cnmshpr" class="form-control" disabled="disabled">
+                                    <option value="0">-- Select name or shipper --</option>
+                                    @{
+                                        foreach (var item in ViewBag.CustomerShipperList)
+                                        {
+                                            <option value="@item.Value">@item.Text</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="shipperaddress" class="col-sm-3 col-form-label">Customer/Shipper Address</label>
+                            <div class="col-sm-9    ">
+                                <select id="shipperaddress" class="form-control">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="contactperson" class="col-sm-3 col-form-label">Customer/Shipper Contact Person</label>
+                            <div class="col-sm-9    ">
+                                @Html.EditorFor(model => model.contactperson, new { htmlAttributes = new { @class = "form-control", id = "contactperson", @readonly = true } })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="contactno" class="col-sm-3 col-form-label">Customer/Shipper Contact No.</label>
+                            <div class="col-sm-9    ">
+                                @Html.EditorFor(model => model.contactno, new { htmlAttributes = new { @class = "form-control", id = "contactno", @readonly = true } })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label for="noofcvs" class="col-sm-3 col-form-label">
+                                No. of ConVans
+                            </label>
+                            <div class="col-sm-9    ">
+                                @Html.EditorFor(model => model.noofcvs, new { htmlAttributes = new { @class = "form-control", id = "noofcvs", @type="number",@min="0", @max="2",@value="0" } })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="csize" class="col-sm-3 col-form-label">
+                                ConVan Size
+                            </label>
+                            <div class="col-sm-9    ">
+                                <select id="csize" class="form-control">
+                                    <option value="0">-- Select size --</option>
+                                    @{
+                                        foreach (var item in ViewBag.ConVanSizesList)
+                                        {
+                                            <option value="@item.Value">@item.Text</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="cstatus" class="col-sm-3 col-form-label">
+                                ConVan Status
+                            </label>
+                            <div class="col-sm-9    ">
+                                @*<select id="cstatus" class="form-control">
+                                    <option value="0">-- Select status --</option>
+                                    @{
+                                        foreach (var item in ViewBag.ConVanStatusList)
+                                        {
+                                            <option value="@item.Value">@item.Text</option>
+                                        }
+                                    }
+                                </select>*@
+                                @Html.EditorFor(model => model.cstatus, new { htmlAttributes = new { @Value="Empty", @class = "form-control", id = "cstatus", @readonly = true } })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputtedby" class="col-sm-3 col-form-label">
+                                Inputted By
+                            </label>
+                            <div class="col-sm-9">
+                                <select id="inputtedby" class="form-control">
+                                    <option value="0">-- Select --</option>
+                                    @{
+                                        foreach (var item in ViewBag.InByList)
+                                        {
+                                            <option value="@item.Value">@item.Text</option>
+                                        }
+                                    }
+                                </select>
+                                @*<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"class="btn btn-inverse" title="Help"><i class="fa fa-plus-square"></i></button>*@
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="csr" class="col-sm-3 col-form-label">
+                                Customer Service Representative
+                            </label>
+                            <div class="col-sm-9    ">
+                                <select id="csr" class="form-control">
+                                    <option value="0">-- Select --</option>
+                                    @{
+                                        foreach (var item in ViewBag.CSRSList)
+                                        {
+                                            <option value="@item.Value">@item.Text</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="accountexecutive" class="col-sm-3 col-form-label">
+                                Account Executive
+                            </label>
+                            <div class="col-sm-9    ">
+                                <select id="accountexecutive" class="form-control">
+                                    <option value="0">-- Select --</option>
+                                    @{
+                                        foreach (var item in ViewBag.AccountExecutiveList)
+                                        {
+                                            <option value="@item.Value">@item.Text</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div>
+                @Html.EditorFor(model => model.docYear, new { htmlAttributes = new { @class = "form-control", id = "docYear", @readonly = true } })
+                @Html.EditorFor(model => model.docID, new { htmlAttributes = new { @class = "form-control", id = "docID", @readonly = true } })
+            </div>
+        </div>
+    </div>
+    <div class="box-footer">
+        <button type="button" class="btn btn-primary" id="submit"> <i class="fa fa-plus fa-1x"></i> Submit </button>
+        <button type="button" class="btn btn-default" onclick="location.href='@Url.Action("Index", "Booking")'"> <i class="fa fa-times fa-1x"></i> Cancel</button>
+    </div>
+</div>
+
+<link href="~/Content/bootstrap-toggle.css" rel="stylesheet" />
+<script src="~/Scripts/bootstap-toggle.js"></script>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/jqueryui")
+
+<script type="text/javascript">
+
+        $(function () {
+            $("#mnemonic").chosen();
+            $("#cnmshpr").chosen();
+            $("#csize").chosen();
+            //$("#cstatus").chosen();
+        });
+
+    $(document).ready(function () {
+
+        $("#docYear").css("display", "none");
+        $("#docID").css("display", "none");
+
+        $('#ddate').on("change", function () {
+            var tt = document.getElementById('ddate').value;
+
+            var date = new Date(tt);
+
+            var y = date.getFullYear();
+            var yearInput = y.toString()
+
+            $.ajax({
+                url: '../../../Booking/GetIDSFromYear',
+                type: 'GET',
+                data: { yearInput: yearInput },
+                contentType: "application/json",
+                success: function (ids) {
+                    console.log("I'M HERE");
+                    console.log(ids);
+                    var docFormatted = yearInput + '-' + ids;
+                    document.getElementById("dNum").value = docFormatted;
+                    document.getElementById("docYear").value = yearInput;
+                    document.getElementById("docID").value = ids;
+                },
+            });
+        });
+
+        $('#mnemonic').on("change", function () {
+
+            var mnemonicValue = document.getElementById("mnemonic").value;
+
+            $.ajax({
+                url: '../../../Booking/BindMnemonic',
+                type: 'GET',
+                data: { mnemonicValue: mnemonicValue },
+                contentType: "application/json",
+                success: function (mnemonicdata) {
+                    $("#cnmshpr").val(mnemonicdata.shipper).trigger("chosen:updated");
+                    document.getElementById("contactperson").value = mnemonicdata.person;
+                    document.getElementById("contactno").value = mnemonicdata.cno;
+                    for (var i = 0; i < mnemonicdata.address.length; i++) {
+                        $('#shipperaddress').append(`<option value="${mnemonicdata.address[i].Value}">
+                                       ${mnemonicdata.address[i].Value}
+                                  </option>`);
+                    }
+                },
+            });
+        });
+
+            $('#submit').click(function () {
+                var isAllValid = true;
+
+                var mnem = document.getElementById("mnemonic");
+                var mnemselected = mnem.options[mnem.selectedIndex].text;
+
+                if (mnemselected.trim() == '' || mnemselected == "-- Select mnemonic --") {
+                    $.notify("Mnemonic is required.", "error");
+                    isAllValid = false;
+                }
+
+                var cnm = document.getElementById("cnmshpr");
+                var cnmselected = cnm.options[cnm.selectedIndex].text;
+
+                if (cnmselected.trim() == '' || cnmselected == "-- Select name or shipper --") {
+                    $.notify("Customer/Shipper Name is required.", "error");
+                    isAllValid = false;
+                }
+
+                if ($('#ddate').val().trim() == '') {
+                    $.notify("Document Date is required.", "error");
+                    isAllValid = false;
+                }
+
+                if ($('#dNum').val().trim() == '') {
+                    $.notify("Document No is required.", "error");
+                    isAllValid = false;
+                }
+
+                //var cst = document.getElementById("cstatus");
+                //var cstselected = cst.options[cst.selectedIndex].text;
+
+                if ($('#cstatus').val().trim() == '') {
+                    $.notify("ConVan Status is required.", "error");
+                    isAllValid = false;
+                }
+
+                var csi = document.getElementById("csize");
+                var csiselected = csi.options[csi.selectedIndex].text;
+
+                if (csiselected.trim() == '' || csiselected == "-- Select size --") {
+                    $.notify("ConVan Size is required.", "error");
+                    isAllValid = false;
+                }
+
+                var cst = document.getElementById("csize");
+                var cstselected = cst.options[cst.selectedIndex].text;
+
+                if (cstselected.trim() == '' || cstselected == "-- Select status --") {
+                    $.notify("ConVan Status is required.", "error");
+                    isAllValid = false;
+                }
+
+                if ($('#shipperaddress').val().trim() == '') {
+                    $.notify("Shipper Address is required.", "error");
+                    isAllValid = false;
+                }
+
+                if ($('#contactperson').val().trim() == '') {
+                    $.notify("Contact Person is required.", "error");
+                    isAllValid = false;
+                }
+
+                if ($('#contactno').val().trim() == '') {
+                    $.notify("Contact No is required.", "error");
+                    isAllValid = false;
+                }
+
+                if ($('#noofcvs').val().trim() == '') {
+                    $.notify("No of CV is required.", "error");
+                    isAllValid = false;
+                }
+
+                if ($('#inputtedby').val().trim() == '0') {
+                    $.notify("Inputted By is required.", "error");
+                    isAllValid = false;
+                }
+
+                if ($('#csr').val().trim() == '0') {
+                    $.notify("CSR is required.", "error");
+                    isAllValid = false;
+                }
+
+                if ($('#accountexecutive').val().trim() == '0') {
+                    $.notify("Account Executive is required.", "error");
+                    isAllValid = false;
+                }
+                if (isAllValid) {
+
+                    var dataHdr = {
+                        docDate: $('#ddate').val(),
+                        inhouseBookingDate: $('#inhousedate').val(),
+                        docNum: $('#dNum').val(),
+                        //billTo: $('#billto').val(),
+                        mnemonic: $('#mnemonic').val(),
+                        cnameshpr: $('#cnmshpr').val(),
+                        shipperAddress: $('#shipperaddress').val(),
+                        //shipperTelNo: $('#shipperstelno').val(),
+                        csize: $('#csize').val(),
+                        cstatus: $('#cstatus').val(),
+                        trnStatus: "Active",
+                        //preparedBy: $('#preparedBy').val(),
+                        docYear: $('#docYear').val(),
+                        docID: $('#docID').val(),
+                        contactperson: $('#contactperson').val(),
+                        contactno: $('#contactno').val(),
+                        noofcvs: $('#noofcvs').val(),
+                        inputtedby: $('#inputtedby').val(),
+                        csr: $('#csr').val(),
+                        accountexecutive: $('#accountexecutive').val()
+                    }
+
+                    console.log(dataHdr);
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '../../../Booking/Save',
+                        data: JSON.stringify(dataHdr),
+                        contentType: 'application/json',
+                        success: function (dataHdr) {
+                            if (dataHdr.status) {
+                                //alert('Successfully saved');
+                                console.log(dataHdr);
+                                $.notify("Operation successfully posted.", "success");
+                                var url = '@Url.Action("AddDetail", "Booking")?ID=' + dataHdr.transacID;
+                                    window.location.href = url;
+                                @*var url = '@Url.Action("TrnDetails", "Booking")?ID=' + dataHdr.transacID;
+                                    window.location.href = url;*@
+                                @*var txt;
+                                var r = confirm("Press OK to proceed adding of details!");
+                                if (r == true) {
+                                    var url = '@Url.Action("AddDetail", "Booking")?ID=' + dataHdr.transacID;
+                                    window.location.href = url;
+                                } else {
+                                    var url = '@Url.Action("Index", "Booking")';
+                                    window.location.href = url;
+                                }*@
+                            }
+                            else {
+                                //alert('Error');
+                                $.notify("Operation failed to post.", "error");
+                            }
+                        },
+                        error: function (error) {
+                            console.log(error);
+                            $('#submit').text('Save');
+                        }
+                    });
+                }
+
+            });//end
+
+        });
+</script>
+}
+
+<style>
+
+    .boldh .awe-col, .boldh {
+        color: blue;
+    }
+
+    .bluev {
+        color: blueviolet;
+    }
+
+    .pinkb {
+        background: pink !important;
+    }
+
+    .greenb {
+        background: #f0f9f7 !important;
+    }
+
+    #kargalogo {
+        justify-content: space-around;
+        display: flex;
+    }
+
+    /*input#shipperstelno, input#shipperaddress, input#billto, input#preparedBy, select#shipperaddress {
+        max-width: 1047px;
+    }*/
+</style>
+

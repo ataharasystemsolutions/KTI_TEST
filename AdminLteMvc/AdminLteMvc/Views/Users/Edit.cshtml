@@ -1,0 +1,189 @@
+﻿@model AdminLteMvc.Models.WEBSales.Users
+
+@{
+    ViewBag.Title = "Users";
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+}
+
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="box box-success">
+        <div class="box-header with-border">
+            <h3 class="box-title">Update</h3>
+        </div><!-- /.box-header -->
+        <div class="box-body">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.UserID, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.UserID, new { htmlAttributes = new { @class = "form-control", id = "userid", @readonly = "true" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", id = "username" } })
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", id = "password" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", id = "email" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Contact, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Contact, new { htmlAttributes = new { @class = "form-control", id = "contact" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Branch, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @*@Html.EditorFor(model => model.Branch, new { htmlAttributes = new { @class = "form-control" } })*@
+                        @Html.DropDownList("Branch", null, "", new { @class = "form-control", @id = "branch" })
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Active, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.CheckBoxFor(model => model.Active, htmlAttributes: new { @id = "locked" })
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="button" value="Save" style="width:80px" class="btn btn-primary" id="submit" />
+                        <input type="button" value="Cancel" style="width:80px" class="btn btn-default" onclick="location.href='@Url.Action("Index", "Users")'" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  }
+
+
+@section Scripts{
+    @Scripts.Render("~/bundles/jqueryui")
+
+    <script type="text/javascript">
+
+        function validatetoemail(my_email) {
+            var filter = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/;
+            if (filter.test(my_email)) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+        $(document).ready(function () {
+
+            $('#submit').click(function () {
+                var isAllValid = true;
+
+                if ($('#userid').val().trim() == '') {
+                    $.notify("User ID is required.", "error");
+                    isAllValid = false;
+                }
+
+
+                if ($('#username').val().trim() == '') {
+                    $.notify("User Name is required.", "error");
+                    isAllValid = false;
+                }
+
+                if ($('#password').val().trim() == '') {
+                    $.notify("Password is required.", "error");
+                    isAllValid = false;
+                }
+
+                if ($('#password').val().length < 4) {
+                    $.notify("Password must be at least 4 characters.", "error");
+                    isAllValid = false;
+                }
+
+                if ($('#email').val().trim() != '') {
+                    if (validatetoemail($('#email').val().trim())) {
+                    }
+                    else {
+                        $.notify("Email is not valid email address.", "error");
+                        isAllValid = false;
+                    }
+                }
+
+                if ($('#branch').val().trim() == '') {
+                    $.notify("Branch is required.", "error");
+                    isAllValid = false;
+                }
+
+                if (isAllValid) {
+
+                    var active = $('#locked').is(":checked");
+                    
+                    var data = {
+
+                        UserID: $('#userid').val().trim(),
+                        UserName: $('#username').val().trim(),
+                        Password: $('#password').val().trim(),
+                        Email: $('#email').val().trim(),
+                        Contact: $('#contact').val().trim(),
+                        Branch: $('#branch').val().trim(),
+                        Active: active.toString()
+                    }
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '../../../Users/Update',
+                        data: JSON.stringify(data),
+                        contentType: 'application/json',
+                        success: function (data) {
+                            if (data.status) {
+                                //alert('Successfully saved');
+                                $.notify("Operation successfully posted.", "success");
+
+                                var url = '@Url.Action("Index")';
+                                window.location.href = url;
+
+                            }
+                            else {
+                                //alert('Error');
+                                $.notify("Operation failed to post.", "error");
+                            }
+                            $('#submit').text('Save');
+                        },
+                        error: function (error) {
+                            console.log(error);
+                            $('#submit').text('Save');
+                        }
+                    });
+                }
+
+            });//end
+
+        });
+    </script>
+}

@@ -1,0 +1,194 @@
+﻿@model AdminLteMvc.Models.WEBSales.Booking
+@{
+    ViewBag.Title = "Transaction Details of Booking "+ Model.docNum;
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="box box-success">
+        <div class="box-header with-border">
+            <h3 class="box-title">@Html.Awe().TextBox("txtsearch").Placeholder("Search").CssClass("searchtxt")</h3>
+        </div>
+        <div class="box-body">
+            <div id="demoContent">
+
+                @(Html.Awe().Grid("ApiDemoGrid")
+          .Mod(o => o.PageInfo().PageSize().ColumnsSelector())
+          .Columns(new[]{
+              new Column{Bind = "transactionNo", Header = "Transaction No"},
+              new Column{Bind = "transactionDate", Header = "Date of Transaction"},
+              new Column{Bind = "dtlStatus", Header = "Detail Status"},
+              new Column{Bind = "serviceType", Header = "Service Type"},
+              new Column{Bind = "quantity",Header = "Quantity"},
+              new Column{Bind = "consize",Header = "ConVan Size"},
+              new Column{Bind = "conClass",Header = "Container Class"},
+              new Column{Bind = "conRqrmnts",Header = "ConVan Requirements"},
+              new Column{Bind = "origin",Header = "Origin"},
+              new Column{Bind = "destination",Header = "Destination"},
+              new Column{Bind = "cyEPO",Header = "CY - Empty Pull Out"},
+              new Column{Bind = "cySA",Header = "CY - Stuffing Activity"},
+              new Column{Bind = "cyLD",Header = "CY - Laden Delivery"},
+              new Column{Bind = "consignee",Header = "Consignee"},
+              new Column{Bind = "consigneeAdd",Header = "Consignee Address"},
+              new Column{Bind = "consigneetelno",Header = "Consignee Contact No"},
+              new Column{Bind = "booktype",Header = "Booking Type"},
+              new Column{Bind = "chargee",Header = "Chargee"},
+              new Column{Bind = "payMode",Header = "Charge Type"},
+              new Column{Bind = "remarks",Header = "Remarks"}
+          })
+
+              .Resizable()
+              .Sortable(true)
+              .Reorderable()
+              .Height(350)
+              .Groupable(false)
+              .Selectable(SelectionType.Single)
+              .Parent("txtsearch", "search")
+              .Url(Url.Action("GetTrnDetails", "Booking", new { trnID = @Model.docID })))
+
+            </div>
+            <div class="box-footer">
+                <button type="button" class="btn btn-success" id="backMn" onclick="location.href = '@Url.Action("Index", "Booking")'"> <i class="fa fa-arrow-left fa-1x"></i> Back to Main</button>
+                <button type="button" class="btn btn-primary" id="adddtl" disabled="true" onclick="location.href = '@Url.Action("AddDetail", "Booking", new { @Model.ID})'"> <i class="fa fa-plus-circle fa-1x"></i> Add Detail</button>
+                @*<button type="button" class="btn btn-warning" id="edit"> <i class="fa fa-pencil fa-1x"></i> Edit </button>*@
+                <button type="button" class="btn btn-info" id="toatw" style=" display:none;"> <i class="fa fa-arrow-right"></i> Proceed for ATW</button>
+                <button type="button" class="btn btn-danger" id="delete"> <i class="fa fa-trash fa-1x"></i> Delete</button>
+            </div>
+        </div>
+    </div>
+}
+<link href="~/Content/bootstrap-toggle.css" rel="stylesheet" />
+
+@section Scripts{
+    <script src="~/Scripts/bootstap-toggle.js"></script>
+    <script type="text/javascript">
+
+
+        var statBk = @Html.Raw(Json.Encode(Model.trnStatus));
+        var flag=@Html.Raw(Json.Encode(ViewBag.flag));
+        $(document).ready(function () {
+            if (statBk == "Cancelled" || statBk == "Closed") {
+                document.getElementById("edit").disabled = true;
+                document.getElementById("delete").disabled = true;
+                document.getElementById("adddtl").disabled = true;
+                document.getElementById("toatw").disabled = true;
+            }
+            if (flag == 1) {
+                document.getElementById("adddtl").disabled = true;
+            }
+            else {
+                document.getElementById("adddtl").disabled = false;
+            }
+
+        });
+
+    $(function () {
+        $('#ApiDemoGrid').on('awerender', function () {
+            $(this).find(".checkbox-toggle").bootstrapToggle();
+        });
+
+        $('#txtsearch').keyup(function () {
+            $('#ApiDemoGrid').data('api').load();
+        });
+
+        $('#ApiDemoGrid').on('aweload', function (e, data, rd) {
+            $('#log').prepend('aweload handled,\n data: ' + JSON.stringify(data) + "\n request data" + JSON.stringify(rd) + '\n\n');
+        }).on('awebeginload', function (e, data) {
+            $('#log').prepend('awebeginload handled,\n request data: ' + JSON.stringify(data) + '\n\n');
+        });
+
+        var lastSelectedIds;
+            $('#ApiDemoGrid').on('aweselect', function () {
+                lastSelectedIds = $.map($(this).data('api').getSelection(), function (val) { return val.tranID; });
+                console.log(lastSelectedIds);
+                var trnstat = $.map($(this).data('api').getSelection(), function (val) { return val.dtlStatus; });
+                if (trnstat == "Withdrawn") {
+                    document.getElementById("toatw").disabled = true;
+                    document.getElementById("delete").disabled = true;
+                }
+                if (trnstat == "For Withdrawal") {
+                    document.getElementById("toatw").disabled = false;
+                    document.getElementById("delete").disabled = false;
+                }
+            })
+
+        $('#edit').click(function () {
+            if (lastSelectedIds != null) {
+                if (lastSelectedIds.length != 0) {
+                    window.location.href = '/Booking/Edit/' + lastSelectedIds;
+                }
+                else {
+                    $.notify("Please select detail to edit.", "error");
+                }
+            }
+            else {
+                $.notify("Please select detail to edit.", "error");
+            }
+        });
+
+        $('#toatw').click(function () {
+            if (lastSelectedIds != null) {
+                if (lastSelectedIds.length != 0) {
+                    window.location.href = '/ATW/CreateOption/' + lastSelectedIds;
+                }
+                else {
+                    $.notify("Please select transaction to proceed.", "error");
+                }
+            }
+            else {
+                $.notify("Please select transaction to proceed.", "error");
+            }
+        });
+
+        $('#delete').click(function () {
+            if (lastSelectedIds != null) {
+                if (lastSelectedIds.length != 0) {
+                    window.location.href = '/Booking/CancelDetail/' + lastSelectedIds;
+                }
+                else {
+                    $.notify("Please select row to view details.", "error");
+                }
+            }
+            else {
+                $.notify("Please select row to view details.", "error");
+            }
+        });
+    });
+
+    function setContent(o) {
+        $('#ApiDemoGrid').data('api').clearpersist();
+        $('#demoContent').html(o);
+    };
+
+    var toggleButton = function (model, prop) {
+        var checked = model[prop] ? 'checked = "checked"' : '';
+        return '<input disabled="disabled" type="checkbox" ' + checked + ' class="checkbox-toggle" data-toggle="toggle" data-on="Yes" data-off="No" data-size="small">';
+    };
+    </script>
+}
+
+<style>
+    td {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .boldh .awe-col, .boldh {
+        color: blue;
+    }
+
+    .bluev {
+        color: blueviolet;
+    }
+
+    .pinkb {
+        background: pink !important;
+    }
+
+    .greenb {
+        background: #f0f9f7 !important;
+    }
+</style>

@@ -1,0 +1,23 @@
+﻿@model AdminLteMvc.Models.WEBSales.TransactionDetails
+
+@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+}
+
+<div class="box box-success">
+    <div class="box-header with-border">
+        <h3 class="box-title">Are you sure you want to remove this detail from document @Model.documentID?</h3>
+    </div><!-- /.box-header -->
+    <div class="box-footer">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input type="submit" value="Confirm" style="width:80px" class="btn btn-primary" />
+                <input type="button" value="Cancel" style="width:80px" class="btn btn-default" onclick="location.href='@Url.Action("TrnDetails", "Booking", new {ID = @Model.transactionID})'" />
+            </div>
+        }
+    </div>
+</div>

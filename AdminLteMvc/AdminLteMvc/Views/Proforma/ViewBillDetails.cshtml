@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = "Bill Details";
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+
+    <button type="button" class="btn btn-default" onclick="location.href='@Url.Action("Index", "Proforma")'"> <i class="fa fa-cancel fa-1x"></i> Back to Bill List</button>
+}
+
+
+<div class="wrapper wrapper-content animated fadeIn">
+
+    <div class="text-center m-t-md">
+        <div id="DisplayPDF">
+
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            var URL = '../../../Proforma/DisplayProformaBOLReport';
+            $("#DisplayPDF").html(
+                $('<iframe>', {
+                    src: URL + '?billNo= @ViewBag.BillNo',
+                    title: "Bill Report",
+                    width: '1000px',
+                    height: '800px'
+                })
+            );
+        });
+    </script>
+}

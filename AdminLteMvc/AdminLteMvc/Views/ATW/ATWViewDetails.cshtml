@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "ATW Report";
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+
+    <button type="button" class="btn btn-default" onclick="location.href='@Url.Action("Index", "ATW")'"> <i class="fa fa-cancel fa-1x"></i> Back to ATW List</button>
+}
+
+
+<div class="wrapper wrapper-content animated fadeIn">
+
+    <div class="text-center m-t-md">
+        <div id="DisplayPDF">
+
+        </div>
+    </div>
+</div>
+@*<div class="box-footer">
+        <button type="button" class="btn btn-default" onclick="location.href='@Url.Action("IndexOut", "EIR")'"> <i class="fa fa-cancel fa-1x"></i> Back to EIR-Out List</button>
+    </div>*@
+@section scripts{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            var URL = '../../../ATW/DisplayATWReport';
+            //<a href="~/Views/ATW/ATWViewDetails.cshtml">~/Views/ATW/ATWViewDetails.cshtml</a>
+            $("#DisplayPDF").html(
+                $('<iframe>', {
+                    src: URL + '?ATWBKNO=@ViewBag.ATWBKNO' + '&TRANSNO=@ViewBag.TRANSNO',
+                    title: "ATW Report",
+                    width: '1000px',
+                    height: '800px'
+                })
+            );
+        });
+    </script>
+}

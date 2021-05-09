@@ -1,0 +1,157 @@
+﻿@model AdminLteMvc.Models.WEBSales.Booking
+
+@{
+    ViewBag.Title = "Booking Info";
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+}
+
+<div class="box box-success">
+    <div class="box-body">
+        <div class="container">
+            <form>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label for="dNum" class="col-sm-3 col-form-label">Booking Number</label>
+                            <div class="col-sm-9    ">
+                                @Html.EditorFor(model => model.docNum, new { htmlAttributes = new { @class = "form-control", id = "dNum", @readonly = true } })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="ddate" class="col-sm-3 col-form-label">Booking Date</label>
+                            <div class="col-sm-9    ">
+                                @Html.EditorFor(model => model.docDate, new { htmlAttributes = new { @class = "form-control", @type = "date", id = "ddate", @readonly = true } })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inhousedate" class="col-sm-3 col-form-label">In-House Booking Date</label>
+                            <div class="col-sm-9    ">
+                                @Html.EditorFor(model => model.inhouseBookingDate, new { htmlAttributes = new { @class = "form-control", @type = "date", id = "inhousedate", @readonly = true } })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="mnemonic" class="col-sm-3 col-form-label">Mnemonic</label>
+                            <div class="col-sm-9    ">
+                                @Html.EditorFor(model => model.mnemonic, new { htmlAttributes = new { @class = "form-control", id = "mnemonic", @readonly = true } })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="cnmshpr" class="col-sm-3 col-form-label">Customer/Shipper Name</label>
+                            <div class="col-sm-9    ">
+                                @Html.EditorFor(model => model.cnameshpr, new { htmlAttributes = new { @class = "form-control", id = "cnmshpr", @readonly = true } })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="shipperaddress" class="col-sm-3 col-form-label">Customer/Shipper Address</label>
+                            <div class="col-sm-9    ">
+                                @Html.EditorFor(model => model.shipperAddress, new { htmlAttributes = new { @class = "form-control", id = "shipperaddress", @readonly = true } })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="contactperson" class="col-sm-3 col-form-label">Customer/Shipper Contact Person</label>
+                            <div class="col-sm-9    ">
+                                @Html.EditorFor(model => model.contactperson, new { htmlAttributes = new { @class = "form-control", id = "contactperson", @readonly = true } })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="contactno" class="col-sm-3 col-form-label">Customer/Shipper Contact No.</label>
+                            <div class="col-sm-9    ">
+                                @Html.EditorFor(model => model.contactno, new { htmlAttributes = new { @class = "form-control", id = "contactno", @readonly = true } })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label for="noofcvs" class="col-sm-3 col-form-label">
+                                No. of ConVans
+                            </label>
+                            <div class="col-sm-9    ">
+                                @Html.EditorFor(model => model.noofcvs, new { htmlAttributes = new { @class = "form-control", id = "noofcvs", @readonly = true } })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="csize" class="col-sm-3 col-form-label">
+                                ConVan Size
+                            </label>
+                            <div class="col-sm-9    ">
+                                @Html.EditorFor(model => model.csize, new { htmlAttributes = new { @class = "form-control", id = "csize", @readonly = true } })
+
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="csize" class="col-sm-3 col-form-label">
+                                ConVan Status
+                            </label>
+                            <div class="col-sm-9    ">
+                                @Html.EditorFor(model => model.cstatus, new { htmlAttributes = new { @class = "form-control", id = "cstatus", @readonly = true } })
+
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputtedby" class="col-sm-3 col-form-label">
+                                Inputted By
+                            </label>
+                            <div class="col-sm-9">
+                                @Html.EditorFor(model => model.inputtedby, new { htmlAttributes = new { @class = "form-control", id = "inputtedby", @readonly = true } })
+
+                                @*<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"class="btn btn-inverse" title="Help"><i class="fa fa-plus-square"></i></button>*@
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="csr" class="col-sm-3 col-form-label">
+                                Customer Service Representative
+                            </label>
+                            <div class="col-sm-9    ">
+                                @Html.EditorFor(model => model.csr, new { htmlAttributes = new { @class = "form-control", id = "csr", @readonly = true } })
+
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="accountexecutive" class="col-sm-3 col-form-label">
+                                Account Executive
+                            </label>
+                            <div class="col-sm-9    ">
+                                @Html.EditorFor(model => model.accountexecutive, new { htmlAttributes = new { @class = "form-control", id = "accountexecutive", @readonly = true } })
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div>
+                @Html.EditorFor(model => model.docYear, new { htmlAttributes = new { @class = "form-control", id = "docYear", @readonly = true } })
+                @Html.EditorFor(model => model.docID, new { htmlAttributes = new { @class = "form-control", id = "docID", @readonly = true } })
+            </div>
+        </div>
+    </div>
+    <div class="box-footer">
+        <button type="button" class="btn btn-success" id="backMn" onclick="location.href = '@Url.Action("Index", "Booking")'"> <i class="fa fa-arrow-left fa-1x"></i> Back to Main</button>
+        <button type="button" class="btn btn-warning" id="edit"> <i class="fa fa-pencil fa-1x"></i> Edit </button>
+        <button type="button" class="btn btn-primary" id="adddtl" onclick="location.href = '@Url.Action("AddDetail", "Booking", new { Model.ID})'"> <i class="fa fa-plus-circle fa-1x"></i> Add Detail</button>
+    </div>
+</div>
+
+<link href="~/Content/bootstrap-toggle.css" rel="stylesheet" />
+<script src="~/Scripts/bootstap-toggle.js"></script>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/jqueryui")
+
+<script type="text/javascript">
+        $("#docYear").css("display", "none");
+    $("#docID").css("display", "none");
+
+    var statBk = @Html.Raw(Json.Encode(Model.trnStatus));
+        $(document).ready(function () {
+            if (statBk == "Cancelled" || statBk == "Closed") {
+                document.getElementById("edit").disabled = true;
+                document.getElementById("adddtl").disabled = true;
+            }
+        });
+
+        $('#edit').click(function () {
+            var bkID = @Html.Raw(Json.Encode(Model.ID));
+            window.location.href = '/Booking/EditBooking/' + bkID;
+        });
+</script>
+}

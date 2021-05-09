@@ -1,0 +1,251 @@
+﻿@model AdminLteMvc.Models.WEBSales.Yard
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+}
+
+<div class="box box-success">
+    <div class="box-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group form-inline">
+                        <label for="atwbkno">ATW Booking No</label> <br />
+                        <select id="atwbkno" class="form-control">
+                            <option value="0">-- Select ATW --</option>
+                            @{
+                                foreach (var item in ViewBag.ATWNo)
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group form-inline">
+                        <label for="cvno">ConVan No</label> <br />
+                        <select id="cvno" class="form-control">
+                        </select>
+                    </div>
+                </div>
+                @*<div class="col-md-4">
+                    <div class="form-group form-inline">
+                        <label for="assignedby">Assigned By</label> <br />
+                        <select id="assignedby" class="form-control">
+                            <option value="0">-- Select --</option>
+                            @{
+                                foreach (var item in ViewBag.AssignedList)
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }
+                            }
+
+                        </select>
+                    </div>
+                </div>*@
+            </div>
+        </div>
+    </div>
+    @Html.EditorFor(model => model.yardTrnNo, new { htmlAttributes = new { @class = "form-control", id = "trnnos", @readonly = true } })
+    <i>*Please select transaction below to yard.</i>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Select</th>
+                @*<th>ConVan No.</th>*@
+                <th>Transaction No.</th>
+                <th>ConVan Class</th>
+                <th>ConVan Requirements</th>
+                <th>Service Type</th>
+                <th>Customer/Shipper Name</th>
+                <th>Origin</th>
+                <th>Destination</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <div class="box-footer">
+        <button type="button" class="btn btn-primary" id="submit"> <i class="fa fa-arrow-circle-right"></i> Submit</button>
+        <button type="button" class="btn btn-default" onclick="location.href='@Url.Action("Index", "Yard")'"> <i class="fa fa-times"></i> Cancel</button>
+    </div>
+</div>
+<link href="~/Content/bootstrap-toggle.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+@section Scripts{
+    <script src="~/Scripts/bootstap-toggle.js"></script>
+    @Scripts.Render("~/bundles/jqueryui")
+
+<script type="text/javascript">
+
+            $("#atwbkno").chosen();
+    $("#assignedby").chosen();
+
+    $("#trnnos").css("display", "none");
+
+        $('#atwbkno').on("change", function () {
+            var tempatwno = document.getElementById('atwbkno').value;
+
+            var atwno = tempatwno.toString();
+
+            $.ajax({
+                url: '../../../Yard/GetTrnsFromATWBK',
+                type: 'get',
+                data: { atwno: atwno },
+                contenttype: "application/json",
+                success: function (trns) {
+                    var trndtls = $(trns.trndetails);
+                    $("table tbody").empty();
+                    for (var i = 0; i < trndtls.length; i++) {
+                        var dtlString = trndtls[i].transactionNo.toString();
+                        var yardtran = trns.yardtrns;
+                        console.log(dtlString);
+                        if (yardtran.includes(dtlString)) { } else {
+                            //<td> <select id='cvno' class='form - control'>"
+                            //for (var i = 0; i < trns.cvnoList.length; {
+                            //    var $nos = $('#cvno');
+                            //    $nos.append('<option id=' + trns.cvnoList[i].Value + ' value=' + trns.cvnoList[i].Text + '>' + trns.cvnoList[i].Text + '</option>');
+                            //}"</select ></td>
+                            var markup = "<tr><td><input type='checkbox' name='trnsctions' value='" + trndtls[i].transactionNo + "'></td><td>"
+                                + trndtls[i].transactionNo + "</td><td>"
+                                + trndtls[i].conClass + "</td><td>"
+                                + trndtls[i].conRqrmnts + "</td><td>"
+                                + trndtls[i].serviceType + "</td><td>"
+                                + trns.cnameshpr + "</td><td>"
+                                + trndtls[i].origin + "</td><td>"
+                                + trndtls[i].destination + "</td></tr>";
+                            $("table tbody").append(markup);
+                            //for (var i = 0; i < trns.cvnoList.length; i++) {
+                            //    //alert("INSIDE" + trns.cvnoList[i].Value);
+                            //    //var option = $('<option/>');
+                            //    //option.attr({ 'value': trns.cvnoList[i].Value }).text(trns.cvnoList[i].Value);
+                            //    //$('#cvno').append(option);
+                            //    var $nos = $('#cvno');
+                            //    $nos.append('<option id=' + trns.cvnoList[i].Value + ' value=' + trns.cvnoList[i].Text + '>' + trns.cvnoList[i].Text + '</option>');
+                            //}
+                        }
+
+                    }
+                    function checkTrns() {
+                        var len = $("input[name='trnsctions']:checked").length;
+                        if (len > 1) { $.notify("Maximum of 1 transaction per ATW only.", "error"); }
+                    }
+
+                    $("input:checkbox").on("change", function () {
+                        checkTrns();
+                    });
+                },
+            });
+
+            $.ajax({
+                url: '../../../Yard/GetConVanNos',
+                type: 'get',
+                data: { atwno: atwno },
+                contenttype: "application/json",
+                success: function (nos) {
+                    for (var i = 0; i < nos.length; i++) {
+                        var option = $('<option/>');
+                        option.attr({ 'value': nos[i].Value }).text(nos[i].Value);
+                        $('#cvno').append(option);
+                    }
+                },
+            });
+        })
+
+
+        $('#submit').click(function () {
+                var isAllValid = true;
+
+            if ($("input:checkbox:checked").length < 1) {
+                $.notify("Must select transaction to proceed.", "error");
+                isAllValid = false;
+            } else if ($("input:checkbox:checked").length > 1) {
+                $.notify("Maximum of 1 transaction per ATW only.", "error");
+                isAllValid = false;
+            }else {
+                    var trnArray = [];
+                    $("table tbody").find('input[name="trnsctions"]').each(function () {
+                        if ($(this).is(":checked")) {
+                            trnArray.push($(this).val());
+                        }
+                    });
+                    var trns = trnArray.join();
+                    document.getElementById("trnnos").value = trns;
+                }
+
+
+            var bk = $('#atwbkno').find(":selected").val();
+            var ab = $('#assignedby').find(":selected").val();
+            var cvno = $('#cvno').val();
+
+            if (bk === '0' || $('#atwbkno').val().trim() == '') {
+                $.notify("ATW Booking No is required.", "error");
+                isAllValid = false;
+            }
+
+            //if (ab === '0' || $('#assignedby').val().trim() == '') {
+            //   $.notify("Assigned By is required.", "error");
+            //   isAllValid = false;
+            //}
+            
+            if (cvno === null || $('#cvno').val().trim() == '') {
+                $.notify("ConVan No is required.", "error");
+                isAllValid = false;
+            }
+
+                if (isAllValid) {
+
+
+                    var yarddata = {
+                        yardATWBkNo: $('#atwbkno').val(),
+                        yardStatus: "Active",
+                        //yardAssignedBy: $('#assignedby').val(),
+                        yardConVanNo: $('#cvno').val(),
+                        yardTrnNo: $('#trnnos').val()
+                    }
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '../../../Yard/Save',
+                        data: JSON.stringify(yarddata),
+                        contentType: 'application/json',
+                        success: function (dataHdr) {
+                            if (dataHdr.status) {
+                                $.notify("Operation successfully posted.", "success");
+                                @*var url = '@Url.Action("Index", "Yard")';
+                                window.location.href = url;*@
+
+                                var r = confirm("Would like to add another ATW to Yard?");
+                                if (r == true) {
+                                    var url = '@Url.Action("Create", "Yard")';
+                                    window.location.href = url;
+                                } else {
+                                    var url = '@Url.Action("Index", "Yard")';
+                                window.location.href = url;
+                                }
+                            }
+                            else {
+                                $.notify("Operation failed to post.", "error");
+                            }
+                        },
+                        error: function (error) {
+                            $('#submit').text('Save');
+                        }
+                    });
+                }
+            });
+</script>
+}
+
+<style>
+    #cvno{
+        width:200px;
+    }
+    label{
+        position:center;
+    }
+</style>

@@ -1,0 +1,438 @@
+﻿@model AdminLteMvc.Models.WEBSales.EirPullOut
+@{
+    ViewBag.Title = "EIR Returned";
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+}
+
+<div class="box box-success">
+    <div class="box-body"> 
+            <div class="row">
+                <div class="col-md-4">
+                    <h4>
+                        <b>
+                            <span style="font-size:20px;">
+                                KARGAMINE TOO, INC.
+                            </span> <br />
+                            <span style="font-size:15px;">EIR In No:</span> <span style="color:red; font-size: 13px;">@ViewBag.EIRINo</span><br />
+                            <span style="font-size:15px;">Reference No:</span> <span style="color:red; font-size:13px;">@Model.EIRONo</span>
+                        </b>
+                    </h4>
+                </div>
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <h4>
+                        <b>
+                            <i>Equipment Interchange Receipt</i> <br />
+                        </b>
+                    </h4>
+                </div>
+            </div>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td>
+                        <b>SCR:</b>
+                        @Html.EditorFor(model => model.EIROSCR, new { htmlAttributes = new { @class = "form-control", id = "EIROSCR", @readonly = true } })
+                    </td>
+                    <td>
+                        <b>RETURN TIME:</b>
+                        @Html.EditorFor(model => model.EIROTime, new { htmlAttributes = new { @class = "form-control", id = "EIROTime", @readonly = true } })
+                       
+                    </td>
+
+                    <td>
+                        <b>SERVICE TYPE:</b>
+                        @Html.EditorFor(model => model.EIROServiceType, new { htmlAttributes = new { @class = "form-control", id = "EIROServiceType", @readonly = true } })
+                    </td>
+                    <td>
+                        <b>TRANSACTION NO:</b>
+                        @Html.EditorFor(model => model.EIROTransactionNo, new { htmlAttributes = new { @class = "form-control", id = "EIROTransactionNo", @readonly = true } })
+                       
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>CONVAN NO:</b>
+                        @Html.EditorFor(model => model.EIROConvanNo, new { htmlAttributes = new { @class = "form-control", id = "EIROConvanNo", @readonly = true } })
+                    </td>
+                    <td>
+                        <b><span style=" color:red">*</span>CONVAN STATUS:</b>
+                        
+                        @Html.DropDownListFor(model => model.EIROConvanStatus, (IEnumerable<SelectListItem>)ViewBag.cvslist, new { @class = "form-control select2" })
+                    </td>
+                    <td>
+                        <b>CONVAN SIZE:</b>
+                        @Html.EditorFor(model => model.EIROConvanSize, new { htmlAttributes = new { @class = "form-control", id = ".EIROConvanSize", @readonly = true } })
+                    </td>
+                    <td>
+                        <b>CONSIGNEE:</b>
+                        @Html.EditorFor(model => model.EIROConsignee, new { htmlAttributes = new { @class = "form-control", id = "EIROTransactionNo", @readonly = true } })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>SHIPPER:</b>
+                        @Html.EditorFor(model => model.EIROShipper, new { htmlAttributes = new { @class = "form-control", id = "EIROShipper", @readonly = true } })
+                    </td>
+                    <td>
+                        <b><span style=" color:red">*</span>TRUCKER:</b>
+                        @Html.EditorFor(model => model.EIROTrucker, new { htmlAttributes = new { @class = "form-control", id = "EIROTrucker" } })
+                    </td>
+                    <td>
+                        <b><span style=" color:red">*</span>DRIVER'S NAME:</b>
+                        @Html.EditorFor(model => model.EIRODriversName, new { htmlAttributes = new { @class = "form-control", id = "EIRODriversName" } })
+                      
+                    </td>
+                    <td>
+                        <b><span style=" color:red">*</span>PLATE NO:</b>
+                        @Html.EditorFor(model => model.EIROPlateNo, new { htmlAttributes = new { @class = "form-control", id = "EIROPlateNo" } })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>VESSEL:</b>
+                        @Html.DropDownListFor(model => model.EIROVessel, (IEnumerable<SelectListItem>)ViewBag.vessellist, new { @class = "form-control select2", id= "EIROVessel" })
+                    </td>
+                    <td>
+                        <b>VOYAGE NO:</b>
+                       
+                        @Html.EditorFor(model => model.EIROVoyageNo, new { htmlAttributes = new { @class = "form-control", id = "EIROVoyageNo" } })
+                    </td>
+                    <td>
+                        <b><span style=" color:red">*</span>SEAL NO:</b>
+                        @Html.EditorFor(model => model.EIROSealNo, new { htmlAttributes = new { @class = "form-control", id = "EIROSealNo" } })
+                    </td>
+                    <td>
+                        <b><span style=" color:red">*</span>SEAL STATUS:</b>
+                        @Html.DropDownListFor(model => model.EIROSealStatus, (IEnumerable<SelectListItem>)ViewBag.sslist, new { @class = "form-control select2" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>RELAY PORT:</b>
+                        @Html.DropDownListFor(model => model.EIRORelayPort, (IEnumerable<SelectListItem>)ViewBag.cyepolist, new { @class = "form-control select2" })
+                    </td>
+                    <td>
+                        <b>PORT OF ORIGIN:</b>
+                        @Html.EditorFor(model => model.EIROPortOfOrigin, new { htmlAttributes = new { @class = "form-control", id = "EIROPortOfOrigin",  @readonly = true } })
+                    </td>
+                    <td>
+                        <b>PORT OF DESTINATION:</b>
+                        @Html.EditorFor(model => model.EIROPortOfDestination, new { htmlAttributes = new { @class = "form-control", id = "EIROPortOfDestination", @readonly = true } })
+                    </td>
+                    <td>
+                        <b>WEIGHT:</b>
+                        @Html.EditorFor(model => model.EIROWeight, new { htmlAttributes = new { @class = "form-control", id = "EIROWeight", @readonly = true } })
+                    </td>
+                </tr>
+                @*note:required feild*@
+                <tr>
+                    <td>
+                        <b>VOLUME:</b>
+                        @Html.EditorFor(model => model.EIROVolume, new { htmlAttributes = new { @class = "form-control", id = "EIROVolume", @readonly = true } })
+                    </td>
+                    <td><b>Trucker Origin - Trip Type:</b>
+                        <select id="ddl_trip" class="form-control">
+                            <option value="0">Select</option>
+                            <option value="Regular">Regular</option>
+                            <option value="Special">Special</option>
+                            <option value="Foul">Foul</option>
+                        </select>
+                    </td>
+                    <td><b>Trucker Origin - WayBill No.:</b>
+                        <input class="form-control" id="txt_waybillno" />
+                    </td>
+                    <td>
+                        <b>WayBill Attachment:</b>
+                      
+                        <input type="file" id="files" name="ImageFile" multiple />
+                    </td>
+                   
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered">
+            <tr>
+                <td>
+                    <b>RETURN DATE:</b> <br /><input type="date" class="form-control" id="returndate">
+                    <br />
+                    <b><span style=" color:red">*</span>DAMAGES CODES:</b> <br />
+                    <select id="damagecodes" class="form-control" multiple="multiple">
+                        @{
+                            foreach (var item in ViewBag.DamageList)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        }
+                    </select>
+                    <br /><br />
+                    <b>REMARKS:</b>
+                    @*@Html.TextBoxFor("EIRORemarks", new { htmlAttributes = new { @Value = "", @class = "form-control", id = "remarks" } })*@
+                    <textarea class="form-control" id="remarks" style=" resize:none;" aria-label="REMARKS"></textarea>
+                </td>
+                <td>
+                    <img src="~/AppFiles/Images/container.PNG" />
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="box-footer">
+        <button type="button" class="btn btn-primary" id="return"> <i class="fa fa-pencil fa-1x"></i> RETURN </button>
+        <button type="button" class="btn btn-default" onclick="location.href='@Url.Action("IndexIn", "EIR")'"> <i class="fa fa-cancel fa-1x"></i> Back to list of EIR</button>
+    </div>
+</div>
+@*<div class="row" style="margin-top:5%">
+    <div class="form-group col-md-12">
+        <input type="file" class="form-control" id="filess" multiple />
+    </div>
+    <div class="form-group col-md-4">
+        <input type="button" id="btnUpload" class="btn btn-info" value="Upload Files" />
+    </div>
+</div>*@
+<link href="~/Content/bootstrap-toggle.css" rel="stylesheet" />
+<script src="~/Scripts/bootstap-toggle.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/jqueryui")
+
+<script type="text/javascript">
+    $("#damagecodes").chosen();
+    var icodes = @Html.Raw(Json.Encode(Model.EIRODamagesCode));
+    var arrRequire = icodes.split(',');
+    $("#damagecodes").val(arrRequire).trigger("chosen:updated");
+
+    $('#return').click(function () {
+      
+        var cs = document.getElementById("EIROConvanStatus");
+        var cs_text = cs.options[cs.selectedIndex].text;
+        
+      
+        var dn_text = $("#EIRODriversName").val();
+        var ET_text = $("#EIROTrucker").val();
+        var ep_text = $("#EIROPlateNo").val();
+      
+        var erp = document.getElementById("EIRORelayPort");
+        var erp_text = erp.options[erp.selectedIndex].text;
+        var ev = document.getElementById("EIROVessel");
+        var ev_text = ev.options[ev.selectedIndex].text;
+      
+
+        var evn_text = $("#EIROVoyageNo").val();
+        var sn = $("#EIROSealNo").val();
+  
+        var ss = document.getElementById("EIROSealStatus");
+        var ss_text = ss.options[ss.selectedIndex].text;
+
+        var isAllValid = true;
+        if ($('#returndate').val().trim() == '')
+        {
+                $.notify("EIR Return Date is required.", "error");
+                isAllValid = false;
+        }
+        if ($('#damagecodes').val() == '' || $('#damagecodes').val() == null)
+        {
+                $.notify("Damage Codes is required.", "error");
+                isAllValid = false;
+        }
+        if (cs_text == 'Select') {
+            $.notify("Convan Status is required", "error");
+            isAllValid = false;
+        }
+        if (dn_text.length==0) {
+            $.notify("Drivers Name is required", "error");
+            isAllValid = false;
+        }
+        if (ET_text.length==0) {
+            $.notify("Trucker is required", "error");
+            isAllValid = false;
+        }
+        if (ep_text.length==0) {
+            $.notify("Plate Number is required", "error");
+            isAllValid = false;
+        }
+        if ($('#remarks').val().trim() == '') {
+            $.notify("Remarks is required.", "error");
+            isAllValid = false;
+        }
+        if (sn.length == 0) {
+            $.notify("Seal No. is required.", "error");
+            isAllValid = false;
+        }
+        if (ss_text == 'Select') {
+            $.notify("Seal Status is required.", "error");
+            isAllValid = false;
+        }
+        if (isAllValid) {
+
+                var tempcode = $('#damagecodes').val().join();
+                var dmgcds = tempcode.toString();
+                var IDpassed = @Html.Raw(Json.Encode(ViewBag.IDFromOut));
+                var eirinno =@Html.Raw(Json.Encode(@ViewBag.EIRINo));
+                var refno = @Html.Raw(Json.Encode(@Model.EIRONo));
+
+                var a = @Html.Raw(Json.Encode(@Model.EIROSCR));
+                var b= @Html.Raw(Json.Encode(@Model.EIROTime));
+                var c= @Html.Raw(Json.Encode(@Model.EIROServiceType));
+                var d= @Html.Raw(Json.Encode(@Model.EIROTransactionNo));
+                var e = @Html.Raw(Json.Encode(@Model.EIROConvanNo));
+                var f = cs_text;
+
+
+                var g= @Html.Raw(Json.Encode(@Model.EIROConvanSize));
+                var h= @Html.Raw(Json.Encode(@Model.EIROConsignee));
+                var i = @Html.Raw(Json.Encode(@Model.EIROShipper));
+             
+                var u = dn_text;
+                var j = ET_text;
+                var k = ep_text;
+            
+                var l = erp_text;
+                var m = ev_text;
+                var n = evn_text;
+
+                var o = sn;
+                var p = ss_text;
+
+                var q= @Html.Raw(Json.Encode(@Model.EIROPortOfOrigin));
+                var r= @Html.Raw(Json.Encode(@Model.EIROPortOfDestination));
+                var s= @Html.Raw(Json.Encode(@Model.EIROWeight));
+                var t = @Html.Raw(Json.Encode(@Model.EIROVolume));
+
+
+                var eirData = {
+                    EIRINo: eirinno,
+                    EIRIReferenceNo: refno,
+                    EIRIDate: $('#returndate').val(),
+                    EIRITime: b,
+                    EIRIServiceType: c,
+                    EIRIConvanNo: e,
+                    EIRIConvanStatus: f,
+                    EIRIConvanSize: g,
+                    EIRITransactionNo: d,
+                    EIRIRelayPort: l,
+                    EIRIShipper: i,
+                    EIRIConsignee: h,
+                    EIRITrucker: j,
+                    EIRIPlateNo: k,
+                    EIRIDriversName: u,
+                    EIRIVessel: m,
+                    EIRIVoyageNo: n,
+                    EIRIPortOfOrigin: q,
+                    EIRIPortOfDestination: r,
+                    EIRISealNo: o,
+                    EIRISealStatus: p,
+                    EIRIWeight: s,
+                    EIRIVolume: t,
+                    EIRIDamagesCode: dmgcds,
+                    EIRISCR: a,
+                    EIRIStatus: "In",
+                    EIRIRemarks: $('#remarks').val(),
+
+                    triptype: $('#ddl_trip :selected').text(),
+                    waybillno: $('#txt_waybillno').val(),
+
+
+                }
+
+                console.log(eirData);
+                console.log(IDpassed);
+                console.log(dmgcds);
+            var isAllValid = true;
+            var mnem = document.getElementById("ddl_trip");
+            var mnemselected = mnem.options[mnem.selectedIndex].text;
+            if (mnemselected.trim() == '' || mnemselected == "Select") {
+                $.notify("Trip Type is required.", "error");
+                isAllValid = false;
+            }
+            if ($('#txt_waybillno').val().trim()=='')
+            {
+                $.notify("Waybill Number is required.", "error");
+                isAllValid = false;
+            }
+            if ($("#files").get(0).files.length === 0) {
+                $.notify("Waybill Attachment is required.", "error");
+                isAllValid = false;
+            }
+            if (isAllValid) {
+                $.ajax({
+                    type: 'POST',
+                    url: '../../../EIR/Return',
+                    data: JSON.stringify({ data: eirData, ID: IDpassed }),
+                    contentType: 'application/json',
+
+                    success: function (data) {
+                        alert(data);
+                        if (data.status) {
+                            getfile(data.ff);
+                            $.notify("Operation successfully posted.", "success");
+                            var url = '@Url.Action("IndexIn", "EIR")';
+                            window.location.href = url;
+                        }
+                        else {
+                            $.notify("Operation failed to post.", "error");
+                        }
+                    },
+                    error: function (error) {
+
+                        alert(error.responseText);
+                        console.log('Nobel');
+                        console.log(fileData);
+                        console.log(error.responseText);
+                    }
+                });
+            }
+        }
+
+
+        //use for selecting vessel name
+
+    })
+    function getfile(fl) {
+        if (window.FormData !== undefined) {
+            var fileUpload = $("#files").get(0);
+            var files = fileUpload.files;
+            var fileData = new FormData();
+            for (var i = 0; i < files.length; i++) {
+                fileData.append(files[i].name, files[i]);
+            }
+            alert(fl);
+            fileData.append('fl', fl);
+            var hh = "test";
+            $.ajax({
+                url: '/EIR/Uploads',
+                type: "POST",
+                contentType: false,
+                processData: false,
+                data: fileData,
+                success: function (result) {
+                    alert(result);
+                },
+                error: function (err) {
+                    alert(err.statusText);
+                }
+            });
+        } else {
+            alert("FormData is not supported in the browser.");
+        }
+    }
+</script>
+}
+
+<style>
+    #EIROVessel, #EIROVoyageNo, #EIROPortOfOrigin, #EIROPortOfDestination, #EIROSealStatus {
+        display: block;
+        width: 100%;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    }
+</style>

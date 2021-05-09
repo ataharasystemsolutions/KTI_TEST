@@ -1,0 +1,254 @@
+﻿@model AdminLteMvc.Models.WEBSales.ATW
+@{
+    ViewBag.Title = "ATW Transaction Details";
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="box box-success">
+        <div class="box-body">
+            <table class="table table-responsive">
+                <tr>
+                    <td>ATW Booking No.</td>
+                    <td>
+                        @Html.EditorFor(model => model.atwBkNo, new { htmlAttributes = new { @class = "form-control", id = "atwBkNo", @readonly = true, @required = "required" } })
+                    </td>
+                    <td>Authorized Trucker</td>
+                    <td>
+                        @Html.EditorFor(model => model.aTrucker, new { htmlAttributes = new { @class = "form-control", id = "aTrucker", @required = "required", @readonly = true } })
+                    </td>
+                </tr>
+                <tr>
+                    <td>Booking No.</td>
+                    <td>
+                        @Html.EditorFor(model => model.bkNo, new { htmlAttributes = new { @class = "form-control", id = "bkNo", @required = "required", @readonly = true } })
+                    </td>
+                    <td>Authorized Driver</td>
+                    <td>
+                        @Html.EditorFor(model => model.aDriver, new { htmlAttributes = new { @class = "form-control", id = "aDriver", @required = "required", @readonly = true } })
+                    </td>
+                </tr>
+                <tr>
+                    <td>Issue Date</td>
+                    <td>
+                        @Html.EditorFor(model => model.iDate, new { htmlAttributes = new { @class = "form-control", id = "iDate", @type = "date", @required = "required", @readonly = true } })
+                    </td>
+                    <td>Truck Plate No.</td>
+                    <td>
+                        @Html.EditorFor(model => model.plateNo, new { htmlAttributes = new { @class = "form-control", id = "plateno", @required = "required", @readonly = true } })
+                    </td>
+                </tr>
+                <tr>
+                    <td>Expiry Date</td>
+                    <td>
+                        @Html.EditorFor(model => model.eDate, new { htmlAttributes = new { @class = "form-control", id = "eDate", @readonly = true, @required = "required" } })
+                    </td>
+                    <td>Remarks</td>
+                    <td>
+                        @Html.TextAreaFor(model => model.remarks, new { @class = "form-control", id = "remarks", @required = "required", @readonly = true })
+                    </td>
+                </tr>
+                <tr>
+                    <td>ATW Issued By</td>
+                    <td>
+                        @Html.EditorFor(model => model.issuedBy, new { htmlAttributes = new { @class = "form-control", id = "issuedby", @readonly = true, @required = "required" } })
+                    </td>
+                    
+                </tr>
+            </table>
+            <div id="demoContent">
+
+                @(Html.Awe().Grid("ApiDemoGrid")
+          .Mod(o => o.PageInfo().PageSize().ColumnsSelector())
+          .Columns(new[]{
+              new Column{Bind = "transactionNo", Header = "Transaction No"},
+              new Column{Bind = "transactionDate", Header = "Date of Transaction"},
+              new Column{Bind = "origin",Header = "Origin"},
+              new Column{Bind = "destination",Header = "Destination"},
+              new Column{Bind = "consignee",Header = "Consignee"},
+              new Column{Bind = "consigneeAdd",Header = "Consignee Address"},
+              new Column{Bind = "conClass",Header = "Container Class"},
+              new Column{Bind = "conRqrmnts",Header = "ConVan Requirements"},
+              new Column{Bind = "payMode",Header = "Payment Mode"},
+              new Column{Bind = "cyEPO",Header = "CY - Empty Pull Out"},
+              new Column{Bind = "cySA",Header = "CY - Stuffing Activity"},
+              new Column{Bind = "cyLD",Header = "CY - Laden Delivery"},
+              new Column{Bind = "remarks",Header = "Remarks"}
+          })
+
+              .Resizable()
+              .Sortable(true)
+              .Reorderable()
+              .Height(350)
+              .Groupable(false)
+              .Selectable(SelectionType.Single)
+              .Parent("txtsearch", "search")
+              .Url(Url.Action("GetATWDetails", "ATW", new { trnList = @Model.trns, bknum = Model.bkNo })))
+
+            </div>
+            <div class="box-footer">
+                <button type="button" class="btn btn-success" id="backMn" onclick="location.href = '@Url.Action("Index", "ATW")'"> <i class="fa fa-arrow-left fa-1x"></i> Back to Main</button>
+                <button type="button" class="btn btn-info" id="viewdtls"> <i class="fa fa-print fa-1x"></i> View Details </button>            
+    @*<button type="button" class="btn btn-primary" id="adddtl" onclick="location.href = '@Url.Action("AddATWDetail", "ATW", new { @Model.atwID})'"> <i class="fa fa-plus-circle fa-1x"></i> Add Transaction</button>*@
+                @*<button type="button" class="btn btn-info" id="adddtl" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus-circle fa-1x"></i>Add Transaction</button>
+                <button type="button" class="btn btn-warning" id="edit"> <i class="fa fa-pencil fa-1x"></i> Edit </button>
+                <button type="button" class="btn btn-danger" id="delete"> <i class="fa fa-trash fa-1x"></i> Delete</button>*@
+            </div>
+        </div>
+    </div>
+}
+<link href="~/Content/bootstrap-toggle.css" rel="stylesheet" />
+
+@section Scripts{
+    <script src="~/Scripts/bootstap-toggle.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#trnnos").chosen();
+        });
+        @*var statBk = @Html.Raw(Json.Encode(Model.trnStatus));
+        $(document).ready(function () {
+            if (statBk == "Cancelled") {
+                document.getElementById("edit").disabled = true;
+                document.getElementById("delete").disabled = true;
+                document.getElementById("adddtl").disabled = true;
+            }
+        });*@
+
+    $(function () {
+        $('#ApiDemoGrid').on('awerender', function () {
+            $(this).find(".checkbox-toggle").bootstrapToggle();
+        });
+
+        $('#txtsearch').keyup(function () {
+            $('#ApiDemoGrid').data('api').load();
+        });
+
+        $('#ApiDemoGrid').on('aweload', function (e, data, rd) {
+            $('#log').prepend('aweload handled,\n data: ' + JSON.stringify(data) + "\n request data" + JSON.stringify(rd) + '\n\n');
+        }).on('awebeginload', function (e, data) {
+            $('#log').prepend('awebeginload handled,\n request data: ' + JSON.stringify(data) + '\n\n');
+        });
+
+        var lastATW;
+            $('#ApiDemoGrid').on('aweselect', function () {
+                lastSelectedIds = $.map($(this).data('api').getSelection(), function (val) { return val.tranID; });
+                console.log(lastSelectedIds);
+            })
+            $('#ApiDemoGrid').on('aweselect', function () {
+                transactionNumber = $.map($(this).data('api').getSelection(), function (val) { return val.transactionNo; });
+                console.log(transactionNumber);
+            })
+
+        $('#edit').click(function () {
+            if (lastSelectedIds != null) {
+                if (lastSelectedIds.length != 0) {
+                    window.location.href = '/Booking/Edit/' + lastSelectedIds;
+                }
+                else {
+                    $.notify("Please select detail to edit.", "error");
+                }
+            }
+            else {
+                $.notify("Please select detail to edit.", "error");
+            }
+        });
+
+        $('#delete').click(function () {
+            if (lastSelectedIds != null) {
+                if (lastSelectedIds.length != 0) {
+                    window.location.href = '/Booking/CancelDetail/' + lastSelectedIds;
+                }
+                else {
+                    $.notify("Please select row to view details.", "error");
+                }
+            }
+            else {
+                $.notify("Please select row to view details.", "error");
+            }
+        });
+
+        $('#print').click(function () {
+            if (lastSelectedIds != null) {
+                if (lastSelectedIds.length != 0) {
+                    var atwno = @Html.Raw(Json.Encode(@Model.bkNo));
+                    //window.location.href = '/ATW/ForPrint/' + lastSelectedIds + '?atwbkno=' + atwno;
+                    window.location.href = '/ATW/ATWViewDetails/' + '?transNo=' + transactionNumber + '&atwBkNo=' + atwno;
+                }
+                else {
+                    $.notify("Please select row to view details.", "error");
+                }
+            }
+            else {
+                $.notify("Please select row to view details.", "error");
+            }
+        });
+        $('#viewdtls').click(function () {
+            if (lastSelectedIds != null) {
+                if (lastSelectedIds.length != 0) {
+                    var atwno = @Html.Raw(Json.Encode(@Model.bkNo));
+                    //window.location.href = '/ATW/ForPrint/' + lastSelectedIds + '?atwbkno=' + atwno;
+                    window.location.href = '/ATW/ATWViewDetails/' + '?transNo=' + transactionNumber + '&atwBkNo=' + atwno;
+                }
+                else {
+                    $.notify("Please select row to view details.", "error");
+                }
+            }
+            else {
+                $.notify("Please select row to view details.", "error");
+            }
+        });
+
+        $('#savetrns').click(function () {
+            var preq = $('#trnnos').val();
+            console.log(preq);
+            var trnlist = preq.toString();
+            console.log(trnlist);
+        });
+    });
+
+    function setContent(o) {
+        $('#ApiDemoGrid').data('api').clearpersist();
+        $('#demoContent').html(o);
+    };
+
+    var toggleButton = function (model, prop) {
+        var checked = model[prop] ? 'checked = "checked"' : '';
+        return '<input disabled="disabled" type="checkbox" ' + checked + ' class="checkbox-toggle" data-toggle="toggle" data-on="Yes" data-off="No" data-size="small">';
+    };
+    </script>
+}
+
+<style>
+    .chosen-choices{
+        width: 415px;
+    }
+    .chosen-drop {
+        width: 415px;
+    }
+    .modal-sm {
+        width: 450px; /* New width for small modal */
+    }
+    td {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .boldh .awe-col, .boldh {
+        color: blue;
+    }
+
+    .bluev {
+        color: blueviolet;
+    }
+
+    .pinkb {
+        background: pink !important;
+    }
+
+    .greenb {
+        background: #f0f9f7 !important;
+    }
+</style>

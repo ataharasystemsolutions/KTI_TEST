@@ -1,0 +1,549 @@
+﻿@model AdminLteMvc.Models.WEBSales.EirPullOut
+@{
+    ViewBag.Title = "EirPullOut";
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+}
+
+<div class="box box-success">
+    <div class="box-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h4>
+                        <b>KARGAMINE TOO, INC.</b>
+                    </h4>
+                    <span style="font-size:10px;">
+                        Unit A4-B Las Buesnas Bldg., #37 Industrial Avenue, Potrero, Malabon<br />
+                        Tel No: 8788-9396   &nbsp;&nbsp;  Fax: 7799-604
+                    </span>
+                    <br />
+
+                </div>
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <h4>
+                        <b>
+                            <i>Equipment Interchange Receipt</i> <br />
+                            <span style="font-size:20px;">EIR No:</span> <input type="text" style="color:red;" class="form-control" id="eirno" , readonly="true">
+                        </b>
+                    </h4>
+                </div>
+            </div>
+        </div>
+        <br />
+        <b>SELECT TRN:</b>
+        <select id="trnNo" class="form-control">
+            @{
+                foreach (var item in ViewBag.Trns)
+                {
+                    <option value="@item.Value">@item.Text</option>
+                }
+            }
+        </select>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td>
+                        <b>ISSUE DATE:</b> @*@ViewBag.DateToday*@
+                        @Html.EditorFor(model => model.EIRODate, new { htmlAttributes = new { @type = "date", @class = "form-control", id = "eirodate", @Value = ViewBag.DateToday } })
+                    </td>
+                    <td>
+                        <b>ISSUE TIME:</b> @*@ViewBag.TimeToday*@
+                        @Html.EditorFor(model => model.EIROTime, new { htmlAttributes = new { @class = "form-control", id = "eirotime", @Value = ViewBag.TimeToday, @readonly = true } })
+                    </td>
+                    <td>
+                        <b>SERVICE TYPE:</b> @*@ViewBag.ServiceType*@
+                        @Html.EditorFor(model => model.EIROServiceType, new { htmlAttributes = new { @class = "form-control", id = "eirostype", @Value = ViewBag.ServiceType, @readonly = true } })
+                    </td>
+                    <td>
+                        <b>TRANSACTION NO:</b> @Html.EditorFor(model => model.EIROTransactionNo, new { htmlAttributes = new { @class = "form-control", id = "eirotrn", @readonly = true } })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>CONVAN NO:</b> @*@ViewBag.ConVanNo*@
+                        @Html.EditorFor(model => model.EIROConvanNo, new { htmlAttributes = new { @class = "form-control", id = "eirocvno", @readonly = true } })
+                        <br />
+                        <b>SHIPPER:</b> @*@ViewBag.Shipper*@
+                        @Html.EditorFor(model => model.EIROShipper, new { htmlAttributes = new { @class = "form-control", id = "eiroshipper", @readonly = true } })
+                    </td>
+                    <td>
+                        <b>CONVAN STATUS:</b> @*@ViewBag.ConVanStatus*@
+                        @Html.EditorFor(model => model.EIROConvanStatus, new { htmlAttributes = new { @class = "form-control", id = "eirocvstat", @Value = ViewBag.ConVanStatus, @readonly = true } })
+                    </td>
+                    <td>
+                        <b>CONVAN SIZE:</b> @*@ViewBag.ConvanSize*@
+                        @Html.EditorFor(model => model.EIROConvanSize, new { htmlAttributes = new { @class = "form-control", id = "eirocvsize", @Value = ViewBag.ConvanSize, @readonly = true } })
+                    </td>
+                    <td>
+                        <b>CONSIGNEE:</b> @*@ViewBag.Consignee*@
+                        @*@Html.TextArea("eiroconsignee", (string)ViewBag.Consignee, new { @class = "form-control", @readonly = true })*@
+                        @*@Html.TextAreaFor(model => model.EIROConsignee, new { htmlAttributes = new { @class = "form-control", id = "eiroconsignee", @readonly = true } })*@
+                        @Html.TextAreaFor(model => model.EIROConsignee, new { id = "eiroconsignee", @class = "form-control", style = " rows=20, columns=40", @readonly = true })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>DRIVER'S NAME:</b> @*@ViewBag.DriversName*@
+                        @Html.EditorFor(model => model.EIRODriversName, new { htmlAttributes = new { @class = "form-control", id = "eirodrivername", @Value = ViewBag.DriversName } })
+                    </td>
+                    <td>
+                        <b>TRUCKER:</b> @*@ViewBag.Trucker*@
+                        @Html.EditorFor(model => model.EIROTrucker, new { htmlAttributes = new { @class = "form-control", id = "eirotrucker", @Value = ViewBag.Trucker } })
+                    </td>
+                    <td>
+                        <b>PLATE NO:</b> @*@ViewBag.PlateNo*@
+                        @Html.EditorFor(model => model.EIROPlateNo, new { htmlAttributes = new { @class = "form-control", id = "eiroplateno", @Value = ViewBag.PlateNo } })
+                    </td>
+                    <td>
+                        <b>RELAY PORT:</b> @*@ViewBag.RelayPort*@
+                        @Html.EditorFor(model => model.EIRORelayPort, new { htmlAttributes = new { @class = "form-control", id = "eirorelayport", @Value = ViewBag.RelayPort } })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>VESSEL:</b>@if (ViewBag.VesselList != null)
+                        {
+                            @Html.DropDownListFor(model => model.EIROVessel, ViewBag.VesselList as SelectList, "", new { htmlAttributes = new { @class = "form-control", id = "vessel" } })
+                        }
+                    </td>
+                    <td><b>VOYAGE NO:</b>@Html.DropDownListFor(model => model.EIROVoyageNo, new SelectList(" "), "", new { htmlAttributes = new { @class = "form-control", id = "voyageno" } })</td>
+                    <td><b>SEAL NO:</b>@Html.EditorFor(model => model.EIROSealNo, new { htmlAttributes = new { @class = "form-control", id = "sealno" } })</td>
+                    <td><b>SEAL STATUS:</b>@Html.DropDownListFor(model => model.EIROSealStatus, ViewBag.SealStatusList as SelectList, "-- Select --", new { htmlAttributes = new { @class = "form-control", id = "sealstatus" } })</td>
+                </tr>
+                <tr>
+                    <td><b>PORT OF ORIGIN:</b>@Html.DropDownListFor(model => model.EIROPortOfOrigin, ViewBag.OriginList as SelectList, "-- Select --", new { htmlAttributes = new { @class = "form-control", id = "portoforigin" } })</td>
+                    <td><b>PORT OF DESTINATION:</b>@Html.DropDownListFor(model => model.EIROPortOfDestination, ViewBag.DestinationList as SelectList, "", new { htmlAttributes = new { @class = "form-control", id = "portofdestination" } })</td>
+                    <td><b>WEIGHT:</b>@Html.EditorFor(model => model.EIROWeight, new { htmlAttributes = new { @class = "form-control", id = "weight" } })</td>
+                    <td><b>VOLUME:</b>@Html.EditorFor(model => model.EIROVolume, new { htmlAttributes = new { @class = "form-control", id = "volume" } })</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered">
+            <tr>
+                <td>
+
+                    <b>DAMAGES CODES:</b> <br />
+                    <select id="damagecodes" class="form-control" multiple="multiple">
+                        @{
+                            foreach (var item in ViewBag.DamageList)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        }
+                    </select> <br /><br />
+                    <b>SHIPPING COMPANY REPRESENTATIVE:</b><br />
+                    @Html.EditorFor(model => model.EIROSCR, new { htmlAttributes = new { @class = "form-control", id = "eiroscr" } })
+                    <br />
+                    <b>REMARKS:</b><br />
+                    @Html.TextAreaFor(model => model.EIRORemarks, new { htmlAttributes = new { @class = "form-control", id = "remarks" } })
+                </td>
+                <td>
+                    <img src="~/AppFiles/Images/container.PNG" />
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="box-footer">
+        <button type="button" class="btn btn-primary" id="submit"> <i class="fa fa-pencil fa-1x"></i> Pull Out </button>
+        <button type="button" class="btn btn-default" onclick="location.href='@Url.Action("IndexOut", "EIR")'"> <i class="fa fa-cancel fa-1x"></i> Cancel</button>
+    </div>
+</div>
+
+<link href="~/Content/bootstrap-toggle.css" rel="stylesheet" />
+<script src="~/Scripts/bootstap-toggle.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/jqueryui")
+
+    <script type="text/javascript">
+    $("#damagecodes").chosen();
+
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1;
+    var yyyy = today.getFullYear();
+    if (dd < 10) {
+        dd = '0' + dd
+    }
+    if (mm < 10) {
+        mm = '0' + mm
+    }
+
+    today = yyyy + '-' + mm + '-' + dd;
+    document.getElementById("eirodate").value = today;
+
+        $(document).ready(function () {
+            $("#EIROVessel").change(function () {
+                $.get("../../../EIR/GetVesselNo", { vesselID: $("#EIROVessel").val() }, function (data) {
+                    $("#EIROVoyageNo").empty();
+                    $.each(data, function (index, row) {
+                        $("#EIROVoyageNo").append("<option value='" + row.voyageID + "'>" + row.voyageNo + "</option>")
+                    });
+                });
+            });
+
+            $('#trnNo').on("change", function () {
+                    var trnchosen = document.getElementById('trnNo').value;
+                var atwID = @Html.Raw(Json.Encode(ViewBag.ATWID));
+
+                $.get("../../../EIR/GetDataFromTrn", { ID: atwID, trnselected: trnchosen }, function (data) {
+                    console.log(data);
+                    document.getElementById("eirno").value = data.EIRNo;
+                    document.getElementById("eirostype").value = data.STYPE;
+                    document.getElementById("eirocvno").value = data.CVNO;
+                    document.getElementById("eirocvstat").value = data.CSTAT;
+                    document.getElementById("eirocvsize").value = data.CSIZE;
+                    document.getElementById("eiroconsignee").value = data.CONSIGNEE;
+                    document.getElementById("eirodrivername").value = data.DRIVER;
+                    document.getElementById("eiroshipper").value = data.SHIPPER;
+                    document.getElementById("eirotrucker").value = data.TRUCKER;
+                    document.getElementById("eiroplateno").value = data.PLATENO;
+                    document.getElementById("eirorelayport").value = data.RELAYPORT;
+                    document.getElementById("eirotrn").value = data.TRN;
+                });
+
+                    //$.ajax({
+                    //    url: '../../../EIR/GetDataFromTrn',
+                    //    type: 'GET',
+                    //    data: '{"ID":"' + atwID + '","trnselected":"' + trnchosen + '"}',
+                    //    contentType: "application/json",
+                    //    success: function (ids) {
+                    //        console.log("I'M HERE");
+                    //        console.log(ids);
+                    //        //var docFormatted = 'ATW-' + yearInput + '-' + ids;
+                    //        //document.getElementById("atwno").value = docFormatted;
+                    //        //document.getElementById("atwyear").value = yearInput;
+                    //        //document.getElementById("atwbkid").value = ids;
+                    //        //document.getElementById("bkno").value = yearInput + '-' + ids;
+                    //    },
+                    //});
+                });
+        });
+
+        $('#submit').click(function () {
+            var isAllValid = true;
+            if ($('#eirodate').val().trim() == '') {
+                $.notify("Issue Date is required.", "error");
+                isAllValid = false;
+            }
+            if ($('#eirotime').val().trim() == '') {
+                $.notify("Issue Time is required.", "error");
+                isAllValid = false;
+            }
+            if ($('#eirostype').val().trim() == '') {
+                $.notify("Service Type is required.", "error");
+                isAllValid = false;
+            }
+            if ($('#eirocvstat').val().trim() == '') {
+                $.notify("ConVan Status is required.", "error");
+                isAllValid = false;
+            }
+            if ($('#eirocvsize').val().trim() == '') {
+                $.notify("ConVan Size is required.", "error");
+                isAllValid = false;
+            }
+            if ($('#eiroconsignee').val().trim() == '') {
+                $.notify("Consignee is required.", "error");
+                isAllValid = false;
+            }
+            if ($('#eirodrivername').val().trim() == '') {
+                $.notify("Driver's Name is required.", "error");
+                isAllValid = false;
+            }
+            if ($('#eirotrucker').val().trim() == '') {
+                $.notify("Trucker is required.", "error");
+                isAllValid = false;
+            }
+            if ($('#eiroplateno').val().trim() == '') {
+                $.notify("Plate No is required.", "error");
+                isAllValid = false;
+            }
+            //if ($('#eirorelayport').val().trim() == '') {
+            //    $.notify("Relay Port is required.", "error");
+            //    isAllValid = false;
+            //}
+            var a = document.getElementById("EIROVessel");
+            var vesselselected = a.options[a.selectedIndex].text;
+
+            //if (vesselselected.trim() == '' || vesselselected == "-- Select vessel --") {
+            //    $.notify("Vessel is required.", "error");
+            //    isAllValid = false;
+            //}
+
+            var b = document.getElementById("EIROVoyageNo");
+            var voyageselected = b.options[b.selectedIndex].text;
+
+            //if (voyageselected.trim() == '' || voyageselected == "-- Select voyage no --") {
+            //    $.notify("Voyage No is required.", "error");
+            //    isAllValid = false;
+            //}
+
+            var c = document.getElementById("EIROPortOfOrigin");
+            var originselected = c.options[c.selectedIndex].text;
+
+            if (originselected.trim() == '' || originselected == "-- Select --") {
+                $.notify("Port of Origin is required.", "error");
+                isAllValid = false;
+            }
+
+            var d = document.getElementById("EIROPortOfDestination");
+            var destinationselected = d.options[d.selectedIndex].text;
+
+            //if (destinationselected.trim() == '' || destinationselected == "-- Select --") {
+            //    $.notify("Port of Destination is required.", "error");
+            //    isAllValid = false;
+            //}
+
+            if ($('#sealno').val().trim() == '') {
+                $.notify("Seal No is required.", "error");
+                isAllValid = false;
+            }
+
+            var e = document.getElementById("EIROSealStatus");
+            var sealstatselected = e.options[e.selectedIndex].text;
+
+            if (sealstatselected.trim() == '' || sealstatselected == "-- Select --") {
+                $.notify("Seal Status is required.", "error");
+                isAllValid = false;
+            }
+
+            //if ($('#weight').val().trim() == '') {
+            //    $.notify("Weight is required.", "error");
+            //    isAllValid = false;
+            //}
+
+            //if ($('#volume').val().trim() == '') {
+            //    $.notify("Volume is required.", "error");
+            //    isAllValid = false;
+            //}
+
+            if ($('#damagecodes').val() == '' || $('#damagecodes').val() == null) {
+                $.notify("Damage Codes is required.", "error");
+                isAllValid = false;
+            }
+
+            if ($('#eiroscr').val().trim() == '') {
+                $.notify("Shipping Company Representative is required.", "error");
+                isAllValid = false;
+            }
+
+            //var a = @Html.Raw(Json.Encode(ViewBag.EIRNO));
+            //var b = @Html.Raw(Json.Encode(ViewBag.DateToday));
+            //var c = @Html.Raw(Json.Encode(ViewBag.TimeToday));
+            //var d = @Html.Raw(Json.Encode(ViewBag.ServiceType));
+            //var e = @Html.Raw(Json.Encode(ViewBag.ConVanNo));
+            //var f = @Html.Raw(Json.Encode(ViewBag.ConVanStatus));
+            //var g = @Html.Raw(Json.Encode(ViewBag.ConvanSize));
+            var h = @Html.Raw(Json.Encode(ViewBag.ListofTrns));
+            //var i = @Html.Raw(Json.Encode(ViewBag.RelayPort));
+            //var j = @Html.Raw(Json.Encode(ViewBag.Shipper));
+            //var k = @Html.Raw(Json.Encode(ViewBag.Consignee));
+            //var l = @Html.Raw(Json.Encode(ViewBag.Trucker));
+            //var m = @Html.Raw(Json.Encode(ViewBag.PlateNo));
+            //var n = @Html.Raw(Json.Encode(ViewBag.DriversName));
+
+            var IDpassed = @Html.Raw(Json.Encode(ViewBag.ATWID));
+            var ATWBkNo = @Html.Raw(Json.Encode(ViewBag.ATWBkNo));
+
+
+            if (isAllValid) {
+                var tempcode = $('#damagecodes').val().join();
+                var dmgcds = tempcode.toString();
+
+                var eirData = {
+                    EIRONo: $('#eirno').val(),
+                    EIROAtwBkNo: ATWBkNo,
+                    EIRODate: $('#eirodate').val(),
+                    EIROTime: $('#eirotime').val(),
+                    EIROServiceType: $('#eirostype').val(),
+                    EIROConvanNo: $('#eirocvno').val(),
+                    EIROConvanStatus: $('#eirocvstat').val(),
+                    EIROConvanSize: $('#eirocvsize').val(),
+                    EIROTransactionNo: $('#eirotrn').val(),
+                    EIRORelayPort: $('#eirorelayport').val(),
+                    EIROShipper: $('#eiroshipper').val(),
+                    EIROConsignee: $('#eiroconsignee').val(),
+                    EIROTrucker: $('#eirotrucker').val(),
+                    EIROPlateNo: $('#eiroplateno').val(),
+                    EIRODriversName: $('#eirodrivername').val(),
+                    EIROVessel: vesselselected,
+                    EIROVoyageNo: voyageselected,
+                    EIROPortOfOrigin: originselected,
+                    EIROPortOfDestination: destinationselected,
+                    EIROSealNo: $('#sealno').val(),
+                    EIROSealStatus: sealstatselected,
+                    EIROWeight: $('#weight').val(),
+                    EIROVolume: $('#volume').val(),
+                    EIRODamagesCode: dmgcds,
+                    EIROSCR: $('#eiroscr').val(),
+                    EIROStatus: "Pull-Out",
+                    EIRORemarks: $('#EIRORemarks').val()
+                }
+
+                console.log(eirData);
+                console.log(IDpassed);
+
+                var counter = @Html.Raw(Json.Encode(ViewBag.CounterNo));
+                var cn1 = @Html.Raw(Json.Encode(ViewBag.cn1));
+                var cn2 = @Html.Raw(Json.Encode(ViewBag.cn2));
+
+                var cv = $('#eirocvno').val();
+
+                var cn;
+                if (cv == cn1) {
+                    cn = cn2;
+                } else {
+                    cn = cn1;
+                }
+
+                $.ajax({
+                        type: 'POST',
+                    url: '../../../EIR/Save',
+                    data: JSON.stringify({ data: eirData}),
+                        contentType: 'application/json',
+                    success: function (data) {
+                        data.responseText;
+                        console.log("I'M IN");
+                        console.log(data.status);
+                            if (data.status) {
+                                $.notify("Operation successfully posted.", "success");
+                                console.log(counter);
+                                if (counter == 1) {
+                                    console.log("Im in");
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: '../../../EIR/Pull',
+                                        data: JSON.stringify({ ID: IDpassed, cvno1: cn, counter: 2 }),
+                                        contentType: 'application/json',
+                                        success: function (data) {
+                                            if (data.status) {
+                                                $.notify("Operation successfully posted.", "success");
+                                                @*var url = '@Url.Action("IndexOut", "EIR")';*@
+                                                //window.location.href = window.location.href = '/EIR/EirPullOut/?ID=' + IDpassed + '&cvno1=' + cn + '&counter=2&cvno2=';
+                                                console.log(data);
+                                                document.getElementById("eirno").value = '';
+                                                document.getElementById("eirno").value = data.eirno;
+
+                                                $("#trnNo").empty();
+                                                $("#trnNo").append(new Option("Select Below","0"));
+                                                var o = new Option(data.trndrop, data.trndrop);
+                                                $("#trnNo").append(o);
+
+                                                document.getElementById("eirotime").value = '';
+                                                document.getElementById("eirotime").value = data.itime;
+
+                                                document.getElementById("eirostype").value = '';
+                                                document.getElementById("eirostype").value = data.stype;
+
+                                                document.getElementById("eirotrn").value = '';
+                                                document.getElementById("eirotrn").value = data.trnno;
+
+                                                document.getElementById("eirocvno").value = '';
+                                                document.getElementById("eirocvno").value = data.cno;
+
+                                                document.getElementById("eirocvstat").value = '';
+                                                document.getElementById("eirocvstat").value = data.cstat;
+
+                                                document.getElementById("eirocvsize").value = '';
+                                                document.getElementById("eirocvsize").value = data.csize;
+
+                                                document.getElementById("eiroconsignee").value = '';
+                                                document.getElementById("eiroconsignee").value = data.consignee;
+
+                                                document.getElementById("eiroshipper").value = '';
+                                                document.getElementById("eiroshipper").value = data.shipper;
+
+                                                document.getElementById("eirodrivername").value = '';
+                                                document.getElementById("eirodrivername").value = data.dname;
+
+                                                document.getElementById("eirotrucker").value = '';
+                                                document.getElementById("eirotrucker").value = data.trucker;
+
+                                                document.getElementById("eiroplateno").value = '';
+                                                document.getElementById("eiroplateno").value = data.pno;
+
+                                                document.getElementById("eirorelayport").value = '';
+                                                document.getElementById("eirorelayport").value = data.relayp;
+
+                                                document.getElementById("sealno").value = '';
+                                                $('#EIROSealStatus option:selected').removeAttr('selected');
+                                                $('#EIROPortOfOrigin option:selected').removeAttr('selected');
+                                                $(".chosen-container chosen-container-multi").val('').trigger("chosen:updated");
+                                                //document.getElementById('damagecodes_chosen').reset();
+                                                //$("#damagecodes_chosen").trigger("chosen:updated");
+                                                //$('.chosen-results option:selected').removeAttr('selected');
+                                                //document.getElementById("damagecodes").value = '';
+                                                document.getElementById("eiroscr").value = '';
+                                                document.getElementById("EIRORemarks").value = '';
+                                                /*document.getElementById("eirostype").value = '';*/
+                                                //document.getElementById("eirostype").value = data.stype;
+                                                //document.getElementById("eirotrn").value = data.trnno;
+                                                //document.getElementById("eirocvno").value = data.cno;
+                                                //document.getElementById("eirocvstat").value = data.cstat;
+                                                //document.getElementById("eirocvsize").value = data.csize;
+                                                //document.getElementById("eiroconsignee").value = data.consignee;
+                                                //document.getElementById("eiroshipper").value = data.shipper;
+                                                //document.getElementById("eirodrivername").value = data.dname;
+                                                //document.getElementById("eirotrucker").value = data.trucker;
+                                                //document.getElementById("eiroplateno").value = data.pno;
+                                                //document.getElementById("eirorelayport").value = data.relayp;
+                                            }
+                                            else {
+                                                $.notify("Operation failed to post.", "error");
+                                            }
+                                        },
+                                        error: function (error) {
+                                            console.log(error);
+                                            $('#submit').text('Save');
+                                        }
+                                    });
+                                    //window.location.href = '/EIR/EirPullOut/?ID=' + IDpassed + '&cvno1=' + cn + '&counter=2&cvno2=';
+                                } else {
+                                    alert("HEEEEEEEEEEEY");
+                                    var url = '@Url.Action("IndexOut", "EIR")';
+                                    window.location.href = url;
+                                }
+
+                            }
+                            else {
+                                $.notify("Operation failed to post.", "error");
+                            }
+                        },
+                        error: function (error) {
+                            console.log(error);
+                            error.responseText;
+                            $('#submit').text('Save');
+                        }
+                    });
+            }
+        })
+    </script>
+}
+
+<style>
+    #EIROVessel, #EIROVoyageNo, #EIROPortOfOrigin, #EIROPortOfDestination, #EIROSealStatus {
+        display: block;
+        width: 100%;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    }
+
+    textarea#EIRORemarks {
+        width: 300px;
+    }
+
+    textarea#eiroconsignee.form-control {
+        height: 120px;
+    }
+</style>

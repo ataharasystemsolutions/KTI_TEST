@@ -1,0 +1,446 @@
+﻿@model AdminLteMvc.Models.Class.forapprovalList
+@{
+    ViewBag.Title = "For Approval List";
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+}
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-body">
+                <table id="forapprovalList" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Shipper</th>
+                            <th>Service Type</th>
+                            <th>Convan No.</th>
+                            <th>Consignee Name</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            foreach (var det in ViewBag.list)
+                            {
+                                <tr>
+                                    <td>@det.shipper</td>
+                                    <td>@det.serviceType</td>
+                                    <td>@det.convanNo</td>
+                                    <td>@det.consigneeName</td>
+                                    <td>@det.startDate</td>
+                                    <td>@det.endDate</td>
+                                    <td>@det.Status</td>
+                                    <td><a onclick="viewdetails(@det.consigneeId)"  class="btn btn-sm btn-primary"> View</a></td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- /.box -->
+    </div>
+    <!-- /.col -->
+</div>
+<a id="btn_view_details" data-toggle="modal" data-target="#modal-approve" style=" display:none;" class="btn btn-sm btn-primary"></a>
+    <div class="modal fade" id="modal-approve" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Approval Form</h4>
+                </div>
+                @using (Html.BeginForm("addCRO", "cro", FormMethod.Post))
+                {
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Shipper</label>
+                                    <input id="shipper" name="shipper" class=" form-control" readonly="true" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Shipper Contact Person</label>
+                                    <input id="shippercontact" name="shippercontact" class=" form-control" readonly="true" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Consignee</label>
+                                    <input id="consignee" name="consignee" class=" form-control" readonly="true" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Transaction Number</label>
+                                    <input id="transactionnumber" name="transactionnumber" readonly="true" class=" form-control" />
+                                </div>
+                                <div class="form-group">
+                                    <label><span style=" color:red">*</span>Issue Date</label>
+                                    <input id="issueDate" name="issueDate" type="date" class=" form-control" />
+                                </div>
+                                <div class="form-group">
+                                    <label><span style=" color:red">*</span>Expiry Date</label>
+                                    <input id="expiryDate" name="expiryDate" type="date" class=" form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label><span style=" color:red">*</span>Authorized Trucker Destination</label>
+                                    <select id="authorizedTruckerDestination" name="authorizedTruckerDestination" class=" form-control">
+                                        @{
+                                            foreach (var i in ViewBag.autTruckerList)
+                                            {
+                                                <option value="@i.Value">@i.Text</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label><span style=" color:red">*</span>Authorized Driver Destination</label>
+                                    <input id="authorizeDriverDestination" name="authorizeDriverDestination" class=" form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label><span style=" color:red">*</span>Authorized Truck Plate No. Destination</label>
+                                    <input id="AuthorizedTruckPlateNoDestination" name="AuthorizedTruckPlateNoDestination" class=" form-control" />
+                                </div>
+                                <div class="form-group">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label><span style=" color:red">*</span>CY - Pull of Out of Cargo / Laden ConVan</label>
+
+                                    @{
+                                        foreach (var item in ViewBag.CYlist)
+                                        {
+                                            string idldnconvan = item.Value + "_LadenConVan";
+                                            if (@item.Text != "Select")
+                                            {
+                                                <div id="convanRadio" class="radio">
+                                                    <label><input id="LadenConVan" type="radio" name="LadenConVan" value="@item.Text">@item.Text</label>
+                                                </div>
+                                            }
+                                        }
+                                    }
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label><span style=" color:red">*</span>CY - Stuffing / Stripping</label>
+                                    <br />
+                                    @{
+                                        foreach (var item in ViewBag.CYlist)
+                                        {
+                                            string id = item.Value.Trim() + "_stripping";
+                                            if (@item.Text != "Select")
+                                            {
+                                                <div id="strippingRadio" class="radio">
+                                                    <label><input id="stripping" type="radio" name="stripping" value="@item.Text">@item.Text</label>
+                                                </div>
+                                            }
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Packed As</label>
+                                    <input id="packedAS" name="packedAS" class=" form-control" readonly="true" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>ConVan/FlatRack No.</label>
+                                    <input id="convanFlatrackNo" name="convanFlatrackNo" class=" form-control" readonly="true" />
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>QTY</th>
+                                    <th>Unit's</th>
+                                    <th>Cargo Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input id="qty" name="qty" class=" form-control" type="number" readonly="true" min="1" value="0" /></td>
+                                    <td><input id="units" name="units" class=" form-control" readonly="true" /></td>
+                                    <td>
+                                        <textarea id="cargodescription" name="cargodescription" readonly="true" style=" height:30px;  resize:none;" class=" form-control"></textarea>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Cargo Details</label>
+                                    <textarea id="cargodetails" name="cargodetails" style=" height:30px; resize:none;" class=" form-control" readonly="true"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Service Mode</label>
+                                    <input id="serviceMode" name="serviceMode" class=" form-control" readonly="true" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Origin</label>
+                                    <input id="origin" name="origin" class=" form-control" readonly="true" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Destination</label>
+                                    <input id="destination" name="destination" class=" form-control" readonly="true" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Payment Terms</label>
+                                    <input id="paymentTerms" name="paymentTerms" class=" form-control" readonly="true" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Vessel Voyage</label>
+                                    <input id="vesselVoyage" name="vesselVoyage" class=" form-control" readonly="true" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label><span style=" color:red">*</span>Special Handling Requirement</label>
+                                    <br />
+                                    @{
+                                        foreach (var item in ViewBag.hrList)
+                                        {
+                                            if (@item.Text != "Select")
+                                            {
+                                                <div class="checkbox-inline">
+                                                    <input id="@item.Text" type="checkbox" name="@item.Text" value="@item.Text">@item.Text
+                                                </div>
+                                            }
+                                        }
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Remarks</label>
+                                    <textarea id="remarks" name="remarks" style=" height:100px; resize:none;" class=" form-control"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label><span style=" color:red">*</span>Issued By</label>
+                                    <input id="issuedBy" name="issuedBy" class=" form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label><span style=" color:red">*</span>Approved By</label>
+                                    <input id="approvedBy" name="approveBy" class=" form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- /.box -->
+                    <div class="modal-footer">
+                        <button type="button" id="btnclose" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                        <button type="submit" id="btnsave_change" class="btn btn-primary">Approve</button>
+                    </div>
+                    <input type="hidden" id="hdndelId" name="hdndelId" />
+                    <input type="hidden" id="selectedHR" name="selectedHR" />
+                    <input type="hidden" id="selectedStripping" name="selectedStripping" />
+                    <input type="hidden" id="selectedConVan" name="selectedConVan" />
+                    <input type="hidden" id="EIRONO" name="EIRONO" />
+                                        }
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+
+    @*error message*@
+<span>@TempData["message"]</span>
+
+    @if (@TempData["message"] == "Saved")
+    {
+        <script type="text/javascript">
+            $(function () {
+                alert("test");
+            $.notify("Successfully Saved", "success")
+            window.location.href = '@Url.Action("forapprovalList", "cro")';
+        });
+        </script>
+    }
+    @if (@TempData["message"] == "UnSaved")
+    {
+        <script type="text/javascript">
+            $(function () {
+                $.notify("Please fill in all required fields.", "error")
+            });
+        </script>
+    }
+
+    @section Scripts{
+        <script src="~/Scripts/bootstap-toggle.js"></script>
+        <!-- page script -->
+        <script>
+            $(function () {
+                $('#forapprovalList').DataTable({
+                    'paging': true,
+                    'lengthChange': true,
+                    'searching': true,
+                    'ordering': true,
+                    'info': true,
+                    'autoWidth': false
+                })
+            });
+            $(document).ready(function () {
+                $('#issueDate').on("change", function () {
+
+                    alert('test');
+                    var tt = document.getElementById('issueDate').value;
+
+                    var myNewDate = new Date(tt);
+                    myNewDate.setDate(myNewDate.getDate() + 2);
+
+                    var dd = myNewDate.getDate();
+                    var mm = myNewDate.getMonth();
+                    var yyyy = myNewDate.getFullYear();
+                    if (dd < 10) {
+                        dd = '0' + dd
+                    }
+                    if (mm < 10) {
+                        mm = '0' + mm
+                    }
+                    today = yyyy + '-' + mm + '-' + dd;
+
+                    alert(myNewDate);
+
+                    document.getElementById("expiryDate").value = today;
+                });
+
+                $('#btnsave_change').click(function () {
+                    var abc = ""
+                    //.slice(0, -1)
+                    $('input[type=checkbox]').each(function () {
+                        if (this.checked) {
+                            abc = abc + $(this).val() + ","
+                            $('#selectedHR').val(abc.slice(0, -1));
+                        }
+                    });
+                    console.log(abc);
+                    var stripp = "";
+                    var selectedconvanRadio = $("input[type='radio'][name='LadenConVan']:checked");
+                    stripp = selectedconvanRadio.val();
+                    $('#selectedStripping').val(stripp);
+                    console.log(stripp);
+                    var ladenConVan = "";
+                    var selectedstrippingRadio = $("input[type='radio'][name='stripping']:checked");
+                    ladenConVan = selectedstrippingRadio.val();
+                    console.log(ladenConVan);
+                    $('#selectedConVan').val(ladenConVan);
+
+
+
+
+
+
+
+                    //console.log(abc);
+                    //console.log(stripp);
+                    //console.log(ladenConVan);
+
+                });
+            });
+            function viewdetails(id) {
+                $('#hdndelId').val(id);
+                $.ajax({
+                    type: "POST",
+                    url: "/cro/consigneeDetails",
+                    data: { Id: id },
+                    success: function (result) {
+                        if (result.cntt == 0) {
+                            $.notify("This transaction is not yet billed.", "error");
+                            $("#btnclose").click()
+                        }
+                        else {
+                            $('#shipper').val(result.ds[0].shipper);
+                            $('#shippercontact').val(result.ds[0].contactperson);
+                            $('#consignee').val(result.ds[0].consigneeName);
+
+                            $('#transactionnumber').val(result.ds[0].transactionNo);
+
+                            //$('#issuedDate').val(result.ds[0].issuedDate);
+                            //$('#expiryDate').val(result.ds[0].xpireDate);
+
+                            $('#packedAS').val(result.ds[0].PackedAs);
+                            $('#convanFlatrackNo').val(result.ds[0].ConVanFlatRackNo);
+                            $('#qty').val(result.ds[0].Qty);
+                            $('#units').val(result.ds[0].Unit);
+                            $('#cargodescription').val(result.ds[0].CargoType);
+
+
+                            $('#cargodetails').val(result.ds[0].CargoDetails);
+                            $('#convanFlatrackNo').val(result.ds[0].ConVanFlatRackNo);
+                            $('#qty').val(result.ds[0].Qty);
+                            $('#units').val(result.ds[0].Unit);
+                            $('#cargodescription').val(result.ds[0].CargoType);
+
+                            $('#serviceMode').val(result.ds[0].serviceMode);
+
+                            $('#origin').val(result.ds[0].origin);
+
+                            $('#destination').val(result.ds[0].destination);
+
+                            $('#vesselVoyage').val(result.ds[0].VesselVoyage);
+
+                            $('#EIRONO').val(result.ds[0].proformaBillRefNo);
+                            $('#paymentTerms').val(result.ds[0].payMode);
+         
+                            $("#btn_view_details").click()
+                            
+                        }
+                    }
+                });
+            }
+
+        </script>
+    }
+
+    <style>
+        table.dataTable thead .sorting:after {
+            opacity: 0.2;
+            content: "";
+        }
+
+        table.dataTable thead .sorting_asc:after {
+            content: "";
+        }
+
+        .modal-dialog {
+            width: 700px;
+            margin: 30px auto;
+        }
+    </style>

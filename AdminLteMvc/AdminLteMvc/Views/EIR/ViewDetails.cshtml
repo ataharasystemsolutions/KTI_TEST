@@ -1,0 +1,87 @@
+﻿@model AdminLteMvc.Models.WEBSales.EirPullOut
+@{
+    ViewBag.Title = "ViewDetails";
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+}
+
+    <div class="box box-success">
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <h4>
+                        <b>
+                            <span style="font-size:20px;">
+                                KARGAMINE TOO, INC.
+                            </span> <br />
+                            <span style="font-size:15px;">EIR In No:</span> <span style="color:red; font-size: 13px;">@Model.EIRONo</span><br />
+                        </b>
+                    </h4>
+                </div>
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <h4>
+                        <b>
+                            <i>Equipment Interchange Receipt</i> <br />
+                        </b>
+                    </h4>
+                </div>
+            </div>
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <td><b>ISSUE DATE:</b>@Model.EIRODate</td>
+                        <td><b>ISSUE TIME:</b> @Model.EIROTime</td>
+                        <td><b>SERVICE TYPE:</b> @Model.EIROServiceType</td>
+                        <td><b>TRANSACTION NO:</b> @Model.EIROTransactionNo</td>
+                    </tr>
+                    <tr>
+                        <td><b>CONVAN NO:</b> @Model.EIROConvanNo</td>
+                        <td><b>CONVAN STATUS:</b> @Model.EIROConvanStatus</td>
+                        <td><b>CONVAN SIZE:</b> @Model.EIROConvanSize</td>
+                        <td><b>CONSIGNEE:</b> @Model.EIROConsignee</td>
+                    </tr>
+                    <tr>
+                        <td><b>SHIPPER:</b> @Model.EIROShipper</td>
+                        <td><b>TRUCKER:</b> @Model.EIROTrucker</td>
+                        <td><b>DRIVER'S NAME:</b> @Model.EIRODriversName</td>
+                        <td><b>PLATE NO:</b> @Model.EIROPlateNo</td>
+                    </tr>
+                    <tr>
+                        <td><b>VESSEL:</b> @Model.EIROVessel</td>
+                        <td><b>VOYAGE NO:</b>@Model.EIROVoyageNo</td>
+                        <td><b>SEAL NO:</b>@Model.EIROSealNo</td>
+                        <td><b>SEAL STATUS:</b>@Model.EIROSealStatus</td>
+                    </tr>
+                    <tr>
+                        <td><b>RELAY PORT:</b> @Model.EIRORelayPort</td>
+                        <td><b>PORT OF ORIGIN:</b>@Model.EIROPortOfOrigin</td>
+                        <td><b>PORT OF DESTINATION:</b>@Model.EIROPortOfDestination</td>
+                        <td>
+                            <b>WEIGHT:</b>@Model.EIROWeight<br />
+                            <b>VOLUME:</b>@Model.EIROVolume
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-bordered">
+                <tr>
+                    <td>
+                        <b>DAMAGES CODES:</b> <br />
+                        @Model.EIRODamagesCode
+                        <br /><br />
+                        <b>SCR:</b><br />
+                        @Model.EIROSCR<br /><br />
+                        <b>REMARKS:</b><br />
+                        @Model.EIRORemarks
+                    </td>
+                    <td>
+                        <img src="~/AppFiles/Images/container.PNG" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="box-footer">
+            <button type="button" class="btn btn-default" onclick="location.href='@Url.Action("IndexOut", "EIR")'"> <i class="fa fa-cancel fa-1x"></i> Back to EIR-Out List</button>
+        </div>
+    </div>
+

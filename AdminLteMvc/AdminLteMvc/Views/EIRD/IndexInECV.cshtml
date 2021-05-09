@@ -1,0 +1,137 @@
+﻿@model AdminLteMvc.Models.WEBSales.EIRINECV
+@{
+    ViewBag.Title = "EIR-In (LIST OF RETURNED EMPTY CONVANS)";
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+}
+
+<div class="box box-success">
+    <div class="box-header with-border">
+        <h3 class="box-title">@Html.Awe().TextBox("txtsearch").Placeholder("Search").CssClass("searchtxt")</h3>
+    </div>
+    <div class="box-body">
+        <div id="demoContent">
+
+            @(Html.Awe().Grid("ApiDemoGrid")
+          .Mod(o => o.PageInfo().PageSize().ColumnsSelector())
+          .Columns(new[]{
+                new Column{Bind = "eirinecvno", Header = "EIR In No."},
+                new Column{Bind = "eirinecvreferenceno", Header = "Reference No."},
+              new Column{Bind = "eirinecvstatus", Header = "EIR In Status"},
+new Column{Bind = "eirinecvidate", Header = "Issue Date"},
+new Column{Bind = "eirinecvitime", Header = "Issue Time"},
+new Column{Bind = "eirinecvservicetype", Header = "Service Type"},
+new Column{Bind = "eirinecvtransactionno", Header = "Transaction No."},
+new Column{Bind = "eirinecvconvanno", Header = "ConVan No."},
+new Column{Bind = "eirinecvconvanstatus", Header = "ConVan Status"},
+new Column{Bind = "eirinecvconvansize", Header = "ConVan Size"},
+new Column{Bind = "eirinecvconsignee", Header = "Consignee"},
+new Column{Bind = "eirinecvshipper", Header = "Shipper"},
+new Column{Bind = "eirinecvtrucker", Header = "Trucker-Destination"},
+new Column{Bind = "eirinecvdriversname", Header = "Driver's Name"},
+new Column{Bind = "eirinecvplateno", Header = "Plate No."},
+new Column{Bind = "eirinecvrelayport", Header = "Relay Port"},
+new Column{Bind = "eirinecvvessel", Header = "Vessel"},
+new Column{Bind = "eirinecvvoyageno", Header = "Voyage No."},
+new Column{Bind = "eirinecvsealno", Header = "Seal No."},
+new Column{Bind = "eirinecvsealstatus", Header = "Seal Status"},
+new Column{Bind = "eirinecvportoforigin", Header = "Port of Origin"},
+new Column{Bind = "eirinecvportofdestination", Header = "Port of Destionation"},
+new Column{Bind = "eirinecvweight", Header = "Weight"},
+new Column{Bind = "eirinecvvolume", Header = "Volume"},
+new Column{Bind = "eirinecvdamagescode", Header = "Damages Code"},
+new Column{Bind = "eirinecvscr", Header = "Shipping Company Representative"},
+new Column{Bind = "eirinecvremarks", Header = "Remarks"},
+new Column{Bind = "eirinecvtriptype", Header = "Trip Type"},
+new Column{Bind = "eirinecvwaybillno", Header = "WayBill No"},
+new Column{Bind = "eirinecvwaybillattachement", Header = "WayBill Attachments"},
+          })
+              .Resizable()
+              .Reorderable()
+              .Height(350)
+              .Groupable(false)
+              .Selectable(SelectionType.Single)
+              .Parent("txtsearch", "search")
+              .Url(Url.Action("GetReturnedECV", "EIRD")))
+
+        </div>
+    </div>
+    <div class="box-footer">
+        @*<button type="button" class="btn btn-primary" id="eirreturn">Return of Empty CV</button>*@
+        @*<button type="button" class="btn btn-success" disabled="true" id="eirin"> EIR In </button>
+            <button type="button" class="btn btn-default" id="viewbill"> View Bill</button>*@
+    </div>
+</div>
+<link href="~/Content/bootstrap-toggle.css" rel="stylesheet" />
+@section Scripts{
+    <script src="~/Scripts/bootstap-toggle.js"></script>
+
+    <script type="text/javascript">
+
+        $(function () {
+
+            $('#ApiDemoGrid').on('awerender', function () {
+                $(this).find(".checkbox-toggle").bootstrapToggle();
+            });
+
+            $('#txtsearch').keyup(function () {
+                $('#ApiDemoGrid').data('api').load();
+            });
+
+            $('#ApiDemoGrid').on('aweload', function (e, data, rd) {
+                $('#log').prepend('aweload handled,\n data: ' + JSON.stringify(data) + "\n request data" + JSON.stringify(rd) + '\n\n');
+            }).on('awebeginload', function (e, data) {
+                $('#log').prepend('awebeginload handled,\n request data: ' + JSON.stringify(data) + '\n\n');
+            });
+
+            var lastSelectedID;
+            var lastSelectedBillNo;
+            var outID;
+            $('#ApiDemoGrid').on('aweselect', function () {
+                outID = $.map($(this).data('api').getSelection(), function (val) { return val.outID; });
+                lastSelectedID = $.map($(this).data('api').getSelection(), function (val) { return val.eiroID; });
+                lastSelectedIdStat = $.map($(this).data('api').getSelection(), function (val) { return val.eirldstatus; });
+
+                //if (lastSelectedIdStat == "Pending" || lastSelectedIdStat == "Closed") {
+                //    document.getElementById("eirin").disabled = false;
+                //}
+                //else {
+                //    document.getElementById("eirin").disabled = true;
+                //}
+
+            })
+
+            $('#eirreturn').click(function () {
+
+                if (lastSelectedID != null) {
+                    if (lastSelectedID.length != 0) {
+                        window.location.href = '/EIRD/ReturnECV/' + lastSelectedID;
+                    }
+                    else {
+                        $.notify("Please select pulled out transaction to return.", "error");
+                    }
+                }
+                else {
+                    $.notify("Please select pulled out transaction to return.", "error");
+                }
+            });
+        });
+
+        function setContent(o) {
+            $('#ApiDemoGrid').data('api').clearpersist();
+            $('#demoContent').html(o);
+        };
+
+        var toggleButton = function (model, prop) {
+            var checked = model[prop] ? 'checked = "checked"' : '';
+            return '<input disabled="disabled" type="checkbox" ' + checked + ' class="checkbox-toggle" data-toggle="toggle" data-on="Yes" data-off="No" data-size="small">';
+        };
+
+    </script>
+}
+<style>
+    td {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>

@@ -1,0 +1,441 @@
+﻿@{
+    ViewBag.Title = "Bill of lading Form";
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+}
+
+<div class="box box-success">
+    <div class="box-body">
+        <!-- info row -->
+            <div class="row invoice-info">
+                <div class="col-sm-3 invoice-col">
+                    <div class="form-group">
+                        <label style="font-size:12px;"><i>*Please select EIR IN no.*</i></label><br />
+                        <select id="eirinno" class="form-control col-sm-3">
+
+                            @{
+                                foreach (var item in ViewBag.eirin)
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-9 invoice-col">
+                    <div class="form-group">
+                    </div>
+                    <div class="form-group">
+                        <span style="font-size:12px; color:red;">Note: All fields with asterisk(*) must be required!</span>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row invoice-info">
+                <div class="col-sm-3 invoice-col">
+                    <div class="form-group">
+                        <label for="dNum">Shipper Name</label>
+                        <input id="shipper" type="text" class="form-control" readonly="readonly" />
+                    </div>
+                    <div class="form-group">
+                        <label for="dNum">Consignee Name</label>
+                        <input id="Consignee" type="text" class="form-control" readonly="readonly" />
+                    </div>
+                    <div class="form-group">
+                        <label for="dNum">Notify Part<span style=" color:red;">*</span></label>
+                        <input id="notifypart" type="text" class="form-control" />
+                    </div>
+                    <div class="form-group" style=" display:none;">
+                        <label for="dNum">Inputted By</label>
+                        <input id="inputedby" type="text" class="form-control" />
+                    </div>
+                    <div class="form-group" style=" display:none;">
+                        <label for="dNum">Time Issued</label>
+                        <input id="timeIssued" type="text" class="form-control" />
+                    </div>
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-3 invoice-col">
+                    <div class="form-group">
+                        <label for="dNum">Shipper Address</label>
+                        <input id="shipperadd" type="text" class="form-control" readonly="readonly" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dNum">Consignee Address</label>
+                        <input id="Consigneeadd" type="text" class="form-control" readonly="readonly" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dNum">Notify Part Address<span style=" color:red;">*</span></label>
+                        <input id="notifypartadd" type="text" class="form-control" />
+                    </div>
+                    <div class="form-group" style=" display:none;">
+                        <label for="dNum">Date Issued</label>
+                        <input id="dateIssued" type="text" class="form-control" />
+                    </div>
+
+                    <div class="form-group" style=" display:none;">
+                        <label for="dNum">Place Issued</label>
+                        <input id="placeIssued" type="text" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="dNum">Vessel Voyage<span style=" color:red;">*</span></label>
+
+                        <select id="vesselvoyage" class="form-control">
+                            <option value="0">Select</option>
+                            @{
+                                foreach (var item in ViewBag.vesselList)
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }
+                            }
+                        </select>
+                        @*<input id="vesselvoyage" type="text" class="form-control" />*@
+                    </div>
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-3 invoice-col">
+                    <div class="form-group">
+                        <label for="dNum">Booking No.</label>
+                        <input id="bookingNo" type="text" class="form-control" readonly="readonly" />
+                    </div>
+                    <div class="form-group">
+                        <label for="dNum">Transaction No.</label>
+                        <input id="trnNumber" type="text" class="form-control" readonly="readonly" />
+                    </div>
+                    <div class="form-group">
+                        <label for="dNum">Origin</label>
+                        <input id="origin" type="text" class="form-control" readonly="readonly" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dNum">Relay Port<span style=" color:red;">*</span></label>
+                        <select id="relayport" class="form-control">
+                            @{
+                                foreach (var item in ViewBag.cyepo)
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                   
+                    <div class="form-group">
+                        <label for="dNum">Port of Destination<span style=" color:red;">*</span></label>
+                        <select id="portofdestination" class="form-control">
+                            @{
+                                foreach (var item in ViewBag.portdestList)
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }
+                            }
+                        </select>
+                        @*<select id="portofdestination" class="form-control">
+                <option>Select</option>
+                <option>Test</option>
+            </select>*@
+                        @*<input id="portofdestination" type="text" class="form-control" />*@
+                    </div>
+                    <div class="form-group">
+                        <label for="dNum">Final Destination</label>
+                        <input id="finaldestination" type="text" class="form-control" readonly="readonly" />
+                    </div>
+
+
+
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-3 invoice-col">
+                    <div class="form-group">
+                        <label for="dNum">Bill of Lading No.<span style=" color:red;">*</span></label>
+                        <input id="blNo" type="text" class="form-control" />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="dNum">Vessel Name</label>
+                        <input id="vesselname" type="text" class="form-control" readonly="readonly" />
+                    </div>
+                    <div class="form-group">
+                        <label for="dNum">Voyage Number</label>
+                        <input id="voyageno" type="text" class="form-control" readonly="readonly" />
+                    </div>
+                    <div class="form-group">
+                        <label for="dNum">Port of Origin</label>
+                        <input id="portoforigin" type="text" class="form-control" readonly="readonly" />
+                    </div>
+                    <div class="form-group">
+                        <label for="dNum">Service Mode</label>
+                        <input id="servicemode" type="text" class="form-control" readonly="readonly" />
+                    </div>
+                    <div class="form-group">
+                        <label for="dNum">Cargo Type / Content<span style=" color:red;">*</span></label>
+                        <select id="cargotypecontent" class="form-control">
+                            <option value="0">Select</option>
+                            @{
+                                foreach (var item in ViewBag.CargoTypeList)
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+
+
+                </div>
+                <!-- /.col -->
+            </div>
+            <div class="row invoice-info" style=" display:none">
+                <div class="col-sm-3 invoice-col">
+                    <div class="form-group">
+                        <label for="dNum">Issued By</label>
+                        <input id="issuedby" type="text" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-sm-3 invoice-col">
+                    <div class="form-group">
+                        <label for="dNum">Date Issued</label>
+                        <input id="dateissued" type="text" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-sm-3 invoice-col">
+                    <div class="form-group">
+                        <label for="dNum">Time Issued</label>
+                        <input id="timeissued" type="text" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-sm-3 invoice-col">
+                    <div class="form-group">
+                        <label for="dNum">Place Issued</label>
+                        <input id="placeissued" type="text" class="form-control" />
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.row -->
+            <!-- Table row -->
+            <br />
+            <div class="row">
+                <div class="col-xs-12 table-responsive">
+                    <table id="parentitem" class="table">
+                        <thead>
+                            <tr>
+                                <th>MARKS</th>
+                                <th>QUANTITY</th>
+                                <th>UNIT</th>
+                                <th>DESCRIPTION OF CARGO</th>
+                                <th>VALUE</th>
+                                <th>WEIGHT</th>
+                                <th>MEASUREMENT</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="7">No Data Found</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+            <!-- this row will not appear when printing -->
+
+
+
+        </div>
+        <div class="box-footer">
+            <button type="button" class="btn btn-primary" id="bill"> <i class="fa fa-pencil fa-1x"></i> Bill </button>
+            <a type="button" class="btn btn-default" href='@Url.Action("BL", "BOL")'> <i class="fa fa-trash fa-1x"></i> Cancel</a>
+        </div>
+    </div>
+@section Scripts{
+    @Scripts.Render("~/bundles/jqueryui")
+
+<script type="text/javascript">
+        $(document).ready(function () {
+            //get data
+            $("#eirinno").change(function () {
+                var refno = $("#eirinno").val();
+                var isvalid = true;
+                if (refno == 0) {
+                    isvalid = false
+                }
+                if (isvalid) {
+                    $.ajax({
+                        url: '../../../Proforma/pulledbillladingdata',
+                        type: 'post',
+                        data: { refno: refno },
+                        contenttype: "application/json",
+                        success: function (data) {
+                            $("#bookingNo").val(data.parent[0].docNum);
+                            $("#trnNumber").val(data.parent[0].transactionNo);
+                            $("#shipper").val(data.parent[0].proformaBillShipper);
+                            $("#shipperadd").val(data.parent[0].proformaBillShippersAddress);
+                            $("#Consignee").val(data.parent[0].proformaBillConsignee);
+                            $("#Consigneeadd").val(data.parent[0].proformaBillConsigneesAddress);
+                            $("#origin").val(data.parent[0].origin);
+                            $("#portoforigin").val(data.parent[0].EIRIPortOfOrigin);
+                            $("#finaldestination").val(data.parent[0].destination);
+                            $("#servicemode").val(data.parent[0].EIRIServiceType);
+
+                            var marks = data.parent[0].proformaBillMarks == null ? '' : data.parent[0].proformaBillMarks;
+                            var qty = data.parent[0].proformaBillQty == null ? '' : data.parent[0].proformaBillQty;
+                            var unit = data.parent[0].proformaBillUnit == null ? '' : data.parent[0].proformaBillUnit;
+                            var desc = data.parent[0].proformaBillDescriptionOfCargo == null ? '' : data.parent[0].proformaBillDescriptionOfCargo;
+                            var value = data.parent[0].proformaBillValue == null ? '' : data.parent[0].proformaBillValue;
+                            var wet = data.parent[0].proformaBillWeight == null ? '' : data.parent[0].proformaBillWeight;
+                            var um = data.parent[0].proformaBillMeasurement == null ? '' : data.parent[0].proformaBillMeasurement;
+
+                            var tbl = $("#parentitem > TBODY");
+                            tbl.find("tr:eq(0)").remove();
+                            var td = '<tr><td>' + marks + '</td>';
+                            td += '<td>' + qty + '</td>';
+                            td += '<td>' + unit + '</td>';
+                            td += '<td>' + desc + '</td>';
+                            td += '<td>' + value + '</td>';
+                            td += '<td>' + wet + '</td>';
+                            td += '<td>' + um + '</td></tr>';
+                            tbl.append(td);
+                        },
+                    });
+                }
+            });
+            //use for selecting vessel voyage
+            $("#vesselvoyage").change(function () {
+                var refno = $("#vesselvoyage").val();
+                $.ajax({
+                    url: '../../../Proforma/selectvesselvoyage',
+                    type: 'post',
+                    data: { refno: refno },
+                    contenttype: "application/json",
+                    success: function (data) {
+                        $("#vesselname").val(data.parent[0].vesselname);
+                        $("#voyageno").val(data.parent[0].voyageNo);
+                    },
+                });
+            });
+            //save bill
+            $("#bill").click(function () {
+
+                var eirinno= document.getElementById("eirinno");
+                var eirinno_text = eirinno.options[eirinno.selectedIndex].text;
+                var eirinno_val = eirinno.options[eirinno.selectedIndex].value;
+
+                var rp = document.getElementById("relayport");
+                var rp_text = rp.options[rp.selectedIndex].text;
+
+                var pd = document.getElementById("portofdestination");
+                var pd_text = pd.options[pd.selectedIndex].text;
+
+                var vv = document.getElementById("vesselvoyage");
+                var vv_text = vv.options[vv.selectedIndex].text;
+
+
+                var ctc = document.getElementById("cargotypecontent");
+                var ctc_text = ctc.options[ctc.selectedIndex].text;
+
+                console.log(eirinno_val);
+
+                var isValid = true;
+                if (vv_text == "Select") {
+                    isValid = false;
+                    $.notify("Vessel Voyage must be required!", "error");
+                }
+                if ($("#blNo").val().length == 0) {
+                    isValid = false;
+                    $.notify("Bill of Lading No. must be required!", "error");
+                }
+
+                if ($("#notifypart").val().length == 0) {
+                    isValid = false;
+                    $.notify("Notify Part must be required!", "error");
+                }
+                if ($("#notifypartadd").val().length == 0) {
+                    isValid = false;
+                    $.notify("Notify Part Address must be required!", "error");
+                }
+
+                if (rp_text == "Select") {
+                    isValid = false;
+                    $.notify("Relay Port must be required!", "error");
+                }
+
+                if (pd_text == "Select") {
+                    isValid = false;
+                    $.notify("Port of Destination must be required!", "error");
+                }
+                if (ctc_text == "Select") {
+                    isValid = false;
+                    $.notify("Cargo Type / Content must be required!", "error");
+                }
+               
+
+                var datParent = {
+
+                                eirinID: eirinno_val,
+                                eirinNo: eirinno_text,
+                                billofladingNo: $("#blNo").val(),
+                                bookingNo: $("#bookingNo").val(),
+                                transactionNo: $("#trnNumber").val(),
+                                vesselVoyage: vv_text,
+                                shipperName: $("#shipper").val(),
+                                shipperAdd: $("#shipperadd").val(),
+                                consigneeName: $("#Consignee").val(),
+                                consigneeAdd: $("#Consigneeadd").val(),
+                                notifypartName: $("#notifypart").val(),
+                                notifypartAdd: $("#notifypartadd").val(),
+                                origin: $("#origin").val(),
+                                portoforigin: $("#portoforigin").val(),
+                                relayPort: rp_text,
+                                portofDestination: pd_text,
+                                finalDestination: $("#finaldestination").val(),
+                                vesselName: $("#vesselname").val(),
+                                voyageNumber: $("#voyageno").val(),
+                                serviceMode: $("#servicemode").val(),
+                                cargoTypeorcontent: ctc_text
+
+                };
+                var data = new Array();
+                $("#parentitem TBODY TR").each(function (i) {
+                    var row = $(this);
+                    var dat = {
+                        mark: row.find("TD").eq(0).html(),
+                        qty: row.find("TD").eq(1).html(),
+                        unit: row.find("TD").eq(2).html(),
+                        description: row.find("TD").eq(3).html(),
+                        value: row.find("TD").eq(4).html(),
+                        weight: row.find("TD").eq(5).html(),
+                        measurement: row.find("TD").eq(6).html()
+                    }
+                    data.push(dat);
+                });
+                var consolidate = {
+                    datParent: datParent,
+                    data: data,
+                }
+                if (isValid) {
+                    $.ajax({
+                        type: "POST",
+                        url: "../../../Proforma/saveFinalBill",
+                        data: JSON.stringify(consolidate),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (Data) {
+
+                            if (Data.errmsg == "Exist" && Data.status == false) {
+                                $.notify("Data is already exist from the database.", "Error");
+                            }
+                            if (Data.status) {
+                                $.notify("Data successfully Saved.", "success");
+                            }
+                            var url = '@Url.Action("BillofLading", "Proforma")';
+                            window.location.href = url;
+                        }
+                    })
+                }
+            })
+        });
+</script>
+}
+

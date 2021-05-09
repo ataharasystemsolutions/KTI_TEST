@@ -1,0 +1,492 @@
+﻿@model AdminLteMvc.Models.WEBSales.RequestDeliverySchedule
+@{
+    ViewBag.Title = "Request Delivery Schedule";
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-body">
+                <table id="example1" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+
+                            <th>SHIPPER</th>
+                            <th>SERVICE TYPE</th>
+                            <th>CONVAN NO.</th>
+                            <th>Consignee</th>
+                            <th>Need Cro</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @{
+                            foreach (var item in ViewBag.rds)
+                            {
+                                <tr id="row_@item.deliveryID">
+                                    <td>@item.shipper</td>
+                                    <td>@item.serviceType</td>
+                                    <td>@item.convanNo</td>
+                                    <td><a data-toggle="modal" data-target="#myModal" onclick="viewdet(@item.deliveryID)"><i class='fa fa-angle-down'></i> Details</a></td>
+                                    <td>@item.needCro</td>
+                                    <td>@item.status</td>
+                                </tr>
+                            }
+                            if (ViewBag.rds.Count == 0)
+                            { 
+                                <tr>
+                                    <td colspan="6"> No Data Found</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+                <button type="button" id="addnew" class="btn btn-primary" data-toggle="modal" data-target="#modal-add"> <i class="fa fa-plus-circle fa-1x"></i> Add </button>
+            </div>
+        </div>
+
+        <!-- /.box -->
+    </div>
+    <!-- /.col -->
+</div>
+<!-- /.row -->
+<!-- /.content -->
+<!-- /.modal -->
+<div class="modal fade" id="modal-add" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">New Request</h4>
+            </div>
+            @using (Html.BeginForm("addRDS", "RequestDelivery", FormMethod.Post))
+            {
+              
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <span style="color:red; font-size:10px; font-style:italic ">*Note: Only Pier-Door and Door-Door can be applied for this transaction.</span>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+
+                        <label for="convanSize"> Convan No</label>
+                        <select id="convanNo" name="convanNo" class=" form-control">
+                            @{
+                                foreach (var i in ViewBag.allpendinglist)
+                                {
+                                    <option value="@i.Value">@i.Text</option>
+                                }
+                            }
+
+                        </select>
+                        <input id="EIROID" name="EIROID" type="hidden" />
+                        <input id="hdnconvanNo" name="hdnconvanNo" type="hidden" />
+                    </div>
+                    <div class="form-group">
+                        <label for="convanSize"> SHIPPER</label>
+                        <input id="shipper" name="shipper" class="form-control" readonly="true" />
+                    </div>
+
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="convanSize"> Serivice Type</label>
+                        <input id="servicetype" name="servicetype" class="form-control" readonly="true" />
+                    </div>
+                    <div class="form-group">
+                        <label for="convanSize"> Need CRO</label>
+                        <select id="needcro" name="needcro" class=" form-control">
+                            <option value="No">No</option>
+                            <option value="Yes">Yes</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- /.row -->
+            </div>
+            <table id="consignee" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Consignee Name</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <input id="con1" name="con1" class="form-control" readonly="true" />
+                        </td>
+                        <td>
+                            <input id="ds1" name="ds1" class="form-control sdate" disabled="false" type="date" />
+                        </td>
+                        <td>
+                            <input id="de1" name="de1" class="form-control" disabled="false" type="date" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input id="con2" name="con2" class="form-control" readonly="true" />
+                        </td>
+                        <td>
+                            <input id="ds2" name="ds2" class="form-control sdate" disabled="false" type="date" />
+                        </td>
+                        <td>
+                            <input id="de2" name="de2" class="form-control" disabled="false" type="date" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input id="con3" name="con3" class="form-control" readonly="true" />
+                        </td>
+                        <td>
+                            <input id="ds3" name="ds3" class="form-control sdate" disabled="false" type="date" />
+                        </td>
+                        <td>
+                            <input id="de3" name="de3" class="form-control" disabled="false" type="date" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input id="con4" name="con4" class="form-control" readonly="true" />
+                        </td>
+                        <td>
+                            <input id="ds4" name="ds4" class="form-control sdate" disabled="false" type="date" />
+                        </td>
+                        <td>
+                            <input id="de4" name="de4" class="form-control" disabled="false" type="date" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input id="con5" name="con5" class="form-control" readonly="true" />
+                        </td>
+                        <td>
+                            <input id="ds5" name="ds5" class="form-control sdate" disabled="false" type="date" />
+                        </td>
+                        <td>
+                            <input id="de5" name="de5" class="form-control" disabled="false" type="date" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input id="con6" name="con6" class="form-control" readonly="true" />
+                        </td>
+                        <td>
+                            <input id="ds6" name="ds6" class="form-control sdate" disabled="false" type="date" />
+                        </td>
+                        <td>
+                            <input id="de6" name="de6" class="form-control" disabled="false" type="date" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input id="con7" name="con7" class="form-control" readonly="true" />
+                        </td>
+                        <td>
+                            <input id="ds7" name="ds7" class="form-control sdate" disabled="false" type="date" />
+                        </td>
+                        <td>
+                            <input id="de7" name="de7" class="form-control" disabled="false" type="date" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input id="con8" name="con8" class="form-control" readonly="true" />
+                        </td>
+                        <td>
+                            <input id="ds8" name="ds8" class="form-control sdate" disabled="false" type="date" />
+                        </td>
+                        <td>
+                            <input id="de8" name="de8" class="form-control" disabled="false" type="date" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input id="con9" name="con9" class="form-control" readonly="true" />
+                        </td>
+                        <td>
+                            <input id="ds9" name="ds9" class="form-control sdate" disabled="false" type="date" />
+                        </td>
+                        <td>
+                            <input id="de9" name="de9" class="form-control" disabled="false" type="date" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input id="con10" name="con10" class="form-control" readonly="true" />
+                        </td>
+                        <td>
+                            <input id="ds10" name="ds10" class="form-control sdate" disabled="false" type="date" />
+                        </td>
+                        <td>
+                            <input id="de10" name="de10" class="form-control" disabled="false" type="date" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="form-group">
+                <label for="convanSize"> Remarks</label>
+                <textarea style=" resize:none; height:60px;" class="form-control"  id="remarks" name="remarks" ></textarea>
+                </div>
+        </div>
+
+                <!-- /.box -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btnsave_change" class="btn btn-primary">Save changes</button>
+                </div>
+            }
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="myModal" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title">Consignee Details</h3>
+            </div>
+            <div class="modal-body">
+                <table id="consigneeDetails" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Consignee Name</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-default" data-dismiss="modal">Close</a>
+                
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="hiddenEmployeeId" />
+@*error message*@
+@if (ViewBag.Message != null && ViewBag.Message=="Saved")
+    {
+        <script type="text/javascript">
+            $(function () {
+                $.notify("Successfully Saved","success")
+                });
+        </script>
+    }
+@section Scripts{
+    <script src="~/Scripts/bootstap-toggle.js"></script>
+    <!-- page script -->
+    <script>
+        $(function () {
+            $('#example1').DataTable({
+                'paging': true,
+                'lengthChange': true,
+                'searching': true,
+                'ordering': true,
+                'info': true,
+                'autoWidth': false
+            })
+
+        });
+        $("#convanNo").change(function () {
+            var convanNo = document.getElementById("convanNo");
+            var txt = convanNo.options[convanNo.selectedIndex].text;
+            var id = convanNo.options[convanNo.selectedIndex].value;
+
+
+
+            $("#EIROID").val('');
+            $("#hdnconvanNo").val('');
+            $.ajax({
+                type: "POST",
+                url: "/RequestDelivery/gettrntrnDetails",
+                data: { Id:id },
+                success: function (result) {
+                    $("#shipper").val(result.allpendingfind[0].EIROShipper);
+                    $("#servicetype").val(result.allpendingfind[0].EIROServiceType);
+                    $("#EIROID").val(id);
+                    $("#hdnconvanNo").val(txt);
+                    
+                    var con1 = result.allpendingfind[0].consignee1 == null ? '' : result.allpendingfind[0].consignee1;
+                    var con2 = result.allpendingfind[0].consignee2 == null ? '' : result.allpendingfind[0].consignee2;
+                    var con3 = result.allpendingfind[0].consignee3 == null ? '' : result.allpendingfind[0].consignee3;
+                    var con4 = result.allpendingfind[0].consignee4 == null ? '' : result.allpendingfind[0].consignee4;
+                    var con5 = result.allpendingfind[0].consignee5 == null ? '' : result.allpendingfind[0].consignee5;
+                    var con6 = result.allpendingfind[0].consignee6 == null ? '' : result.allpendingfind[0].consignee6;
+                    var con7 = result.allpendingfind[0].consignee7 == null ? '' : result.allpendingfind[0].consignee7;
+                    var con8 = result.allpendingfind[0].consignee8 == null ? '' : result.allpendingfind[0].consignee8;
+                    var con9 = result.allpendingfind[0].consignee9 == null ? '' : result.allpendingfind[0].consignee9;
+                    var con10 = result.allpendingfind[0].consignee10 == null ? '' : result.allpendingfind[0].consignee10;
+
+                    if (con1.length > 0) {
+                        $("#ds1").prop('disabled', false);
+                        $("#de1").prop('disabled', false);
+                    } else {
+                        $("#ds1").prop('disabled', true);
+                        $("#de1").prop('disabled', true);
+                    }
+                    if (con2.length > 0) {
+                        $("#ds2").prop('disabled', false);
+                        $("#de2").prop('disabled', false);
+                    } else {
+                        $("#ds2").prop('disabled', true);
+                        $("#de2").prop('disabled', true);
+                    }
+                    if (con3.length > 0) {
+                        $("#ds3").prop('disabled', false);
+                        $("#de3").prop('disabled', false);
+                    } else {
+                        $("#ds3").prop('disabled', true);
+                        $("#de3").prop('disabled', true);
+                    }
+                    if (con4.length > 0) {
+                        $("#ds4").prop('disabled', false);
+                        $("#de4").prop('disabled', false);
+                    } else {
+                        $("#ds4").prop('disabled', true);
+                        $("#de4").prop('disabled', true);
+                    }
+                    if (con5.length > 0) {
+                        $("#ds5").prop('disabled', false);
+                        $("#de5").prop('disabled', false);
+                    } else {
+                        $("#ds5").prop('disabled', true);
+                        $("#de5").prop('disabled', true);
+                    }
+                    if (con6.length > 0) {
+                        $("#ds6").prop('disabled', false);
+                        $("#de6").prop('disabled', false);
+                    } else {
+                        $("#ds6").prop('disabled', true);
+                        $("#de6").prop('disabled', true);
+                    }
+                    if (con7.length > 0) {
+                        $("#ds7").prop('disabled', false);
+                        $("#de7").prop('disabled', false);
+                    } else {
+                        $("#ds7").prop('disabled', true);
+                        $("#de7").prop('disabled', true);
+                    }
+                    if (con8.length > 0) {
+                        $("#ds8").prop('disabled', false);
+                        $("#de8").prop('disabled', false);
+                    } else {
+                        $("#ds8").prop('disabled', true);
+                        $("#de8").prop('disabled', true);
+                    }
+                    if (con9.length > 0) {
+                        $("#ds9").prop('disabled', false);
+                        $("#de9").prop('disabled', false);
+                    } else {
+                        $("#ds9").prop('disabled', true);
+                        $("#de9").prop('disabled', true);
+                    }
+                    if (con10.length > 0) {
+                        $("#ds10").prop('disabled', false);
+                        $("#de10").prop('disabled', false);
+                    } else {
+                        $("#ds10").prop('disabled', true);
+                        $("#de10").prop('disabled', true);
+                    }
+                    $("#con1").val(con1);
+                    $("#con2").val(con2);
+                    $("#con3").val(con3);
+                    $("#con4").val(con4);
+                    $("#con5").val(con5);
+                    $("#con6").val(con6);
+                    $("#con7").val(con7);
+                    $("#con8").val(con8);
+                    $("#con9").val(con9);
+                    $("#con10").val(con10);
+
+                    $("#myModal").modal("hide");
+                }
+            })
+        });
+        $('.sdate').on("change", function () {
+            var tt = this.value;
+            var flag = $(this).attr("id");
+            var isValid = true;
+          
+                switch (flag) {
+                    case "ds1":
+                            $("#de1").val(tt);
+                        break;
+                    case "ds2":
+                            $("#de2").val(tt);
+                        break;
+                    case "ds3":
+                            $("#de3").val(tt);
+                        break;
+                    case "ds4":
+                            $("#de4").val(tt);
+                        break;
+                    case "ds5":
+                            $("#de5").val(tt);
+                        break;
+                    case "ds6":
+                            $("#de6").val(tt);
+                        break;
+                    case "ds7":
+                            $("#de7").val(tt);
+                        break;
+                    case "ds8":
+                            $("#de8").val(tt);
+                        break;
+                    case "ds9":
+                            $("#de9").val(tt);
+                        break;
+                    case "ds10":
+                            $("#de10").val(tt);
+                        break;
+                    default:
+                        console.log('Sorry');
+                }
+           
+        });
+        function viewdet(delId) {
+            var id = delId;
+            var tbl = $("#consigneeDetails").find("tbody");
+            tbl.empty();
+            $.ajax({
+                type: "POST",
+                url: "/RequestDelivery/getDetails",
+                data: { Id: id },
+                success: function (result) {
+
+                    result.det.forEach(function (value) {
+                        var tr = '<tr><td>' + value.consigneeName + '</td><td>' + value.startDate + '</td><td>' + value.startDate + '</td><td>' + value.Status + '</td></tr>';
+                        tbl.append(tr);
+                    });
+                }
+            });
+        }
+    </script>
+}
+
+<style>
+    table.dataTable thead .sorting:after {
+        opacity: 0.2;
+        content: "";
+    }
+
+    table.dataTable thead .sorting_asc:after {
+        content: "";
+    }
+</style>

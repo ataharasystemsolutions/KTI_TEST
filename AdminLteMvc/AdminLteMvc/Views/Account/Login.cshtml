@@ -1,0 +1,84 @@
+﻿@using AdminLteMvc.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Log in";
+}
+<title>Login</title>
+
+<link href="~/Content/Login.css" rel="stylesheet" type="text/css" />
+
+@using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+
+    <div id="login">
+                        
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <img src="../Content/logo/logoedu.jpg" style="width:260px;height:50px" />
+                            </div>
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.UserCode, new { @class = "form-control", @placeholder = "Username",id="userid" })
+                                
+                            </div>
+                            <div class="form-group">
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password",id="passcode" })
+                            
+                            </div>
+                        </div>
+                        <p><input type="submit" value="Login" class="btn btn-primary" id="logon"></p>
+
+                       @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        
+    </div>
+
+
+
+}
+
+
+
+        <style>
+            #login {
+            padding: 25px 45px 45px;
+            width: 380px;
+            margin: 150px auto;
+                background-color: #fff;
+                border: 1px solid rgba(0,0,0,0.1);
+                border-radius: 10px;
+                background:rgba(255,255,255,1);
+            }
+
+        input[type="submit"] {
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-family: inherit;
+            height: 40px;
+            text-transform: uppercase;
+            width: 300px;
+            -webkit-appearance:none;
+        }
+
+        input[type="text"], input[type="password"] {
+            border-radius: 3px;
+            font-family: inherit;
+            font-size: 14px;
+            height: 40px;
+            outline: none;
+            padding: 0px 10px;
+            margin-left: 17px;
+            width: 300px;
+            -webkit-appearance: none;
+        }
+
+        img{
+            margin-left:17px;
+        }
+
+
+
+
+
+</style>

@@ -1,0 +1,110 @@
+﻿@model AdminLteMvc.Models.WEBSales.EIRIn
+@{
+    ViewBag.Title = "Return Print";
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+}
+
+<div class="box box-success">
+    <div class="box-body">
+        <div class="row">
+            <div class="col-md-4">
+                <h4>
+                    <b>
+                        <span style="font-size:20px;">
+                            KARGAMINE TOO, INC.
+                        </span> <br />
+                        <span style="font-size:15px;">EIR In No:</span> <span style="color:red; font-size: 13px;">@Model.EIRINo</span><br />
+                        <span style="font-size:15px;">Reference No:</span> <span style="color:red; font-size:13px;">@Model.EIRIReferenceNo</span>
+                    </b>
+                </h4>
+            </div>
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <h4>
+                    <b>
+                        <i>Equipment Interchange Receipt</i> <br />
+                    </b>
+                </h4>
+            </div>
+        </div>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td><b>RETURNED DATE:</b>@Model.EIRIDate</td>
+                    <td><b>RETURNED TIME:</b> @Model.EIRITime</td>
+                    <td><b>SERVICE TYPE:</b> @Model.EIRIServiceType</td>
+                    <td><b>TRANSACTION NO:</b> @Model.EIRITransactionNo</td>
+                </tr>
+                <tr>
+                    <td><b>CONVAN NO:</b> @Model.EIRIConvanNo</td>
+                    <td><b>CONVAN STATUS:</b> @Model.EIRIConvanStatus</td>
+                    <td><b>CONVAN SIZE:</b> @Model.EIRIConvanSize</td>
+                    <td><b>CONSIGNEE:</b> @Model.EIRIConsignee</td>
+                </tr>
+                <tr>
+                    <td><b>SHIPPER:</b> @Model.EIRIShipper</td>
+                    <td><b>TRUCKER:</b> @Model.EIRITrucker</td>
+                    <td><b>DRIVER'S NAME:</b> @Model.EIRIDriversName</td>
+                    <td><b>PLATE NO:</b> @Model.EIRIPlateNo</td>
+                </tr>
+                <tr>
+                    <td><b>VESSEL:</b> @Model.EIRIVessel</td>
+                    <td><b>VOYAGE NO:</b>@Model.EIRIVoyageNo</td>
+                    <td><b>SEAL NO:</b>@Model.EIRISealNo</td>
+                    <td><b>SEAL STATUS:</b>@Model.EIRISealStatus</td>
+                </tr>
+                <tr>
+                    <td><b>RELAY PORT:</b> @Model.EIRIRelayPort</td>
+                    <td><b>PORT OF ORIGIN:</b>@Model.EIRIPortOfOrigin</td>
+                    <td><b>PORT OF DESTINATION:</b>@Model.EIRIPortOfDestination</td>
+                    <td>
+                        <b>WEIGHT:</b>@Model.EIRIWeight<br />
+                        <b>VOLUME:</b>@Model.EIRIVolume
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered">
+            <tr>
+                <td>
+                    <b>DAMAGES CODES:</b> <br />
+                    @Model.EIRIDamagesCode
+                    <br /><br />
+                    <b>SCR:</b><br/>
+                    @Model.EIRISCR<br /><br />
+                    <b>REMARKS:</b><br />
+                    @Model.EIRIRemarks
+                </td>
+                <td>
+                    <img src="~/AppFiles/Images/container.PNG" />
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="box-footer">
+        <button type="button" class="btn btn-default" onclick="location.href='@Url.Action("IndexIn", "EIR")'"> <i class="fa fa-cancel fa-1x"></i> Back to list of Returned EIR</button>
+    </div>
+</div>
+
+<link href="~/Content/bootstrap-toggle.css" rel="stylesheet" />
+<script src="~/Scripts/bootstap-toggle.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<style>
+    #EIROVessel, #EIROVoyageNo, #EIROPortOfOrigin, #EIROPortOfDestination, #EIROSealStatus {
+        display: block;
+        width: 100%;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    }
+</style>
+

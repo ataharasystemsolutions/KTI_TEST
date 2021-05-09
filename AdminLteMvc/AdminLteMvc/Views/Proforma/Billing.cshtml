@@ -1,0 +1,378 @@
+﻿@model AdminLteMvc.Models.WEBSales.ProformaBills
+@{
+    ViewBag.Title = "Proforma Bill of Lading";
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+}
+
+<div class="box box-success">
+    <div class="box-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-4"><span style="font-size:25px;"><b>PROFORMA BILL OF LADING</b></span></div>
+                <div class="col-md-4"></div>
+            </div>
+        </div>
+        <span style="font-size:13px;"><i>*Please select pulled out EIR to bill.*</i></span><br />
+        @Html.DropDownListFor(model => model.proformaBillRefNo, ViewBag.ReferenceNos as SelectList, "-- Select --", new { htmlAttributes = new { @class = "form-control", id = "refno" } })
+        <br /><br />
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td><b><span style="color:red">*</span>DATE:</b> @Html.EditorFor(model => model.proformaBillDate, new { htmlAttributes = new { @type = "date", @class = "form-control", id = "billdate" } })</td>
+                    <td><b>SHIPPER:</b>  @Html.EditorFor(model => model.proformaBillShipper, new { htmlAttributes = new { @class = "form-control", id = "billshipper", @readonly = true } })</td>
+                    <td><b>CONSIGNEE:</b> @Html.EditorFor(model => model.proformaBillConsignee, new { htmlAttributes = new { @class = "form-control", id = "billconsignee", @readonly = true } })</td>
+                </tr>
+                <tr>
+                    <td><b>VESSEL NAME:</b> @Html.EditorFor(model => model.proformaBillVesselName, new { htmlAttributes = new { @class = "form-control", id = "billvesselname", @readonly = true } })</td>
+                    <td><b>SHIPPER'S ADDRESS:</b> @Html.EditorFor(model => model.proformaBillShippersAddress, new { htmlAttributes = new { @class = "form-control", id = "billshippersaddress", @readonly = true } })</td>
+                    <td><b>CONSIGNEE'S ADDRESS:</b> @Html.EditorFor(model => model.proformaBillConsigneesAddress, new { htmlAttributes = new { @class = "form-control", id = "billconsigneesaddress", @readonly = true } })</td>
+                </tr>
+                <tr>
+                    <td><b>VOYAGE NO:</b> @Html.EditorFor(model => model.proformaBillVoyageNo, new { htmlAttributes = new { @class = "form-control", id = "billvoyageno", @readonly = true } })</td>
+                    <td><b>SHIPPER'S TEL. NO:</b> @Html.EditorFor(model => model.proformaBillShippersTelNo, new { htmlAttributes = new { @class = "form-control", id = "billshipperstel", @readonly = true } })</td>
+                    <td><b>CONSIGNEE'S TEL. NO:</b> @Html.EditorFor(model => model.proformaBillConsigneesTelNo, new { htmlAttributes = new { @class = "form-control", id = "billconsigneestel", @readonly = true } })</td>
+                </tr>
+                <tr>
+                    <td><b>DESTINATION:</b> @Html.EditorFor(model => model.proformaBillDestination, new { htmlAttributes = new { @class = "form-control", id = "billdestination", @readonly = true } })</td>
+                    <td><b>SERVICE TYPE:</b> @Html.EditorFor(model => model.proformaBillServiceType, new { htmlAttributes = new { @class = "form-control", id = "billservicetype", @readonly = true } })</td>
+                    <td><b>Proforma B/L NO:</b> @ViewBag.ProformaNo</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="table table-bordered">
+            <tr>
+                <th>MARKS</th>
+                <th><span style="color:red">*</span>QUANTITY</th>
+                <th><span style="color:red">*</span>UNIT</th>
+                <th><span style="color:red">*</span>DESCRIPTION OF CARGO</th>
+                <th><span style="color:red">*</span>VALUE</th>
+                <th><span style="color:red">*</span>WEIGHT</th>
+                <th>MEASUREMENT</th>
+            </tr>
+            <tr>
+                <td>@Html.TextAreaFor(model => model.proformaBillMarks, new { @class = "form-control", @id = "billmarks", @Style = " resize:none; height:33px;" })</td>
+                <td>@Html.EditorFor(model => model.proformaBillQty, new { htmlAttributes = new { @class = "form-control", id = "billquantity", @type = "number", @min = "0", @value = "0" } })</td>
+                <td>@Html.EditorFor(model => model.proformaBillUnit, new { htmlAttributes = new { @class = "form-control", id = "billunit" } })</td>
+                <td>@Html.TextAreaFor(model => model.proformaBillDescriptionOfCargo, new { @class = "form-control", @id = "billdescription", @Style = " resize:none; height:33px;" })</td>
+                <td>@Html.EditorFor(model => model.proformaBillValue, new { htmlAttributes = new { @class = "form-control", id = "billvalue", @type = "number", @min = "0", @value = "0" } })</td>
+                <td>@Html.EditorFor(model => model.proformaBillWeight, new { htmlAttributes = new { @class = "form-control", id = "billweight", @type = "number", @min = "0", @value = "0" } })</td>
+                <td>@Html.EditorFor(model => model.proformaBillMeasurement, new { htmlAttributes = new { @class = "form-control", id = "billmeasurement" } })</td>
+            </tr>
+        </table>
+
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td><b>REMARKS:</b> @Html.TextAreaFor(m => m.proformaBillRemarks, new { @class = "form-control", @id = "billremarks" })</td>
+                    <td><b><span style="color:red">*</span>MEASURED BY:</b> @Html.EditorFor(model => model.proformaBillMeasuredBy, new { htmlAttributes = new { @class = "form-control", id = "billmeasuredby" } })</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td><b>TRUCKER'S NAME:</b> @Html.EditorFor(model => model.proformaBillTruckersName, new { htmlAttributes = new { @class = "form-control", id = "billtruckersname", @readonly = true } })</td>
+                    <td><b><span style="color:red">*</span>SHIPPER'S REPRESENTATIVE:</b> @Html.EditorFor(model => model.proformaBillShippersName, new { htmlAttributes = new { @class = "form-control", id = "billshippersname" } })</td>
+                    <td><b>SHIPPER'S SIGNATURE:</b></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <table class="table table-bordered">
+        <tr>
+            <td>
+                <div class="form-group">
+                    <label for="convanSize"> Total No. of Cases / Packages</label>
+                    <input id="totalnoofcasespackages" name="totalnoofcasespackages" class="form-control" type="number" min="1" value="0" />
+                </div>
+            </td>
+            <td>
+                <div class="form-group">
+                    <label for="convanSize"> Unit of Cases / Packages</label>
+                    <select id="unitofcasespackages" name="unitofcasespackages" class="form-control">
+                        @{
+                            foreach (var i in ViewBag.unit)
+                            {
+                                <option value="@i.Value">@i.Text</option>
+                            }
+                        }
+                    </select>
+                    @*<input id="unitofcasespackages" name="unitofcasespackages" class="form-control"  />*@
+                </div>
+            </td>
+            <td>
+                <div class="form-group">
+                    <label for="convanSize"> Cargo Type / Content</label>
+                    <select id="CargoTypeContent" name="CargoType/Content" class="form-control">
+                        @{
+                            foreach (var i in ViewBag.CargoTypeList)
+                            {
+                                <option value="@i.Value">@i.Text</option>
+                            }
+                        }
+                    </select>
+
+                    @*<input id="CargoTypeContent" name="CargoType/Content" class="form-control" />*@
+                </div>
+            </td>
+            <td>
+                <div class="form-group">
+                    <label for="convanSize"> Cargo Details (for Loose Cargoes & Other Cargo Details)</label>
+                    <input id="CargoDetails" name="CargoDetails" class="form-control" />
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="form-group">
+                    <label for="convanSize"> Packed As</label>
+
+                    <select id="PackedAs" name="PackedAs" class="form-control">
+                        @{
+                            foreach (var i in ViewBag.packedASS)
+                            {
+                                <option value="@i.Value">@i.Text</option>
+                            }
+                        }
+                    </select>
+
+                    @*<input id="PackedAs" name="PackedAs" class="form-control" />*@
+                </div>
+            </td>
+            <td>
+                <div class="form-group">
+                    <label for="convanSize"> Shipment Document Date</label>
+                    <input id="ShipmentDocumentDate" name="ShipmentDocumentDate" type="date" class="form-control" />
+                </div>
+            </td>
+            <td>
+                <div class="form-group">
+                    <label for="convanSize"> Shipment Document Number</label>
+                    <input id="ShipmentDocumentNumber" name="ShipmentDocumentNumber" class="form-control" />
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <div class="box-footer">
+        <button type="button" class="btn btn-primary" id="bill"> <i class="fa fa-pencil fa-1x"></i> Bill </button>
+        <button type="button" class="btn btn-default" onclick="location.href='@Url.Action("Index", "Proforma")"> <i class="fa fa-trash fa-1x"></i> Cancel</button>
+    </div>
+</div>
+<link href="~/Content/bootstrap-toggle.css" rel="stylesheet" />
+<script src="~/Scripts/bootstap-toggle.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+@section Scripts{
+    @Scripts.Render("~/bundles/jqueryui")
+
+<script type="text/javascript">
+        $("#proformaBillRefNo").chosen();
+
+        $(document).ready(function () {
+            $("#proformaBillRefNo").change(function () {
+                var refno = $("#proformaBillRefNo").val();
+                $.ajax({
+                    url: '../../../Proforma/GetDetails',
+                    type: 'get',
+                    data: { refno: refno },
+                    contenttype: "application/json",
+                    success: function (data) {
+                        console.log(data);
+                        $("#billvesselname").val(data.ven);
+                        $("#billvoyageno").val(data.von);
+                        $("#billdestination").val(data.des);
+                        $("#billshipper").val(data.shpr);
+                        $("#billshippersaddress").val(data.shpra);
+                        $("#billshipperstel").val(data.shprtel);
+                        $("#billservicetype").val(data.st);
+                        $("#billconsignee").val(data.con);
+                        $("#billconsigneesaddress").val(data.cona);
+                        $("#billconsigneestel").val(data.cont);
+                        $("#billtruckersname").val(data.trucker);
+                        $("#billquantity").val(data.qty);
+                        $("#billunit").val(data.unit);
+                        $("#billvalue").val(data.price);
+                    },
+                });
+            });
+
+
+            $('#bill').click(function () {
+                var isAllValid = true;
+
+                if ($('#proformaBillRefNo').val().trim() == '') {
+                    $.notify("Must select an EIR to proceed.", "error");
+                    isAllValid = false;
+                }
+
+                if ($('#billdate').val().trim() == '') {
+                    $.notify("Date is required.", "error");
+                    isAllValid = false;
+                }
+                if ($('#billmarks').val().trim() == '') {
+                    $.notify("Put NONE if no marks.", "error");
+                    isAllValid = false;
+                }
+                if ($('#billdescription').val().trim() == '') {
+                    $.notify("Description of the cargo is required.", "error");
+                    isAllValid = false;
+                }
+                if ($('#billweight').val().trim() == '') {
+                    $.notify("Weight is required.", "error");
+                    isAllValid = false;
+                }
+                if ($('#billmeasurement').val().trim() == '') {
+                    $.notify("Measurement is required.", "error");
+                    isAllValid = false;
+                }
+                if ($('#billremarks').val().trim() == '') {
+                    $.notify("Remarks is required.", "error");
+                    isAllValid = false;
+                }
+                if ($('#billmeasuredby').val().trim() == '') {
+                    $.notify("Measured by is required.", "error");
+                    isAllValid = false;
+                }
+                if ($('#billshippersname').val().trim() == '') {
+                    $.notify("Shipper's Name is required.", "error");
+                    isAllValid = false;
+                }
+
+
+                if ($('#totalnoofcasespackages').val().trim() == '') {
+                    $.notify("Number of cases / packages is required.", "error");
+                    isAllValid = false;
+                }
+                if ($('#unitofcasespackages option:selected').text().trim() == 'Select') {
+                    $.notify("Unit of cases / packages is required.", "error");
+                    isAllValid = false;
+                }
+                if ($('#CargoTypeContent option:selected').text().trim() == 'Select') {
+                    $.notify(" Cargo Type / Content is required.", "error");
+                    isAllValid = false;
+                }
+                if ($('#CargoDetails').val().trim() == '') {
+                    $.notify("Cargo Details is required.", "error");
+                    isAllValid = false;
+                }
+                if ($('#PackedAs option:selected').text().trim() == 'Select') {
+                    $.notify("Packed As is required.", "error");
+                    isAllValid = false;
+                }
+                if ($('#ShipmentDocumentDate').val().trim() == '') {
+                    $.notify("Shipment Document Date is required. ", "error");
+                    isAllValid = false;
+                }
+                if ($('#ShipmentDocumentNumber').val().trim() == '') {
+                    $.notify("Shippment Document Number is required.", "error");
+                    isAllValid = false;
+                }
+
+
+
+
+                if (isAllValid) {
+
+                    var billno = @Html.Raw(Json.Encode(ViewBag.ProformaNo));
+                    var billdata = {
+                        proformaBillRefNo: $('#proformaBillRefNo').val(),
+                        proformaBillDate: $('#billdate').val(),
+                        proformaBillVesselName: $('#billvesselname').val(),
+                        proformaBillVoyageNo: $('#billvoyageno').val(),
+                        proformaBillDestination: $('#billdestination').val(),
+                        proformaBillShipper: $('#billshipper').val(),
+                        proformaBillShippersAddress: $('#billshippersaddress').val(),
+                        proformaBillShippersTelNo: $('#billshipperstel').val(),
+                        proformaBillServiceType: $('#billservicetype').val(),
+                        proformaBillConsignee: $('#billconsignee').val(),
+                        proformaBillConsigneesAddress: $('#billconsigneesaddress').val(),
+                        proformaBillConsigneesTelNo: $('#billconsigneestel').val(),
+                        proformaBillNo: billno,
+                        proformaBillMarks: $('#billmarks').val(),
+                        proformaBillQty: $('#billquantity').val(),
+                        proformaBillUnit: $('#billunit').val(),
+                        proformaBillDescriptionOfCargo: $('#billdescription').val(),
+                        proformaBillValue: $('#billvalue').val(),
+                        proformaBillWeight: $('#billweight').val(),
+                        proformaBillMeasurement: $('#billmeasurement').val(),
+                        proformaBillRemarks: $('#billremarks').val(),
+                        proformaBillMeasuredBy: $('#billmeasuredby').val(),
+                        proformaBillTruckersName: $('#billtruckersname').val(),
+                        proformaBillShippersName: $('#billshippersname').val(),
+
+
+                        totalnoofcasespackages: $('#totalnoofcasespackages').val(),
+                        unitofcasespackages: $('#unitofcasespackages option:selected').text(),
+                        CargoType: $('#CargoTypeContent option:selected').text(),
+                        CargoDetails: $('#CargoDetails').val(),
+                        PackedAs: $('#PackedAs option:selected').text(),
+                        ShipmentDocumentDate: $('#ShipmentDocumentDate').val(),
+                        ShipmentDocumentNumber: $('#ShipmentDocumentNumber').val()
+
+
+                   }
+
+                    console.log(billdata);
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '../../../Proforma/SaveBill',
+                        data: JSON.stringify(billdata),
+                        contentType: 'application/json',
+                        success: function (dataHdr) {
+                            if (dataHdr.status) {
+                                console.log(dataHdr);
+                                $.notify("Operation successfully posted.", "success");
+                                var url = '@Url.Action("Index", "Proforma")';
+                                window.location.href = url;
+                            }
+                            else {
+                                $.notify("Operation failed to post.", "error");
+                            }
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        }
+                    });
+                }
+            });
+        });
+</script>
+}
+<style>
+    a.chosen-single, .chosen-drop{
+        width:150px;
+    }
+
+    textarea#billmarks.form-control, textarea#billremarks, textarea#billdescription {
+        width: 300px;
+    }
+
+    .table th {
+        text-align: center;
+    }
+    label {
+        display: inline-block;
+        max-width: 100%;
+        margin-bottom: 5px;
+        font-weight: 700;
+        font-size:12px;
+
+    }
+    b, strong {
+        font-weight: 700;
+        font-size: 12px;
+    }
+    th {
+        display: table-cell;
+        vertical-align: inherit;
+        font-weight: bold;
+        text-align: -internal-center;
+        font-size:12px;
+    }
+</style>

@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "Bill of lading Report";
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+}
+<div class="wrapper wrapper-content animated fadeIn">
+
+    <div class="text-center m-t-md">
+        <div id="DisplayPDF">
+
+        </div>
+    </div>
+</div>
+@*<div class="box-footer">
+        <button type="button" class="btn btn-default" onclick="location.href='@Url.Action("IndexOut", "EIR")'"> <i class="fa fa-cancel fa-1x"></i> Back to EIR-Out List</button>
+    </div>*@
+@section scripts{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            var URL = '../../../BOL/FbReport';
+            $("#DisplayPDF").html(
+                $('<iframe>', {
+                    src: URL + '?billID=@ViewBag.billID',
+                    title: "Bill of Lading",
+                    width: '1000px',
+                    height: '800px'
+                })
+            );
+        });
+    </script>
+}
+
