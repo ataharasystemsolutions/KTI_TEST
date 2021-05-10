@@ -84,15 +84,15 @@
                 </tr>
                 <tr>
                     <td>
-                        <b>DRIVER'S NAME:</b> @*@ViewBag.DriversName*@
+                        <b><label style="color: red; font-weight: bolder;">*</label>DRIVER'S NAME:</b> @*@ViewBag.DriversName*@
                         @Html.EditorFor(model => model.EIRODriversName, new { htmlAttributes = new { @class = "form-control", id = "eirodrivername", @Value = ViewBag.DriversName } })
                     </td>
                     <td>
-                        <b>TRUCKER:</b> @*@ViewBag.Trucker*@
+                        <b><label style="color: red; font-weight: bolder;">*</label>TRUCKER:</b> @*@ViewBag.Trucker*@
                         @Html.EditorFor(model => model.EIROTrucker, new { htmlAttributes = new { @class = "form-control", id = "eirotrucker", @Value = ViewBag.Trucker } })
                     </td>
                     <td>
-                        <b>PLATE NO:</b> @*@ViewBag.PlateNo*@
+                        <b><label style="color: red; font-weight: bolder;">*</label>PLATE NO:</b> @*@ViewBag.PlateNo*@
                         @Html.EditorFor(model => model.EIROPlateNo, new { htmlAttributes = new { @class = "form-control", id = "eiroplateno", @Value = ViewBag.PlateNo } })
                     </td>
                     <td>

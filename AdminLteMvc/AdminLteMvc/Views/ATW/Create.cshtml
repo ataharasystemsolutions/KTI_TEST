@@ -46,19 +46,19 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="issuedate" class="col-sm-3 col-form-label">Issue Date</label>
+                            <label for="issuedate" class="col-sm-3 col-form-label"><label style="color: red; font-weight: bolder;">*</label>Issue Date</label>
                             <div class="col-sm-9    ">
                                 @Html.EditorFor(model => model.iDate, new { htmlAttributes = new { @type = "date", @class = "form-control", id = "issuedate" } })
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="expirydate" class="col-sm-3 col-form-label">Expiry Date</label>
+                            <label for="expirydate" class="col-sm-3 col-form-label"><label style="color: red; font-weight: bolder;">*</label>Expiry Date</label>
                             <div class="col-sm-9    ">
                                 @Html.EditorFor(model => model.eDate, new { htmlAttributes = new { @type = "date", @class = "form-control", id = "expirydate" } })
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="issuedby" class="col-sm-3 col-form-label">ATW Issued By</label>
+                            <label for="issuedby" class="col-sm-3 col-form-label"><label style="color: red; font-weight: bolder;">*</label>ATW Issued By</label>
                             <div class="col-sm-9    ">
                                 <select id="issuedby" class="form-control">
                                     @{
@@ -88,7 +88,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label for="authorizedtrucker" class="col-sm-5 col-form-label">Authorized Trucker</label>
+                            <label for="authorizedtrucker" class="col-sm-5 col-form-label"><label style="color: red; font-weight: bolder;">*</label>Authorized Trucker</label>
                             <div class="col-sm-7    ">
                                 <select id="authorizedtrucker" class="form-control">
                                     @{
@@ -102,13 +102,13 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="authorizeddriver" class="col-sm-5 col-form-label">Authorized Driver</label>
+                            <label for="authorizeddriver" class="col-sm-5 col-form-label"><label style="color: red; font-weight: bolder;">*</label>Authorized Driver</label>
                             <div class="col-sm-7    ">
                                 @Html.EditorFor(model => model.aDriver, new { htmlAttributes = new { @class = "form-control", id = "authorizeddriver" } })
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="plateno" class="col-sm-5 col-form-label">Truck Plate No.</label>
+                            <label for="plateno" class="col-sm-5 col-form-label"><label style="color: red; font-weight: bolder;">*</label>Truck Plate No.</label>
                             <div class="col-sm-7    ">
                                 @Html.EditorFor(model => model.plateNo, new { htmlAttributes = new { @class = "form-control", id = "plateno" } })
                             </div>

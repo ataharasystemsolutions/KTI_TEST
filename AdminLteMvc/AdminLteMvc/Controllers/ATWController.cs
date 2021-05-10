@@ -42,12 +42,11 @@ namespace AdminLteMvc.Controllers
             //var list = db.Database.SqlQuery<Models.Class.ATWDisplay>(@"select *,left(CONVERT(varchar,dateChange,101),10) AS dateChangeFormatted from 
             //                                                          ATWs where atwID like '%" + search + "%'");
             //db.Database.SqlQuery<Models.Class.ATWDisplay>("select *,dateChange AS dateChangeFormatted from ATWs");
-            //var list = db.Database.SqlQuery<Models.WEBSales.ATW>(@"select *, convert(varchar, dateChange, getdate(), 1) from ATWs where atwID like '%" + search + "%'");
-            //var list = db.ATW.SqlQuery<Models.WEBSales.ATW>("select *, convert(varchar, dateChange, 1) as mmddyyyy from ATWs where atwID like '%" + search + "%'");
+            //var list = db.Database.SqlQuery<Models.WEBSales.ATW>("select *, convert(varchar, dateChange, getdate(), 1) from ATWs where atwID like '%" + search + "%'");
+            var list = db.Database.SqlQuery<Models.WEBSales.ATW>("select *, convert(varchar, dateChange, 1) as mmddyyyy from ATWs where atwID like '%" + search + "%'");
             //var list = db.Database.SqlQuery<Models.WEBSales.ATW>(@"select *, CAST(dateChange AS DATE) from ATWs where atwID like '%" + search + "%'");
-            var list = db.ATW.Where(o => o.aDriver.Contains(search) || o.aTrucker.Contains(search) || o.atwBkNo.Contains(search) || o.bkNo.Contains(search) || o.conPerson.Contains(search) || o.cShipper.Contains(search) || o.eDate.Contains(search) || o.iDate.Contains(search) || o.remarks.Contains(search)).AsQueryable();
-            return Json(new GridModelBuilder<Models.WEBSales.ATW>(list, g)
-            //return Json(new GridModelBuilder<Models.WEBSales.ATW>(list.AsQueryable(), g)
+            //var list = db.ATW.Where(o => o.aDriver.Contains(search) || o.aTrucker.Contains(search) || o.atwBkNo.Contains(search) || o.bkNo.Contains(search) || o.conPerson.Contains(search) || o.cShipper.Contains(search) || o.eDate.Contains(search) || o.iDate.Contains(search) || o.remarks.Contains(search)).AsQueryable();
+            return Json(new GridModelBuilder<Models.WEBSales.ATW>(list.AsQueryable(), g)
 
             {
                 KeyProp = o => o.atwID,// needed for Entity Framework | nesting | tree | api
