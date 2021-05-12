@@ -36,9 +36,6 @@ namespace AdminLteMvc.Models.WEBSales
         public string shipperno1 { get; set; }
         public string shipperno2 { get; set; }
         public string userId { get; set; }
-
-        [Display(Name = "Date Changed")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime? dateChange { get; set; }
     }
 }
