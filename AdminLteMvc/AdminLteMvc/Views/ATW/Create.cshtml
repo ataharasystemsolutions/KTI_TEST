@@ -10,7 +10,6 @@
     @Html.AntiForgeryToken()
     <div class="box box-success">
         <div class="box-body">
-            <div class="container">
                 <div class="row">
                     <div class="col-md-6">
                         @*<div class="form-group row">
@@ -121,7 +120,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+           
             @*<i>*Please select transaction below to withdraw  (maximum of 2 CVs only).</i>*@
             <div class="box-header with-border">
                 <h3 class="box-title">@Html.Awe().TextBox("txtsearch").Placeholder("Search").CssClass("searchtxt")</h3>

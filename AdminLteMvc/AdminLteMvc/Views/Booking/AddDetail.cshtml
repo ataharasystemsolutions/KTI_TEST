@@ -1,4 +1,5 @@
 ﻿@model AdminLteMvc.Models.WEBSales.TransactionDetails
+@using AdminLteMvc.Functions;
 @{
     ViewBag.Title = "Add Transaction Detail";
     Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
@@ -43,7 +44,7 @@
                     <div class="form-group row">
                         <label for="consize" class="col-sm-3 col-form-label">ConVan Size</label>
                         <div class="col-sm-9    ">
-                            @Html.EditorFor(model => model.consize, new { htmlAttributes = new { @Value = ViewBag.CSIZE, @class = "form-control", id = "consize", @readonly=true } })
+                            @Html.EditorFor(model => model.consize, new { htmlAttributes = new { @Value = ViewBag.CSIZE, @class = "form-control", id = "consize", @readonly = true } })
                         </div>
                     </div>
                     <div class="form-group row">
@@ -394,45 +395,45 @@
                         </div>
                     </div>
                     @*<div class="form-group row">
-            <label for="consignee" class="col-sm-3 col-form-label">Consignee</label>
-            <div class="col-sm-9    ">
-                <select id="consignee" class="form-control">
-                    <option value="0">-- Select below --</option>
-                    @{
-                        foreach (var item in ViewBag.ConsigneeList)
-                        {
-                            <option value="@item.Value">@item.Text</option>
-                        }
-                    }
-                </select>
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="consigneeaddress" class="col-sm-3 col-form-label">Consignee Address</label>
-            <div class="col-sm-9    ">
-                @Html.EditorFor(model => model.consigneeAdd, new { htmlAttributes = new { @class = "form-control", id = "consigneeaddress", @readonly = true } })
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="consigneetelno" class="col-sm-3 col-form-label">Consignee Contact No.</label>
-            <div class="col-sm-9    ">
-                @Html.EditorFor(model => model.consigneetelno, new { htmlAttributes = new { @class = "form-control", id = "consigneetelno", @readonly = true } })
-            </div>
-        </div>*@
-                    @*<div class="form-group row">
-                        <label for="convanno" class="col-sm-3 col-form-label">ConVan No</label>
-                        <div class="col-sm-9    ">
-                            <select id="convanno" class="form-control">
-                                <option value="0">-- Select below --</option>
-                                @{
-                                    foreach (var item in ViewBag.ConVanNoList)
-                                    {
-                                        <option value="@item.Value">@item.Text</option>
+                            <label for="consignee" class="col-sm-3 col-form-label">Consignee</label>
+                            <div class="col-sm-9    ">
+                                <select id="consignee" class="form-control">
+                                    <option value="0">-- Select below --</option>
+                                    @{
+                                        foreach (var item in ViewBag.ConsigneeList)
+                                        {
+                                            <option value="@item.Value">@item.Text</option>
+                                        }
                                     }
-                                }
-                            </select>
+                                </select>
+                            </div>
                         </div>
-                    </div>*@
+                        <div class="form-group row">
+                            <label for="consigneeaddress" class="col-sm-3 col-form-label">Consignee Address</label>
+                            <div class="col-sm-9    ">
+                                @Html.EditorFor(model => model.consigneeAdd, new { htmlAttributes = new { @class = "form-control", id = "consigneeaddress", @readonly = true } })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="consigneetelno" class="col-sm-3 col-form-label">Consignee Contact No.</label>
+                            <div class="col-sm-9    ">
+                                @Html.EditorFor(model => model.consigneetelno, new { htmlAttributes = new { @class = "form-control", id = "consigneetelno", @readonly = true } })
+                            </div>
+                        </div>*@
+                    @*<div class="form-group row">
+                            <label for="convanno" class="col-sm-3 col-form-label">ConVan No</label>
+                            <div class="col-sm-9    ">
+                                <select id="convanno" class="form-control">
+                                    <option value="0">-- Select below --</option>
+                                    @{
+                                        foreach (var item in ViewBag.ConVanNoList)
+                                        {
+                                            <option value="@item.Value">@item.Text</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>*@
                     <div class="form-group row">
                         <label for="booktype" class="col-sm-3 col-form-label">Booking Type</label>
                         <div class="col-sm-9    ">
@@ -472,10 +473,10 @@
                         </div>
                     </div>
                 </div>
-                
+
             </div>
         </div>
-       @* @Html.EditorFor(model => model.trnInputtedDate, new { htmlAttributes = new { @class = "form-control", id = "inputteddate", @readonly = true } })*@
+        @* @Html.EditorFor(model => model.trnInputtedDate, new { htmlAttributes = new { @class = "form-control", id = "inputteddate", @readonly = true } })*@
     </div>
 </div>
 <div class="box-footer">
@@ -488,7 +489,7 @@
 @section Scripts{
     @Scripts.Render("~/bundles/jqueryui")
 
-<script type="text/javascript">
+    <script type="text/javascript">
         $(document).ready(function () {
             //document.getElementById("submit").disabled = true;
 
@@ -579,6 +580,7 @@
                     success: function (consigneedata) {
                         document.getElementById("consigneeaddress1").value = consigneedata.cadd;
                         document.getElementById("consigneetelno1").value = consigneedata.cnum;
+                        
                     },
                 });
             });
@@ -1021,7 +1023,7 @@
             });//end
 
         });
-</script>
+    </script>
 }
 
 <style>
@@ -1029,5 +1031,4 @@
     #price {
         visibility: hidden;
     }
-
 </style>
