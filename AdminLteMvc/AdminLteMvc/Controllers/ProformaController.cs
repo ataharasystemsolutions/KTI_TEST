@@ -559,7 +559,7 @@ namespace AdminLteMvc.Controllers
             string query = "select a.vesselName, b.voyageNo,b.voyageID,b.status from Vessels a " +
                             "inner join VoyageNoes b on a.vesselID = b.vesselid where b.voyageID="+refno+" ";
             var list = db.Database.SqlQuery<Models.Class.dataPopulation>(query);
-            test
+            
             return new JsonResult { Data = new { parent = list } };
         }
         public JsonResult saveFinalBill(Models.Class.saveBilloflading bill)
