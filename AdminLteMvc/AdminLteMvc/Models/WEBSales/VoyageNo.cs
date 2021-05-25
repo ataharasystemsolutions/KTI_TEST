@@ -15,5 +15,8 @@ namespace AdminLteMvc.Models.WEBSales
         public int voyageID { get; set; }
         public string voyageNo { get; set; }
         public string vesselid { get; set; }
+        public string status { get; set; }
+        public string transactionNumber { get; set; }
+
     }
 }

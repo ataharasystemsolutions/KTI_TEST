@@ -25,7 +25,7 @@
                     <div class="form-group">
                     </div>
                     <div class="form-group">
-                        <span style="font-size:12px; color:red;">Note: All fields with asterisk(*) must be required!</span>
+                        <span style="font-size:12px; color:red;">Note: All Field has asterisk(*) must be required!</span>
                     </div>
                 </div>
             </div>
@@ -82,15 +82,13 @@
                         <label for="dNum">Vessel Voyage<span style=" color:red;">*</span></label>
 
                         <select id="vesselvoyage" class="form-control">
-                            <option value="0">Select</option>
-                            @{
-                                foreach (var item in ViewBag.vesselList)
-                                {
-                                    <option value="@item.Value">@item.Text</option>
-                                }
-                            }
                         </select>
-                        @*<input id="vesselvoyage" type="text" class="form-control" />*@
+                    </div>
+                    <div class="form-group">
+                        <label for="dNum">Voyage Leg<span style=" color:red;">*</span></label>
+
+                        <select id="voyageLeg" class="form-control">
+                        </select>
                     </div>
                 </div>
                 <!-- /.col -->
@@ -220,10 +218,10 @@
                     <table id="parentitem" class="table">
                         <thead>
                             <tr>
-                                <th>MARKS</th>
-                                <th>QUANTITY</th>
-                                <th>UNIT</th>
-                                <th>DESCRIPTION OF CARGO</th>
+                                <th>Total No of Cases / Packages</th>
+                                <th>Unit of Cases / Packages</th>
+                                <th>Cargo Type / Content</th>
+                                <th>Cargo Details</th>
                                 <th>VALUE</th>
                                 <th>WEIGHT</th>
                                 <th>MEASUREMENT</th>
@@ -268,6 +266,9 @@
                         data: { refno: refno },
                         contenttype: "application/json",
                         success: function (data) {
+                            console.log(data.parent[0].voyageID);
+                            populateVoyageNo(data.parent[0].voyageID);
+
                             $("#bookingNo").val(data.parent[0].docNum);
                             $("#trnNumber").val(data.parent[0].transactionNo);
                             $("#shipper").val(data.parent[0].proformaBillShipper);
@@ -279,10 +280,16 @@
                             $("#finaldestination").val(data.parent[0].destination);
                             $("#servicemode").val(data.parent[0].EIRIServiceType);
 
-                            var marks = data.parent[0].proformaBillMarks == null ? '' : data.parent[0].proformaBillMarks;
-                            var qty = data.parent[0].proformaBillQty == null ? '' : data.parent[0].proformaBillQty;
-                            var unit = data.parent[0].proformaBillUnit == null ? '' : data.parent[0].proformaBillUnit;
-                            var desc = data.parent[0].proformaBillDescriptionOfCargo == null ? '' : data.parent[0].proformaBillDescriptionOfCargo;
+                            $("#vesselname").val(data.parent[0].EIRIVessel);
+                            $("#voyageno").val(data.parent[0].EIRIVoyageNo);
+
+
+                            var marks = data.parent[0].totalnoofcasespackages == null ? '' : data.parent[0].totalnoofcasespackages;
+                            var qty = data.parent[0].unitofcasespackages == null ? '' : data.parent[0].unitofcasespackages;
+                            var unit = data.parent[0].CargoType == null ? '' : data.parent[0].CargoType;
+                            var desc = data.parent[0].CargoDetails == null ? '' : data.parent[0].CargoDetails;
+
+
                             var value = data.parent[0].proformaBillValue == null ? '' : data.parent[0].proformaBillValue;
                             var wet = data.parent[0].proformaBillWeight == null ? '' : data.parent[0].proformaBillWeight;
                             var um = data.parent[0].proformaBillMeasurement == null ? '' : data.parent[0].proformaBillMeasurement;
@@ -303,9 +310,12 @@
             });
             //use for selecting vessel voyage
             $("#vesselvoyage").change(function () {
-                var refno = $("#vesselvoyage").val();
+                var b = document.getElementById("vesselvoyage");
+                var voyageselected = b.options[b.selectedIndex].text;
+                var voyageselectedId = b.options[b.selectedIndex].value;
+                var refno = voyageselectedId;
                 $.ajax({
-                    url: '../../../Proforma/selectvesselvoyage',
+                    url: '../../../Proforma/getVesselVoyage',
                     type: 'post',
                     data: { refno: refno },
                     contenttype: "application/json",
@@ -317,6 +327,9 @@
             });
             //save bill
             $("#bill").click(function () {
+                var b = document.getElementById("vesselvoyage");
+                var voyageselected = b.options[b.selectedIndex].text;
+                var voyageselectedId = b.options[b.selectedIndex].value;
 
                 var eirinno= document.getElementById("eirinno");
                 var eirinno_text = eirinno.options[eirinno.selectedIndex].text;
@@ -369,7 +382,7 @@
                     isValid = false;
                     $.notify("Cargo Type / Content must be required!", "error");
                 }
-               
+
 
                 var datParent = {
 
@@ -393,7 +406,8 @@
                                 vesselName: $("#vesselname").val(),
                                 voyageNumber: $("#voyageno").val(),
                                 serviceMode: $("#servicemode").val(),
-                                cargoTypeorcontent: ctc_text
+                                cargoTypeorcontent: ctc_text,
+                                voyageID:voyageselectedId
 
                 };
                 var data = new Array();
@@ -423,10 +437,12 @@
                         dataType: "json",
                         success: function (Data) {
 
-                            if (Data.errmsg == "Exist" && Data.status == false) {
+                            if (Data.errmsg == "Exist" && Data.status == false)
+                            {
                                 $.notify("Data is already exist from the database.", "Error");
                             }
-                            if (Data.status) {
+                            if (Data.status)
+                            {
                                 $.notify("Data successfully Saved.", "success");
                             }
                             var url = '@Url.Action("BillofLading", "Proforma")';
@@ -435,6 +451,30 @@
                     })
                 }
             })
+
+
+            function populateVoyageNo(voyNoID) {
+                $.get("../../../Proforma/selectvesselvoyage", { refno: voyNoID }, function (data) {
+                    $("#vesselvoyage").empty();
+                    $("#vesselvoyage").append("<option value='0'>Select</option>")
+                    $.each(data, function (index, row) {
+                        var status = row.status == "Closed" ? "disabled" : "";
+                        var selectedData = row.voyageID == voyNoID ? "selected" : "";
+                        $("#vesselvoyage").append("<option " + status + " " + selectedData + " value='" + row.voyageID + "'>" + row.vesselvoyage + "</option>")
+                    });
+                });
+            }
+            function populateVoyageLeg(voyNoID) {
+                $.get("../../../Proforma/selectvesselvoyage", { refno: voyNoID }, function (data) {
+                    $("#vesselvoyage").empty();
+                    $("#vesselvoyage").append("<option value='0'>Select</option>")
+                    $.each(data, function (index, row) {
+                        var status = row.status == "Closed" ? "disabled" : "";
+                        var selectedData = row.voyageID == voyNoID ? "selected" : "";
+                        $("#vesselvoyage").append("<option " + status + " " + selectedData + " value='" + row.voyageID + "'>" + row.vesselvoyage + "</option>")
+                    });
+                });
+            }
         });
 </script>
 }

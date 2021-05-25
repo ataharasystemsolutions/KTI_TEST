@@ -20,28 +20,23 @@ namespace AdminLteMvc.Controllers
         // GET: Users
         public ActionResult Index()
         {
+            string query = "select b.ID, b.FirstName,b.MiddleName,b.LastName,b.JobTitle,a.active,a.UserName from Users a " +
+                        "inner join EmployeeMasters b on a.empid = b.ID";
+            var list = db.Database.SqlQuery<usrDisplay>(query).AsQueryable();
+            ViewBag.usr = list;
             return View(db.Users.ToList());
         }
-
-        public ActionResult GetItems(GridParams g, string search)
+        public class usrDisplay
         {
-
-
-            var list = db.Users.Where(o => o.UserID.Contains(search) || o.UserName.Contains(search) || o.Branch.Contains(search)).AsQueryable();
-            return Json(new GridModelBuilder<Models.WEBSales.Users>(list, g)
-            {
-                KeyProp = o => o.UserID,// needed for Entity Framework | nesting | tree | api
-                Map = o => new
-                {
-                    o.UserID,
-                    o.UserName,
-                    o.Branch,
-                    o.Contact,
-                    o.Email,
-                    o.Active
-                }
-            }.Build());
+            public int ID { get; set; }
+            public string UserName { get; set; }
+            public string FirstName { get; set; }
+            public string MiddleName { get; set; }
+            public string LastName { get; set; }
+            public string JobTitle { get; set; }
+            public bool active { get; set; }
         }
+
 
         // GET: Users/Details/5
         public ActionResult Details(string id)
@@ -55,7 +50,7 @@ namespace AdminLteMvc.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.Branch = new SelectList(db.Projects, "ProjectCode", "ProjectName", users.Branch);
+            //ViewBag.Branch = new SelectList(db.Projects, "ProjectCode", "ProjectName", users.Branch);
             return View(users);
         }
 
@@ -184,7 +179,7 @@ namespace AdminLteMvc.Controllers
 
             users.Password = base64Decode(users.Password);
 
-            ViewBag.Branch = new SelectList(db.Projects, "ProjectCode", "ProjectName", users.Branch);
+           // ViewBag.Branch = new SelectList(db.Projects, "ProjectCode", "ProjectName", users.Branch);
             return View(users);
         }
 

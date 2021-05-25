@@ -40,6 +40,8 @@ namespace AdminLteMvc.Models.WEBSales
         public string EIROSCR { get; set; }
         public string EIROStatus { get; set; }
         public string EIRORemarks { get; set; }
-        
+        public int vesselID { get; set; }
+        public int voyageID { get; set; }
+
     }
 }

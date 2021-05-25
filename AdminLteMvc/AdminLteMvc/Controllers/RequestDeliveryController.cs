@@ -182,7 +182,7 @@ namespace AdminLteMvc.Controllers
                 "case when LEFT(CONVERT(varchar,startdate,101),10)='01/01/1900' then '-' else LEFT(CONVERT(varchar,startdate,101),10) end as startDate," +
                 "case when LEFT(CONVERT(varchar,endDate,101),10)='01/01/1900' then '-' else LEFT(CONVERT(varchar,endDate,101),10) end as endDate, status " +
                 "from RequestDeliveryScheduleConsignees where deliveryID=" + Id+" ";
-            var det = db.Database.SqlQuery<RequestDeliveryScheduleConsignee>(query);
+            var det = db.Database.SqlQuery<Models.Class.RequestDeliveryScheduleConsigneeDisplay>(query);
             return new JsonResult { Data = new { det = det } };
         }
 

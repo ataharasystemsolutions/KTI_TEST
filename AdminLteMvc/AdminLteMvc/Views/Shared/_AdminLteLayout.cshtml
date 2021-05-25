@@ -7,21 +7,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="~/shopping.ico" rel="shortcut icon" type="image/x-icon" />
     @*TODO: Change App name*@
-    <title>@ViewBag.Title - Dashboard</title>
+    <title>@ViewBag.Title Kargamine</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <!-- Bootstrap 3.3.7 -->
-    <link rel="stylesheet" href="~/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap.min.css">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="~/bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../../bower_components/font-awesome/css/font-awesome.min.css">
     <!-- Ionicons -->
-    <link rel="stylesheet" href="~/bower_components/Ionicons/css/ionicons.min.css">
+    <link rel="stylesheet" href="../../bower_components/Ionicons/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../../dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="../../dist/css/skins/_all-skins.min.css">
+    @*<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">*@
+    <!-- Bootstrap 3.3.7 -->
+    <!--<link rel="stylesheet" href="~/bower_components/bootstrap/dist/css/bootstrap.min.css">-->
+    <!-- Font Awesome -->
+    <!--<link rel="stylesheet" href="~/bower_components/font-awesome/css/font-awesome.min.css">-->
+    <!-- Ionicons -->
+    <!--<link rel="stylesheet" href="~/bower_components/Ionicons/css/ionicons.min.css">-->
     <!-- jvectormap -->
     <link rel="stylesheet" href="~/bower_components/jvectormap/jquery-jvectormap.css">
     <!-- Select2 -->
     <link rel="stylesheet" href="~/bower_components/select2/dist/css/select2.min.css">
-
-
-    @Styles.Render("~/Content/css")
+    @*@Styles.Render("~/Content/css")*@
 
     <!-- Morris chart -->
     <link href="~/Scripts/AdminLTE/plugins/morris/morris.css" rel="stylesheet" type="text/css" />
@@ -33,24 +43,37 @@
     <link href="~/Content/AdminLTE/AdminLTE.min.css" rel="stylesheet" type="text/css" />
     <!-- DataTables -->
     <link rel="stylesheet" href="~/Scripts/DataTables/DataTables-1.10.9/css/dataTables.bootstrap.min.css">
-
     <!--loader-->
     <link href="~/Content/agsloader.css" rel="stylesheet" />
-
     <!--Awesome-->
     <link href="~/Content/themes/gui3/AwesomeMvc.css" rel="stylesheet" />
     <link href="~/Content/themes/gui3/awem.css" rel="stylesheet" />
     <!--For Searchable Dropdown-->
     <link href="~/Content/bootstrap-chosen.css" rel="stylesheet" />
-    @*<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>*@
+
     <script src="~/Scripts/jquery-3.2.1.min.js"></script>
     <link href="~/Content/AdminLTE/skins/_all-skins.min.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        .sidebar-menu li > a > .fa-angle-left {
+            width: auto;
+            height: auto;
+            padding: 0;
+            margin-right: 10px;
+            margin-top: -5px;
+        }
 
-    @Scripts.Render("~/bundles/modernizr")
+     
+       
+    </style>
+    <SCRIPT type="text/javascript">
+        window.history.forward();
+        function noBack() { window.history.forward(); }
+    </SCRIPT>
+    @*@Scripts.Render("~/bundles/modernizr")*@
 </head>
 @*@if (Request.IsAuthenticated)
     {*@
-<body class="hold-transition skin-blue sidebar-mini">
+<body onload="noBack();" onpageshow="if (event.persisted) noBack();" onunload=""  class="hold-transition skin-blue sidebar-mini" >
     <div class="wrapper">
         @Html.Partial("_AdminLteTopMenu")
         <!-- Left side column. contains the logo and sidebar -->
@@ -85,10 +108,20 @@
     <div class="loaderbodyx" id="loaderbodyx">
         <div class="loader"></div>
     </div>
-
+    <!-- ./wrapper -->
+    <!-- jQuery 3 -->
+    <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap 3.3.7 -->
+    <script src="../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="../../bower_components/fastclick/lib/fastclick.js"></script>
+    <!-- AdminLTE App -->
+    <script src="../../dist/js/adminlte.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="../../dist/js/demo.js"></script>
     @* Bundles assume jquery 2.1.3 and Bootstrap 3 *@
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+    @*@Scripts.Render("~/bundles/jquery")*@
+        @Scripts.Render("~/bundles/bootstrap")
     <!-- FastClick -->
     <script src='~/Scripts/AdminLTE/plugins/fastclick/fastclick.min.js'></script>
     <!-- AdminLTE App -->
@@ -114,23 +147,19 @@
     <script src="~/Scripts/jquery.freezeheader.js"></script>
     <!-- Select2 -->
     <script src="~/bower_components/select2/dist/js/select2.full.min.js"></script>
-
     <!--Awesome-->
     <script src="~/Scripts/AweDLL.js"></script>
     <script src="~/Scripts/awem.js"></script>
     <script src="~/Scripts/utils.js"></script>
-
     <!--For Searchable Dropdown-->
     <script src="~/Scripts/chosen.jquery.js"></script>
     <!-- DataTables -->
     <script src="~/Scripts/DataTables/DataTables-1.10.9/js/jquery.dataTables.min.js"></script>
     <script src="~/Scripts/DataTables/DataTables-1.10.9/js/dataTables.bootstrap.min.js"></script>
     @Html.Awe().Init()
-
     <script type='text/javascript'>
         $.fn.bootstrapBtn = $.fn.button.noConflict();
     </script>
-
     @RenderSection("scripts", required: false)
 </body>
 @*}

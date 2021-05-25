@@ -14,6 +14,8 @@ namespace AdminLteMvc.Models.WEBSales
         public int categoryID { get; set; }
         public int voyageID { get; set; }
         public string category { get; set; }
+        public string portOrigin { get; set; }
+        public string portDestination { get; set; }
         public int lastuserId { get; set; }
         public DateTime? lastChange { get; set; }
         public string status { get; set; }

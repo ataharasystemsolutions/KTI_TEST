@@ -94,7 +94,7 @@ namespace AdminLteMvc.Controllers
             var custshpr = db.CustomerShippers.ToList();
             var convanSizes = db.ConVanSizes.ToList();
             var convanStatus = db.ConVanStatus.ToList();
-            var inBy = db.EmployeeMasters.ToList();
+            var inBy = db.InputtedBy.ToList();
             var csrs = db.CSR.ToList();
             var executives = db.AccountExecutive.ToList();
             List<SelectListItem> mnemonicList = new List<SelectListItem>();
@@ -139,13 +139,13 @@ namespace AdminLteMvc.Controllers
                     Value = item.status
                 });
             }
-            foreach (EmployeeMaster item in inBy)
+            foreach (InputtedBy item in inBy)
             {
                 InByList.Add(new SelectListItem
                 {
-                    Text = item.FirstName + " " + item.LastName,
-                    Value = item.EmpID.ToString()
-                }) ;
+                    Text = item.firstname + " " + item.lastname,
+                    Value = item.firstname + " " + item.lastname
+                });
             }
             foreach (CSR item in csrs)
             {

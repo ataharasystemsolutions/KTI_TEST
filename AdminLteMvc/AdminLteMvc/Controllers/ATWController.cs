@@ -11,7 +11,6 @@ using AdminLteMvc.Models;
 using AdminLteMvc.Models.WEBSales;
 using CrystalDecisions.CrystalReports.Engine;
 using Omu.AwesomeMvc;
-using Microsoft.AspNet.Identity;
 
 namespace AdminLteMvc.Controllers
 {
@@ -39,21 +38,27 @@ namespace AdminLteMvc.Controllers
 
         public ActionResult GetItems(GridParams g, string search)
         {
-            //var list = db.Database.SqlQuery<Models.Class.ATWDisplay>(@"select *,left(CONVERT(varchar,dateChange,101),10) AS dateChangeFormatted from 
-            //                                                          ATWs where atwID like '%" + search + "%'");
-            //db.Database.SqlQuery<Models.Class.ATWDisplay>("select *,dateChange AS dateChangeFormatted from ATWs");
-            //var list = db.Database.SqlQuery<Models.WEBSales.ATW>(@"select *, convert(varchar, dateChange, getdate(), 1) from ATWs where atwID like '%" + search + "%'");
-            //var list = db.ATW.SqlQuery<Models.WEBSales.ATW>("select *, convert(varchar, dateChange, 1) as mmddyyyy from ATWs where atwID like '%" + search + "%'");
-            //var list = db.Database.SqlQuery<Models.WEBSales.ATW>(@"select *, CAST(dateChange AS DATE) from ATWs where atwID like '%" + search + "%'");
-            var list = db.ATW.Where(o => o.aDriver.Contains(search) || o.aTrucker.Contains(search) || o.atwBkNo.Contains(search) || o.bkNo.Contains(search) || o.conPerson.Contains(search) || o.cShipper.Contains(search) || o.eDate.Contains(search) || o.iDate.Contains(search) || o.remarks.Contains(search)).AsQueryable();
-            return Json(new GridModelBuilder<Models.WEBSales.ATW>(list, g)
-            //return Json(new GridModelBuilder<Models.WEBSales.ATW>(list.AsQueryable(), g)
 
+            string query = "select case when stat = 0 then 'Completed' else '<span style=color:red>Pending ( ' + convert(varchar, stat) + ' transaction )</span>' end atwStatus, " +
+                           "* " +
+                           "from " +
+                           "( " +
+                                "select(select count(*) from TransactionDetails where atwID = a.atwID  and outStatus is null) as stat, " +
+                                "a.*, " +
+                                "isnull(a.atwBkNo, '') + ' ' + isnull(a.bkNo, '') + ' ' + isnull(a.iDate, '') + ' ' + isnull(a.eDate, '') + ' ' + isnull(a.transactionno1, '') + ' ' + isnull(a.transactionno2, '') + ' ' + isnull(a.convanno1, '') + ' ' + isnull(a.convanno2, '') + ' ' + isnull(a.shipperno1, '') + ' ' + isnull(a.shipperno2, '') + ' ' + isnull(a.issuedBy, '') + ' ' + isnull(a.plateNo, '') + ' ' + isnull(a.aTrucker, '') + ' ' + isnull(a.aDriver, '') + ' ' + isnull(a.cShipper, '') + ' ' + isnull(a.conPerson, '') + ' ' + isnull(a.cvno, '') searchField " +
+                                "from ATWs a " +
+                           ")tt";
+
+            query+= search.Length>0? " where searchField like'%" + search + "%' ":"";
+            var list = db.Database.SqlQuery<Models.WEBSales.ATW>(query).AsQueryable();
+
+            return Json(new GridModelBuilder<Models.WEBSales.ATW>(list, g)
             {
-                KeyProp = o => o.atwID,// needed for Entity Framework | nesting | tree | api
+                KeyProp = o => o.atwID,// needed for Entity Framework | nesting | tree | apit
                 Map = o => new
                 {
                     o.atwID,
+                    o.atwStatus,
                     o.atwBkNo,
                     o.bkNo,
                     o.iDate,
@@ -71,16 +76,15 @@ namespace AdminLteMvc.Controllers
                     o.cShipper,
                     o.conPerson,
                     o.cvno,
-                    o.remarks,
-                    o.userId,
-                    o.dateChange
-                    //o.dateChangeFormatted
-            }
+                    o.remarks
+                }
             }.Build());
         }
 
         public ActionResult GetAllTrns(GridParams g, string search)
         {
+
+
             var list = db.TransactionDetails.Where(o => o.dtlStatus.Contains("For Withdrawal")).Where(x => (x.cnameshipper.Contains(search) || x.booktype.Contains(search) || x.conClass.Contains(search) || x.cyEPO.Contains(search) || x.cyLD.Contains(search) || x.cySA.Contains(search) || x.destination.Contains(search) || x.origin.Contains(search) || x.payMode.Contains(search))).OrderBy(s => s.tranID);
             //var list = db.TransactionDetails.Where(o => o.dtlStatus.Contains("For Withdrawal")).Where(x => x.cargoType.Contains(search)).OrderBy(s => s.tranID);
             return Json(new GridModelBuilder<Models.WEBSales.TransactionDetails>(list, g)
@@ -117,7 +121,7 @@ namespace AdminLteMvc.Controllers
                     o.booktype,
                     o.chargee,
                     o.consize,
-                    o.serviceType           
+                    o.serviceType
                 }
             }.Build());
         }
@@ -265,43 +269,52 @@ namespace AdminLteMvc.Controllers
         [HttpPost]
         public JsonResult SaveHdr(ATW data)
         {
+            DbContextTransaction transaction = db.Database.BeginTransaction();
             bool status = false;
-
-            var isValidModel = TryUpdateModel(data);
-            if (isValidModel)
+            try
             {
-                var trns = data.trns.Split(',');
-                for (int i=0;i<trns.Length;i++)
+                var isValidModel = TryUpdateModel(data);
+                if (isValidModel)
                 {
-                    var trnloop = trns[i];
-                    var getTrnID = db.TransactionDetails.Where(s => s.transactionNo.Equals(trnloop)).Select(s=>s.tranID).Single();
-                    var detail = new TransactionDetails {tranID = getTrnID };
-                    db.TransactionDetails.Attach(detail);
-                    detail.dtlStatus = "Withdrawn";                    
-                    db.Entry(detail).Property("dtlStatus").IsModified = true;
+                    //saving new data into ATW table.
+                    var atwId = db.ATW.Add(data);
                     db.SaveChanges();
+
+                    var trns = data.trns.Split(',');
+                    for (int i = 0; i < trns.Length; i++)
+                    {
+                        var trnloop = trns[i];
+                        //setting dtlStatus,atwID value from table TransactionDetails
+                        var getTrnID = db.TransactionDetails.Where(s => s.transactionNo.Equals(trnloop)).Select(s => s.tranID).Single();
+                        var detail = new TransactionDetails { tranID = getTrnID };
+                        db.TransactionDetails.Attach(detail);
+                        detail.dtlStatus = "Withdrawn";
+                        db.Entry(detail).Property("dtlStatus").IsModified = true;
+                        detail.atwID = atwId.atwID;
+                        db.Entry(detail).Property("atwID").IsModified = true;
+                        db.SaveChanges();
+                    }
+
+                    var listoftrns = db.TransactionDetails.Where(s => s.docNumber.Equals(data.bkNo)).Select(s => s.dtlStatus).ToList();
+                    if (((IList<string>)listoftrns).Contains("For Withdrawal"))
+                    { }
+                    else
+                    {
+                        //setting up trnStatus column into "Closed" value from table Booking 
+                        //note: the trnStatus value will be "Closed" if the transaction details is already assigned a convan number to pullout
+                        var getbkID = db.Booking.Where(s => s.docNum.Equals(data.bkNo)).Select(s => s.ID).Single();
+                        var activityInDb = db.Booking.Find(getbkID);
+                        db.Booking.Attach(activityInDb);
+                        activityInDb.trnStatus = "Closed";
+                        db.Entry(activityInDb).Property("trnStatus").IsModified = true;
+                        db.SaveChanges();
+                    }
+                    status = true;
                 }
-
-                var listoftrns = db.TransactionDetails.Where(s => s.docNumber.Equals(data.bkNo)).Select(s => s.dtlStatus).ToList();
-                if (((IList<string>)listoftrns).Contains("For Withdrawal"))
-                { }
-                else
-                {
-                    var getbkID = db.Booking.Where(s=>s.docNum.Equals(data.bkNo)).Select(s=>s.ID).Single();
-                    var activityInDb = db.Booking.Find(getbkID);
-                    db.Booking.Attach(activityInDb);
-                    activityInDb.trnStatus = "Closed";
-                    db.Entry(activityInDb).Property("trnStatus").IsModified = true;
-                    db.SaveChanges();
-                }
-
-                db.ATW.Add(data);
-                db.SaveChanges();
-
-                status = true;
+                transaction.Commit();
             }
-
-
+            catch (Exception ex)
+            { transaction.Rollback(); }
             return new JsonResult { Data = new { status = status, atwid = data.atwID} };
         }
 
@@ -389,26 +402,7 @@ namespace AdminLteMvc.Controllers
             return View("AddATWDetail", newDetail);
         }
 
-        //public ActionResult ForPrint(int ID, string atwbkno)
-        //{
-        //    var trndetail = db.TransactionDetails.Find(ID);
-        //    var atwdetail = db.ATW.Where(s=>s.atwBkNo.Equals(atwbkno)).Single();
-        //    var bkdetail = db.Booking.Where(s=>s.docNum.Equals(atwdetail.bkNo)).Single();
-
-        //    ViewBag.Trucker = atwdetail.aTrucker;
-        //    ViewBag.ATWBookingNo = atwdetail.atwBkNo;
-        //    ViewBag.Driver = atwdetail.aDriver;
-        //    ViewBag.PlateNo = atwdetail.plateNo;
-        //    ViewBag.Shipper = atwdetail.cShipper;
-        //    ViewBag.BookingNo = atwdetail.bkNo;
-        //    ViewBag.ContactPerson = atwdetail.conPerson;
-        //    ViewBag.IssueDate = atwdetail.iDate;
-        //    ViewBag.ExpiryDate = atwdetail.eDate;
-        //    ViewBag.ConvanSize = bkdetail.csize;
-        //    ViewBag.ConvanStatus = bkdetail.cstatus;
-
-        //    return View("ForPrint", trndetail);
-        //}
+        
         public FileResult DisplayATWReport(string ATWBKNO, string TRANSNO)
         {
             ReportDocument rd = new ReportDocument();
@@ -432,27 +426,23 @@ namespace AdminLteMvc.Controllers
             return File(stream, "application/pdf");
         }
 
-        public ActionResult ATWViewDetails (string transNo, string atwBkNo)
+       public ActionResult ATWViewDetails (string transNo, string atwBkNo)
        {
             ViewBag.TRANSNO = transNo;
             ViewBag.ATWBKNO = atwBkNo;
             return View("ATWViewDetails");
         }
-
-        //Cancel
-        public ActionResult cancelATW(int Id)
+        [HttpPost]
+        public JsonResult checkDataforConfirmingConvan(int atwID, string tran1, string tran2)
         {
-            string userid = User.Identity.GetUserId();
-            var atws = db.ATW.Where(a => a.atwID == Id).FirstOrDefault();
-            //atws.atwID = userid;
-            atws.atwStatus = "InActive";
-            atws.dateChange = DateTime.Now;
-            atws.userId = userid;
-            //atws.eDate = DateTime.Now;
-            db.SaveChanges();
-
-            ViewBag.Message = "Cancel Successfully";
-            return Json(new { status = "Success" });
+            var checkData = db.TransactionDetails.Where(a => a.atwID == atwID).ToList();
+            int cnt = 0;
+            foreach (var item in checkData)
+            {
+                if (item.confirmStatus == null)
+                    cnt = 1;
+            }
+            return new JsonResult { Data = new { cnt = cnt, TransactionDetails = checkData } };
         }
     }
 }

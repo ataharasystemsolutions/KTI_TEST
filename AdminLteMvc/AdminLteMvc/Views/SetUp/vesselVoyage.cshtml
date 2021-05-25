@@ -1,0 +1,439 @@
+﻿@model AdminLteMvc.Models.WEBSales.Vessel
+@{
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <!-- Custom Tabs (Pulled to the right) -->
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs pull-right">
+                <li><a id="vl" href="#tab_1_1" data-toggle="tab">Voyage Leg</a></li>
+                <li><a id="vn" href="#tab_2-2" data-toggle="tab">Voyage No</a></li>
+                <li class="active"><a href="#tab_3-2" data-toggle="tab">Vessels</a></li>
+                <li class="pull-left header"><i class="fa fa-th"></i> Vessel Voyage Set Up</li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane " id="tab_1_1">
+                    <div class="row">
+                        <!-- left column -->
+                        <div class="col-md-3">
+                            <!-- general form elements -->
+                            <div class="box box-primary">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Voyage Leg Form</h3>
+                                </div>
+                                <!-- /.box-header -->
+                                <!-- form start -->
+
+                                <div class="box-body">
+                                    <div class="form-group">
+                                        <label for="Vessel"><span style=" color:red;">*</span>Vessel Name</label>
+                                        <select id="VesselLeg" class="form-control">
+                                            <option value="0">Select</option>
+                                            @{
+                                                foreach (var item in ViewBag.vList)
+                                                {
+                                                    <option value="@item.Value">@item.Text</option>
+                                                }
+                                            }
+                                        </select>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="voyageNo"><span style=" color:red;">*</span>Voyage No</label>
+                                        <select id="ddlVoyageNo" class="form-control">
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="voyageLeg"><span style=" color:red;">*</span>Voyage Leg</label>
+                                        <input type="text" class="form-control" id="txt_VoyageLeg" placeholder="Voyage Leg">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="portOrigin"><span style=" color:red;">*</span>Port of Origin</label>
+                                        <select id="ddlportOrigin" class="form-control">
+                                            <option value="0">Select</option>
+                                            @{
+                                                foreach (var item in ViewBag.locList)
+                                                {
+                                                    <option value="@item.Value">@item.Text</option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="portDestination"><span style=" color:red;">*</span>Port of Destination</label>
+                                        <select id="ddlportDestination" class="form-control">
+                                            <option value="0">Select</option>
+                                            @{
+                                                foreach (var item in ViewBag.locList)
+                                                {
+                                                    <option value="@item.Value">@item.Text</option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- /.box-body -->
+                                <div class="box-footer">
+                                    <button type="button" id="submitVNL" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
+                            <!-- /.box -->
+                        </div>
+                        <!--/.col (left) -->
+                        <!-- right column -->
+                        <div class="col-md-9">
+                            <div class="box box-success">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Voyage Number Lists</h3>
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body">
+                                    <table id="example3" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Vessel Name</th>
+                                                <th>Mnemonic</th>
+                                                <th>Voyage No</th>
+                                                <th>Voyage Leg</th>
+                                                <th>Port of Origin</th>
+                                                <th>Port of Destination</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            @{
+                                                foreach (var item in ViewBag.vnl)
+                                                {
+                                                    <tr id="row_@item.vesselID">
+                                                        <td>@item.vesselName</td>
+                                                        <td>@item.vesselMnemonic</td>
+                                                        <td>@item.voyageNo</td>
+                                                        <td>@item.category</td>
+                                                        <td>@item.portOrigin</td>
+                                                        <td>@item.portDestination</td>
+                                                    </tr>
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /.box -->
+                        </div>
+                        <!--/.col (right) -->
+                    </div>
+                </div>
+                <!-- /.tab-pane -->
+                <div class="tab-pane" id="tab_2-2">
+                    <div class="row">
+                        <!-- left column -->
+                        <div class="col-md-3">
+                            <!-- general form elements -->
+                            <div class="box box-primary">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Voyage Form</h3>
+                                </div>
+                                <!-- /.box-header -->
+                                <!-- form start -->
+
+                                <div class="box-body">
+                                    <div class="form-group">
+                                        <label for="Vessel"><span style=" color:red;">*</span>Vessel Name</label>
+                                        <select id="Vessel" class="form-control">
+                                            <option value="0">Select</option>
+                                            @{
+                                                foreach (var item in ViewBag.vList)
+                                                {
+                                                    <option value="@item.Value">@item.Text</option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="voyageNo"><span style=" color:red;">*</span>Voyage No</label>
+
+                                        <input type="text" class="form-control" id="txt_VoyageNo" placeholder="Voyage No">
+                                    </div>
+                                </div>
+                                <!-- /.box-body -->
+                                <div class="box-footer">
+                                    <button type="button" id="submitVN" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
+                            <!-- /.box -->
+                        </div>
+                        <!--/.col (left) -->
+                        <!-- right column -->
+                        <div class="col-md-9">
+                            <div class="box box-success">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Voyage Number Lists</h3>
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body">
+                                    <table id="example2" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Vessel Name</th>
+                                                <th>Mnemonic</th>
+                                                <th>Voyage No</th>
+                                                <th>Status</th>
+                                                <th>Transaction Number</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            @{
+                                                foreach (var item in ViewBag.vn)
+                                                {
+                                                    <tr id="row_@item.vesselID">
+                                                        <td>@item.vesselName</td>
+                                                        <td>@item.vesselMnemonic</td>
+                                                        <td>@item.voyageNo</td>
+                                                        <td>@item.status</td>
+                                                        <td>@item.transactionNumber</td>
+
+                                                    </tr>
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /.box -->
+                        </div>
+                        <!--/.col (right) -->
+                    </div>
+                </div>
+                <!-- /.tab-pane -->
+                <div class="tab-pane active" id="tab_3-2">
+                    <div class="row">
+                        <!-- left column -->
+                        <div class="col-md-3">
+                            <!-- general form elements -->
+                            <div class="box box-primary">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Vessel Form</h3>
+                                </div>
+                                <!-- /.box-header -->
+                                <!-- form start -->
+                                @using (Html.BeginForm("saveVessel", "SetUp", FormMethod.Post))
+                                {
+                                    <div class="box-body">
+                                        <div class="form-group">
+                                            <label for="vesselName"><span style=" color:red;">*</span>Vessel Name</label>
+                                            @Html.EditorFor(model => model.vesselName, new { htmlAttributes = new { @class = "form-control", id = "txt_vesselName", placeholder = "Vessel Name" } })
+                                            @*<input type="text" class="form-control" id="txt_vesselName" placeholder="Vessel Name">*@
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="vesselMnemonic"><span style=" color:red;">*</span>Vessel Mnemonic</label>
+                                            @Html.EditorFor(model => model.vesselMnemonic, new { htmlAttributes = new { @class = "form-control", id = "txt_vesselMnemonic", placeholder = "Vessel Mnemonic" } })
+                                            @*<input type="text" class="form-control" id="txt_vesselMnemonic" placeholder="Vessel Mnemonic">*@
+                                        </div>
+                                    </div>
+                                    <!-- /.box-body -->
+                                    <div class="box-footer">
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                }
+                            </div>
+                            <!-- /.box -->
+                        </div>
+                        <!--/.col (left) -->
+                        <!-- right column -->
+                        <div class="col-md-9">
+                            <div class="box box-success">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Vessel Lists</h3>
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body">
+                                    <table id="example1" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Vessel Name</th>
+                                                <th>Mnemonic</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            @{
+                                                foreach (var item in ViewBag.vesselList)
+                                                {
+                                                    <tr id="row_@item.vesselID">
+                                                        <td>@item.vesselName</td>
+                                                        <td>@item.vesselMnemonic</td>
+                                                    </tr>
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /.box -->
+                        </div>
+                        <!--/.col (right) -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+        </div>
+        <!-- nav-tabs-custom -->
+    </div>
+    <!-- /.row -->
+    <!-- END CUSTOM TABS -->
+</div>
+@{
+    var succ = TempData["Message"];
+    if (succ == "Saved")
+    {
+        <script type="text/javascript">
+            $(function () {
+                $.notify("Saved successfully.", "success");
+            });
+        </script>
+    }
+    if (succ == "Failed")
+    {
+        <script type="text/javascript">
+            $(function () {
+                $.notify("Please fill in all feild has asterisk(*).", "error");
+            });
+        </script>
+    }
+    if (succ == "Exist")
+    {
+        <script type="text/javascript">
+            $(function () {
+                $.notify("Data is already Exist.", "error");
+            });
+        </script>
+    }
+    if (TempData["Tab"] == "vn")
+    {
+        <script type="text/javascript">
+            $(function () {
+                $("#vn").click()
+            });
+        </script>
+    }
+    if (TempData["Tab"] == "vl")
+    {
+        <script type="text/javascript">
+            $(function () {
+                $("#vl").click()
+            });
+        </script>
+    }
+}
+@section Scripts{
+    <script src="~/Scripts/bootstap-toggle.js"></script>
+
+    <!-- page script -->
+    <script>
+        $(function () {
+            $('.select2').select2()
+
+            $('#example1').DataTable()
+            $('#example2').DataTable()
+            $('#example3').DataTable({
+                'paging': true,
+                'lengthChange': true,
+                'searching': true,
+                'ordering': true,
+                'info': true,
+                'autoWidth': false
+            })
+            $('#submitVN').click(function () {
+                var vesselID = document.getElementById('Vessel').value;
+                var vn = $("#txt_VoyageNo").val();
+                var isValid = true;
+                console.log(vn);
+                console.log(vesselID);
+                if (vesselID == 0 || vn.length == 0) {
+                    isValid = false;
+                    $.notify("Please fill in all feild has asterisk(*).", "error");
+                }
+                if (isValid) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/SetUp/saveVoyageNO",
+                        data: { Id: vesselID, vn: vn },
+                        success: function (result) {
+                            window.location.href = '/SetUp/VesselVoyage'
+                        }
+                    })
+                }
+
+            })
+            $("#VesselLeg").change(function () {
+                var vesselID = $("#VesselLeg").val();
+                $.ajax({
+                    type: "POST",
+                    url: "/SetUp/getVoyage",
+                    data: { Id: vesselID },
+                    success: function (result) {
+                        var voyageList = result.voyageN
+                        $("#ddlVoyageNo").empty();
+                        $("#ddlVoyageNo").append(new Option("Select", "0"));
+                        result.voyageN.forEach(function (value) {
+                            var o = new Option(value.voyageNo, value.voyageID);
+                            $("#ddlVoyageNo").append(o);
+                        })
+                    }
+                })
+            })
+
+            $('#submitVNL').click(function () {
+                var voyageId = $("#ddlVoyageNo").val();
+                var voyageLeg = $("#txt_VoyageLeg").val();
+                var origin1 = document.getElementById("ddlportOrigin");
+                var origin2 = origin1.options[origin1.selectedIndex].text;
+
+                var destination1 = document.getElementById("ddlportDestination");
+                var destination2 = destination1.options[destination1.selectedIndex].text;
+
+                var isValid = true;
+                if (voyageId == 0 || voyageLeg.length == 0 || origin2 == "Select" || destination2 == "Select") {
+                    isValid = false;
+                    $.notify("Please fill in all feild has asterisk(*).", "error");
+                }
+                if (isValid) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/SetUp/saveVoyageLeg",
+                        data: { voyageId: voyageId, voyageLeg: voyageLeg, origin: origin2, destination: destination2 },
+                        success: function (result) {
+                            window.location.href = '/SetUp/VesselVoyage'
+                        }
+                    })
+                }
+
+
+            })
+
+        });
+    </script>
+}
+<style>
+    table.dataTable thead .sorting:after {
+        opacity: 0.2;
+        content: "";
+    }
+
+    table.dataTable thead .sorting_asc:after {
+        content: "";
+    }
+
+    .modal-lg {
+        width: 1200px;
+    }
+</style>
+

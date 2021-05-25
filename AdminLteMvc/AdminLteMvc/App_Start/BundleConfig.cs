@@ -20,8 +20,8 @@ namespace AdminLteMvc
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js",
-                      "~/Scripts/bootstrap-select.js",
+                      //"~/Scripts/bootstrap.js",
+                      //"~/Scripts/bootstrap-select.js",
                         "~/Scripts/notify.js",
                       "~/Scripts/respond.js"));
 

@@ -12,24 +12,23 @@
 
         <div id="demoContent">
             @(Html.Awe().Grid("ApiDemoGrid")
-          .Mod(o => o.PageInfo().PageSize().ColumnsSelector())
-          .Columns(new[]{
-              new Column{Bind = "atwBkNo", Header = "ATW No"},
-              new Column{Bind = "iDate", Header = "Issue Date"},
-              new Column{Bind = "eDate",Header = "Expiry Date"},
-              new Column{Bind = "transactionno1", Header = "Transaction No 1"},
-              new Column{Bind = "convanno1", Header = "ConVan No 1"},
-              new Column{Bind = "shipperno1", Header = "Shipper No 1"},
-              new Column{Bind = "transactionno2", Header = "Transaction No 2"},
-              new Column{Bind = "convanno2", Header = "ConVan No 2"},
-              new Column{Bind = "shipperno2", Header = "Shipper No 2"},
-              new Column{Bind = "aTrucker",Header = "Authorized Trucker"},
-              new Column{Bind = "aDriver",Header = "Authorized Driver"},
-              new Column{Bind = "plateNo",Header = "Truck Plate No"},
-              new Column{Bind = "remarks",Header = "Remarks"},
-              new Column{Bind = "userId",Header = "Changed By"},
-              new Column{Bind = "dateChange",Header = "Date Changed"}
-          })
+              .Mod(o => o.PageInfo().PageSize().ColumnsSelector())
+              .Columns(new[]{
+                  new Column{Bind = "atwStatus", Header = "Status", Width=200 },
+                  new Column{Bind = "atwBkNo", Header = "ATW No" },
+                  new Column{Bind = "iDate", Header = "Issue Date" },
+                  new Column{Bind = "eDate", Header = "Expiry Date" },
+                  new Column{Bind = "transactionno1", Header = "Transaction No 1" },
+                  new Column{Bind = "convanno1", Header = "ConVan No 1" },
+                  new Column{Bind = "shipperno1", Header = "Shipper No 1" },
+                  new Column{Bind = "transactionno2", Header = "Transaction No 2" },
+                  new Column{Bind = "convanno2", Header = "ConVan No 2" },
+                  new Column{Bind = "shipperno2", Header = "Shipper No 2" },
+                  new Column{Bind = "aTrucker", Header = "Authorized Trucker" },
+                  new Column{Bind = "aDriver", Header = "Authorized Driver" },
+                  new Column{Bind = "plateNo", Header = "Truck Plate No" },
+                  new Column{Bind = "remarks", Header = "Remarks" }
+              })
               .Resizable()
               .Reorderable()
               .Height(350)
@@ -50,127 +49,99 @@
                     </div>
                     <div class="modal-body">
 
-                        <div class="row">
-                            <div class="col-md-4">
-                                <h5><b>Transaction No 1</b></h5>
-                            </div>
-                            <div class="col-md-4">
-                                <h5><b>Shipper No 1</b></h5>
-                            </div>
-                            <div class="col-md-4">
-                                <h5><b>ConVan No 1</b></h5>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <input type="text" class="form-control" id="trn1" readonly>
-                            </div>
-                            <div class="col-md-4">
-                                <input type="text" class="form-control" id="shp1" readonly>
-                            </div>
-                            <div class="col-md-4">
-                                <select id="updtcvno1" class="form-control">
-                                    @*<option value="@Model.convanno1">@Model.convanno1</option>*@
-                                    @{
-                                        foreach (var item in ViewBag.ConVanNoList)
-                                        {
-                                            <option value="@item.Value">@item.Text</option>
-                                        }
-                                    }
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row" id="secondrow">
-                            <div class="col-md-4">
-                                <h5><b>Transaction No 2</b></h5>
-                            </div>
-                            <div class="col-md-4">
-                                <h5><b>Shipper No 2</b></h5>
-                            </div>
-                            <div class="col-md-4">
-                                <h5><b>ConVan No 2</b></h5>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <input type="text" class="form-control" id="trn2" readonly>
-                            </div>
-                            <div class="col-md-4">
-                                <input type="text" class="form-control" id="shp2" readonly>
-                            </div>
-                            <div class="col-md-4">
-                                <select id="updtcvno2" class="form-control">
-                                    @*<option value="@Model.convanno2">@Model.convanno2</option>*@
-                                    @{
-                                        foreach (var item in ViewBag.ConVanNoList)
-                                        {
-                                            <option value="@item.Value">@item.Text</option>
-                                        }
-                                    }
-                                </select>
-                            </div>
-                        </div>
 
-                        @*<input type="text" class="form-control" id="updtcvno1">
-                        <select id="convanno" class="form-control">
-                            <option value="0">-- Select below --</option>
-                            @{
-                                foreach (var item in ViewBag.ConVanNoList)
-                                {
-                                    <option value="@item.Value">@item.Text</option>
-                                }
-                            }
-                        </select>*@
+                        <div id="divTransaction1">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <h5><b>Transaction No 1</b></h5>
+                                </div>
+                                <div class="col-md-4">
+                                    <h5><b>Shipper No 1</b></h5>
+                                </div>
+                                <div class="col-md-4">
+                                    <h5><b>ConVan No 1</b></h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" id="trn1" readonly>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" id="shp1" readonly>
+                                </div>
+                                <div class="col-md-4">
+                                    <select id="updtcvno1" class="form-control">
+                                        @*<option value="@Model.convanno1">@Model.convanno1</option>*@
+                                        @{
+                                            foreach (var item in ViewBag.ConVanNoList)
+                                            {
+                                                <option value="@item.Value">@item.Text</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="divTransaction2">
+                            <div class="row" id="secondrow">
+                                <div class="col-md-4">
+                                    <h5><b>Transaction No 2</b></h5>
+                                </div>
+                                <div class="col-md-4">
+                                    <h5><b>Shipper No 2</b></h5>
+                                </div>
+                                <div class="col-md-4">
+                                    <h5><b>ConVan No 2</b></h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" id="trn2" readonly>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" id="shp2" readonly>
+                                </div>
+                                <div class="col-md-4">
+                                    <select id="updtcvno2" class="form-control">
+                                        @*<option value="@Model.convanno2">@Model.convanno2</option>*@
+                                        @{
+                                            foreach (var item in ViewBag.ConVanNoList)
+                                            {
+                                                <option value="@item.Value">@item.Text</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success" id="proceed" data-dismiss="modal"><i class="fa fa-arrow-circle-o-right"></i>Update and Proceed</button>
+                        </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-success" id="proceed" data-dismiss="modal"><i class="fa fa-arrow-circle-o-right"></i>Update and Proceed</button>
-                    </div>
-                </div>
             </div>
         </div>
-
-        <!-- cancellation -->
-        <div class="modal fade" id="modalCancel" data-backdrop="static">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <a href="#" class="close" data-dismiss="modal">&times;</a>
-                        <h3 class="modal-title">CANCEL</h3>
-                    </div>
-                    <div class="modal-body">
-                        <h4>Are you sure you want to continue?</h4>
-                    </div>
-                    <div class="modal-footer">
-                        <a href="#" class="btn btn-default" data-dismiss="modal">NO</a>
-                        <a href="#" class="btn btn-success" id="cancelATW" >OK</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <input type="hidden" id="hiddenEmployeeId" />
     </div>
-
     <div class="box-footer">
         <button type="button" id="addnew" class="btn btn-primary" onclick="location.href = '@Url.Action("Create", "ATW")'"> <i class="fa fa-plus-circle fa-1x"></i> Add</button>
         <button type="button" class="btn btn-info" id="view"> <i class="fa fa-search fa-1x"></i> ATW Details</button>
-        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Confirm ConVan</button>
-        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalCancel">Cancel</button>
+        <button type="button" class="btn btn-success" disabled="true" id="confirmConvan">Confirm ConVan</button>
+        <button type="button" class="btn btn-default" disabled="true" id="eirOut">EIR-OUT (Empty Convan)</button>
+        <button type="button" class="btn btn-warning" style=" display:none;" disabled="true" id="cancelATW">Cancel</button>
         @*<button type="button" class="btn btn-default" id="print"> <i class="fa fa-paper-plane-o fa-1x"></i>View Form and Proceed for Print</button>*@
         @*<button type="button" class="btn btn-info" id="edit"> <i class="fa fa-edit fa-1x"></i> Edit Transaction Header</button>*@
         @*<button type="button" class="btn btn-danger" id="cancel"> <i class="fa fa-close fa-1x"></i> Cancel Transaction </button>*@
     </div>
 </div>
-
+<a id="popConvanNo" data-toggle="modal" data-target="#myModal"></a>
 <link href="~/Content/bootstrap-toggle.css" rel="stylesheet" />
 @section Scripts{
     <script src="~/Scripts/bootstap-toggle.js"></script>
 
     <script type="text/javascript">
 
-
         $("#updtcvno1").chosen({ width: "255px" });
         $("#updtcvno2").chosen({ width: "255px" });
-
         $(function () {
 
             $('#ApiDemoGrid').on('awerender', function () {
@@ -188,20 +159,43 @@
             });
 
             var lastSelectedIds;
+            var canvanNo1;
+            var canvanNo2;
+            var atwStatus;
+            var tran1;
+            var tran2;
             $('#ApiDemoGrid').on('aweselect', function () {
                 lastSelectedIds = $.map($(this).data('api').getSelection(), function (val) { return val.atwID; });
                 lastSelectedCVNO = $.map($(this).data('api').getSelection(), function (val) { return val.cvno; });
+
+                canvanNo1 = $.map($(this).data('api').getSelection(), function (val) { return val.convanno1; });
+                canvanNo2 = $.map($(this).data('api').getSelection(), function (val) { return val.convanno2; });
+                atwStatus = $.map($(this).data('api').getSelection(), function (val) { return val.atwStatus; });
                 console.log(lastSelectedIds);
                 //document.getElementById('updtcvno').value = lastSelectedCVNO;
-                tran1 = $.map($(this).data('api').getSelection(), function (val) { return val.transactionno1; });
-                ship1 = $.map($(this).data('api').getSelection(), function (val) { return val.shipperno1; });
-                tran2 = $.map($(this).data('api').getSelection(), function (val) { return val.transactionno2; });
-                ship2 = $.map($(this).data('api').getSelection(), function (val) { return val.shipperno2; });
+                tran1 = $.map($(this).data('api').getSelection(), function (val) { return val.transactionno1;});
+                ship1 = $.map($(this).data('api').getSelection(), function (val) { return val.shipperno1;});
+                tran2 = $.map($(this).data('api').getSelection(), function (val) { return val.transactionno2;});
+                ship2 = $.map($(this).data('api').getSelection(), function (val) { return val.shipperno2;});
 
                 document.getElementById('trn1').value = tran1;
                 document.getElementById('shp1').value = ship1;
                 document.getElementById('trn2').value = tran2;
                 document.getElementById('shp2').value = ship2;
+                console.log(canvanNo1[0]);
+                console.log(canvanNo2[0]);
+                if (canvanNo1[0] != "***")
+                {
+                    document.getElementById('updtcvno1').value = canvanNo1[0];
+                    $('#updtcvno1').append($('<option value=' + canvanNo1[0] + '>' + canvanNo1[0]+'</option>'));
+                    console.log("nisod day");
+                }
+                if (canvanNo2[0] != "***")
+                {
+                    $("#updtcvno2").append($("<option></option>").attr("value", canvanNo2[0]).text(canvanNo2[0]));
+                    document.getElementById('updtcvno2').disabled = true;
+                    document.getElementById('updtcvno2').value = canvanNo2[0];
+                }
 
                 if (tran2 == '' && ship2 == '') {
                     $("#trn2").css("display", "none");
@@ -217,14 +211,26 @@
                     $("#updtcvno2_chosen").css("display", "block");
                     $("#secondrow").css("display", "block");
                 }
+
+                if (atwStatus == "Completed")
+                {
+                    document.getElementById("eirOut").disabled = true;
+                    document.getElementById("confirmConvan").disabled = true;
+                }
+                else
+                {
+                    document.getElementById("eirOut").disabled = false;
+                    document.getElementById("confirmConvan").disabled = false;
+                }
             })
 
             $('#proceed').click(function () {
                 var IsValid = true;
+
                 var cvnofixed1 = document.getElementById('updtcvno1').value;
                 var cvnofixed2 = document.getElementById('updtcvno2').value;
 
-                if (cvnofixed2 == 0 || cvnofixed1 == 0)
+                if (cvnofixed2 == 0 && cvnofixed1 == 0)
                 {
                     $.notify("Please select a convan number to procceed this transaction.", "error");
                     IsValid = false;
@@ -234,19 +240,18 @@
                     $.notify("Convan Number should not be the same.", "error");
                     IsValid = false;
                 }
+
                 if (IsValid)
                 {
                     if (lastSelectedIds != null) {
                         if (lastSelectedIds.length != 0)
                         {
-                            if (cvnofixed2 == '')
-                            {
-                                window.location.href = '/EIR/EirPullOut/?ID=' + lastSelectedIds + '&cvno1=' + cvnofixed1 + '&counter=1&cvno2=';
-                            }
-                            else
-                            {
-                                window.location.href = '/EIR/EirPullOut/?ID=' + lastSelectedIds + '&cvno1=' + cvnofixed1 + '&counter=1&cvno2=' + cvnofixed2;
-                            }
+                            if (cvnofixed2.length > 0 && cvnofixed1.length > 0) 
+                                window.location.href = '/EIR/EirPullOut?ID=' + lastSelectedIds + '&cvno1=' + cvnofixed1 + '&counter=1&cvno2=' + cvnofixed2;
+                            if (cvnofixed1.length > 0 && cvnofixed2.length == 0)
+                                window.location.href = '/EIR/EirPullOut?ID=' + lastSelectedIds + '&cvno1=' + cvnofixed1 + '&counter=1&cvno2=';
+                            if (cvnofixed1.length == 0 && cvnofixed2.length > 0)
+                                window.location.href = '/EIR/EirPullOut?ID=' + lastSelectedIds + '&cvno1=&counter=1&cvno2=' + cvnofixed1;
                         }
                         else
                         {
@@ -259,23 +264,52 @@
                     }
                 }
             });
-            $('#cancelATW').click(function () {
-                    var atwID = lastSelectedIds;
-                    console.log(atwID);
-                    $.ajax({
-                        type: "POST",
-                        url: "/ATW/cancelATW",
-                        data: { Id: atwID },
-                        success: function (result) {
-                            $("#modalCancel").modal("hide");
-                            // $("#row_" + atwID).remove();
-                            //$.notify("Cancel successfully.", "success");
-                        }
-                    })
-                }
-            )
 
-          
+            $('#eirOut').click(function () {
+                if (lastSelectedIds != null && lastSelectedIds.length != 0) {
+                    if (atwStatus != "Completed") {
+                        if (canvanNo1 != "***" && canvanNo2 != "***")
+                            window.location.href = '/EIR/EirPullOut?ID=' + lastSelectedIds + '&cvno1=' + canvanNo1 + '&counter=1&cvno2=' + canvanNo2;
+                        if (canvanNo1 != "***" && canvanNo2 == "***")
+                            window.location.href = '/EIR/EirPullOut?ID=' + lastSelectedIds + '&cvno1=' + canvanNo1 + '&counter=1&cvno2=';
+                        if (canvanNo1 == "***" && canvanNo2 != "***")
+                            window.location.href = '/EIR/EirPullOut?ID=' + lastSelectedIds + '&cvno1=&counter=1&cvno2=' + canvanNo2;
+                    }
+                }
+            })
+
+            $('#confirmConvan').click(function () {
+                $.ajax({
+                    type: 'POST',
+                    url: '../../../ATW/checkDataforConfirmingConvan',
+                    dataType: 'json',
+                    data: '{"atwID":"' + lastSelectedIds[0] + '","tran1":"' + tran1[0] + '","tran2":"' + tran2[0]+'"}',
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        if (data.cnt > 0) {
+                            $('#popConvanNo').trigger("click");
+
+                            $.each(data.TransactionDetails, function (key, value) {
+                                if (tran1[0] == value.transactionNo) {
+                                    if (value.convanno != "***")
+                                        $('#divTransaction1').css('display', 'none')
+                                }
+                                if (tran2[0] == value.transactionNo) {
+                                    if (value.convanno != "***")
+                                        $('#divTransaction2').css('display', 'none')
+                                }
+                            });
+                        }
+                       
+                       
+                      
+                    },
+                    error: function (err) {
+                        err.responseText;
+                    }
+                })
+               
+            })
         });
 
         function setContent(o) {
@@ -288,15 +322,6 @@
             return '<input disabled="disabled" type="checkbox" ' + checked + ' class="checkbox-toggle" data-toggle="toggle" data-on="Yes" data-off="No" data-size="small">';
         };
 
-        //cancel ATW
-        var confirmCancel = function (ID) {
-            $("#hiddenEmployeeId").val(ID);
-            $("#modalCancel").modal('show');
-        }
-
-
-        
-        
     </script>
 
 }

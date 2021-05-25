@@ -9,9 +9,12 @@ namespace AdminLteMvc.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
-        }
+            
 
+            AutomaticMigrationsEnabled = true;
+            //AutomaticMigrationDataLossAllowed = false;
+        }
+       
         protected override void Seed(AdminLteMvc.Models.ContextModel context)
         {
             //  This method will be called after migrating to the latest version.

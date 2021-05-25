@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using AdminLteMvc.Models;
 using AdminLteMvc.Models.WEBSales;
 using CrystalDecisions.CrystalReports.Engine;
+using CrystalDecisions.Shared; 
 using Omu.AwesomeMvc;
 
 namespace AdminLteMvc.Controllers
@@ -33,30 +34,50 @@ namespace AdminLteMvc.Controllers
 
             var dateTime = DateTime.Now;
 
-            List<string> ids = new List<string>();
-            var getNoOfBills = db.ProformaBills.AsEnumerable().Select(r => r.proformaBillNo).ToList();
-            var idValue = "";
-            if (getNoOfBills.Count() >= 1)
-            {
-                List<int> idList = new List<int>();
-                foreach (var a in getNoOfBills)
-                {
-                    string eirno = a.Substring(9);
-                    idList.Add(Int32.Parse(eirno));
-                }
-                int[] IDS = idList.ToArray();
-                var biggestID = IDS.Max() + 1;
-                idValue = biggestID.ToString();
-            }
-            else
-            {
-                idValue = "10001";
-            }
+            //List<string> ids = new List<string>();
+            //var getNoOfBills = db.ProformaBills.AsEnumerable().Select(r => r.proformaBillNo).ToList();
+            //var idValue = "";
+            //if (getNoOfBills.Count() >= 1)
+            //{
+            //    List<int> idList = new List<int>();
+            //    foreach (var a in getNoOfBills)
+            //    {
+            //        string eirno = a.Substring(9);
+            //        idList.Add(Int32.Parse(eirno));
+            //    }
+            //    int[] IDS = idList.ToArray();
+            //    var biggestID = IDS.Max() + 1;
+            //    idValue = biggestID.ToString();
+            //}
+            //else
+            //{
+            //    idValue = "10001";
+            //}
+            //ViewBag.ProformaNo = "PBL-" + dateTime.Year + "-" + idValue;
 
-            ViewBag.ProformaNo = "PBL-" + dateTime.Year + "-" + idValue;
+
+            //new update proforma bill number should be editable and mandatory
+            //ViewBag.ProformaNo = "test";
+            var Vessel = db.Vessel.ToList();
+            List<SelectListItem> vessellist = new List<SelectListItem>();
+            vessellist.Clear();
+            vessellist.Add(new SelectListItem { Text = "Select", Value = "0" });
+            foreach (Vessel v in Vessel)
+            {
+                vessellist.Add(new SelectListItem
+                {
+                    Text = v.vesselName.Trim(),
+                    Value = v.vesselID.ToString()
+                });
+            }
+            ViewBag.vessellist = vessellist;
             return View();
         }
-
+        public JsonResult GetVesselNo(int vesselID)
+        {
+            List<VoyageNo> VoyageNoList = db.VoyageNo.Where(s => s.vesselid.Equals(vesselID.ToString())).ToList();
+            return Json(VoyageNoList, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult GetBills(GridParams g, string search)
         {
             var list = db.Database.SqlQuery<Models.Class.proformaBill>("select * from proformaBILL where dataFeild like'%" + search + "%'");
@@ -101,11 +122,12 @@ namespace AdminLteMvc.Controllers
             var getEIR = db.EirPullOut.Where(s => s.EIRONo.Equals(refno)).Single();
             var getbkno = db.ATW.Where(s=>s.atwBkNo.Equals(getEIR.EIROAtwBkNo)).Select(s=>s.bkNo).Single();
             var bkdtls = db.Booking.Where(s=>s.docNum.Equals(getbkno)).Single();
-            var trndetails = db.TransactionDetails.Where(s=>s.docNumber.Equals(getbkno)).First();
+            var trndetails = db.TransactionDetails.Where(s=>s.docNumber.Equals(getbkno)).SingleOrDefault();
             //var ctel = db.TransactionDetails.Where(s => s.docNumber.Equals(getbkno)).Select(s => s.consigneetelno).First();
 
-            var VesselName = getEIR.EIROVessel;
-            var VoyageNo = getEIR.EIROVoyageNo;
+            var VesselName = getEIR.vesselID;
+            var VoyageNo = getEIR.voyageID;
+            var VoyageNoText = getEIR.EIROVoyageNo;
             var Destination = getEIR.EIROPortOfDestination;
             var Shipper = getEIR.EIROShipper;
             var ShippersAddress = bkdtls.shipperAddress;
@@ -119,9 +141,10 @@ namespace AdminLteMvc.Controllers
             //var Price = trndetails.price;
             var Trucker = getEIR.EIROTrucker;
 
-            var result = new { 
-                ven = VesselName, 
-                von = VoyageNo, 
+            var result = new {
+                ven = VesselName,
+                von = VoyageNo,
+                vonText = VoyageNoText,
                 des = Destination, 
                 shpr = Shipper, 
                 shpra = ShippersAddress, 
@@ -136,34 +159,95 @@ namespace AdminLteMvc.Controllers
                 //price = Price
             };
 
-
+            var Vessel = db.Vessel.ToList();
+            List<SelectListItem> vessellist = new List<SelectListItem>();
+            vessellist.Clear();
+            vessellist.Add(new SelectListItem { Text = "Select", Value = "0" });
+            foreach (Vessel v in Vessel)
+            {
+                vessellist.Add(new SelectListItem
+                {
+                    Text = v.vesselName.Trim(),
+                    Value = v.vesselName.Trim()
+                });
+            }
+            ViewBag.vessellist = vessellist;
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
-        public JsonResult SaveBill(ProformaBills bill)
+        public JsonResult SaveBill(Models.Class.saveProforma bill)
         {
+            DbContextTransaction transaction = db.Database.BeginTransaction();
             bool status = false;
-
-            var outeir = db.EirPullOut.Where(s=>s.EIRONo.Equals(bill.proformaBillRefNo)).Single();
-
-            var eirpull = db.EirPullOut.Find(outeir.EIROID);
-            db.EirPullOut.Attach(eirpull);
-            eirpull.EIROStatus = "Proforma";
-            db.Entry(eirpull).Property("EIROStatus").IsModified = true;
-            db.SaveChanges();
-
-            var isValidModel = TryUpdateModel(bill);
-            if (isValidModel)
+            var chk = db.ProformaBills.Where(a => a.proformaBillNo == bill.datParent.proformaBillNo).ToList();
+            if (chk.Count == 0)
             {
-                ProformaBills pb = db.ProformaBills.Add(bill);
-                pb.proformaBillStatus = "Pending";
-                db.SaveChanges();
+                try
+                {
+                    var outeir = db.EirPullOut.Where(s => s.EIRONo.Equals(bill.datParent.proformaBillRefNo)).Single();
+                    var eirpull = db.EirPullOut.Find(outeir.EIROID);
+                    db.EirPullOut.Attach(eirpull);
+                    eirpull.EIROStatus = "Proforma";
+                    db.Entry(eirpull).Property("EIROStatus").IsModified = true;
+                    db.SaveChanges();
 
-                status = true;
+
+                    var voyNo = db.VoyageNo.Where(a => a.transactionNumber == outeir.EIROTransactionNo).ToList();
+                    if (voyNo.Count > 0)
+                    {
+                        if (voyNo.SingleOrDefault().voyageID != bill.datParent.proformaBillVoyageID)
+                        {
+                            var updateVoyageNo = voyNo.SingleOrDefault();
+                            updateVoyageNo.status = "Open";
+                            updateVoyageNo.transactionNumber = "-";
+                            db.SaveChanges();
+
+                            var updateSelectedVoyageNo = db.VoyageNo.Where(a => a.voyageID == bill.datParent.proformaBillVoyageID).First();
+                            updateSelectedVoyageNo.status = "Closed";
+                            updateSelectedVoyageNo.transactionNumber = outeir.EIROTransactionNo;
+                            db.SaveChanges();
+
+                        }
+                    }
+
+
+                    var isValidModel = TryUpdateModel(bill);
+                    if (isValidModel)
+                    {
+                        //save data to proformabills table
+                        ProformaBills pb = db.ProformaBills.Add(bill.datParent);
+                        pb.proformaBillStatus = "Pending";
+                        var ret = db.ProformaBills.Add(pb);
+                        db.SaveChanges();
+
+                        //saving multiple item 
+                        foreach (ProformaBillsItems PBI in bill.data)
+                        {
+                            ProformaBillsItems PBI_save = new ProformaBillsItems();
+                            PBI_save.proformaBillID = ret.proformaBillID;
+                            PBI_save.marks = PBI.marks;
+                            PBI_save.quantity = PBI.quantity;
+                            PBI_save.unit = PBI.unit;
+                            PBI_save.description = PBI.description;
+                            db.ProformaBillsItems.Add(PBI_save);
+                            db.SaveChanges();
+                        }
+                        status = true;
+                    }
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                }
             }
-
-
+            else
+            {
+                transaction.Rollback();
+            }
+          
+          
             return new JsonResult { Data = new { status = status } };
         }
 
@@ -179,7 +263,10 @@ namespace AdminLteMvc.Controllers
         }
         public FileResult DisplayProformaBOLReport(string billNo)
         {
+            string directory = AppDomain.CurrentDomain.BaseDirectory;
             ReportDocument rd = new ReportDocument();
+            //rd.Load("D:/Integration File/Kargamine 4162021/UPDATED/AdminLteMvc-master/AdminLteMvc/AdminLteMvc/Report_Documents/ProformaBillOfLading.rpt");
+            //rd.Load(directory + "/Report_Documents/ProformaBillOfLading.rpt");
             rd.Load(Path.Combine(Server.MapPath(@"~/Report_Documents/ProformaBillOfLading.rpt")));
             string query = String.Format("exec SP_BillOfLadingReportByBillNo '{0}'", billNo.Trim());
             var list = db.Database.SqlQuery<Reports_VM.ProformaVm>(query).ToList();
@@ -198,6 +285,9 @@ namespace AdminLteMvc.Controllers
             stream.Seek(0, SeekOrigin.Begin);
 
             return File(stream, "application/pdf");
+
+            rd.Close();
+            rd.Dispose();
         }
 
 
@@ -218,9 +308,10 @@ namespace AdminLteMvc.Controllers
             var bktype = db.BookingType.ToList();
 
             
-            string query = "select a.vesselMnemonic+'-'+b.voyageNo vesselvoyage,b.voyageID from Vessels a " +
-            "inner join VoyageNoes b on a.vesselID = b.vesselid";
-            var vessel = db.Database.SqlQuery<Models.Class.dataPopulation>(query);
+            //string query = "select a.vesselMnemonic+'-'+b.voyageNo vesselvoyage,b.voyageID from Vessels a " +
+            //"inner join VoyageNoes b on a.vesselID = b.vesselid where b.status='Open' and b.transactionNumber='-'";
+            //var vessel = db.Database.SqlQuery<Models.Class.dataPopulation>(query);
+
             List <SelectListItem> prList = new List<SelectListItem>();
             prList.Clear();
             List<SelectListItem> orgList = new List<SelectListItem>();
@@ -255,19 +346,19 @@ namespace AdminLteMvc.Controllers
             List<SelectListItem> chargeeList = new List<SelectListItem>();
             chargeeList.Clear();
 
-            List<SelectListItem> vesselList = new List<SelectListItem>();
-            vesselList.Clear();
+            //List<SelectListItem> vesselList = new List<SelectListItem>();
+            //vesselList.Clear();
 
 
 
-            foreach (Models.Class.dataPopulation item in vessel)
-            {
-                vesselList.Add(new SelectListItem
-                {
-                    Text = item.vesselvoyage,
-                    Value = item.voyageID.ToString()
-                });
-            }
+            //foreach (Models.Class.dataPopulation item in vessel)
+            //{
+            //    vesselList.Add(new SelectListItem
+            //    {
+            //        Text = item.vesselvoyage,
+            //        Value = item.voyageID.ToString()
+            //    });
+            //}
 
             foreach (PaymentMode item in dbpm)
             {
@@ -376,7 +467,7 @@ namespace AdminLteMvc.Controllers
 
             ViewBag.PaymentMode = paymentList;
             ViewBag.chargeeList = chargeeList;
-            ViewBag.vesselList = vesselList;
+            //ViewBag.vesselList = vesselList;
 
 
             
@@ -442,8 +533,6 @@ namespace AdminLteMvc.Controllers
 
 
         }
-
-
         public ActionResult BillofLading()
         {
             loadable();
@@ -453,19 +542,25 @@ namespace AdminLteMvc.Controllers
         [HttpPost]
         public ActionResult pulledbillladingdata(string refno)
         {
+            
             var list = db.Database.SqlQuery<Models.Class.billoflading_pulled_data>("select * from billoflading_pulled_data where EIRIID ='" + refno + "'");
             return new JsonResult { Data = new { parent = list } };
         }
-        public ActionResult selectvesselvoyage(string refno)
+        public ActionResult selectvesselvoyage(int refno)
         {
-            string query = "select a.vesselName,b.voyageNo from Vessels a " +
-                            "inner join VoyageNoes b on a.vesselID = b.vesselid " +
-                            "where b.voyageID = "+ refno + "";
+            string query = "select a.vesselMnemonic+'-'+b.voyageNo vesselvoyage,b.voyageID,b.status from Vessels a " +
+                            "inner join VoyageNoes b on a.vesselID = b.vesselid ";
+            var list = db.Database.SqlQuery<Models.Class.dataPopulation>(query);
+            return Json(list, JsonRequestBehavior.AllowGet);
+            //return new JsonResult { Data = new { parent = list } };
+        }
+        public ActionResult getVesselVoyage(int refno)
+        {
+            string query = "select a.vesselName, b.voyageNo,b.voyageID,b.status from Vessels a " +
+                            "inner join VoyageNoes b on a.vesselID = b.vesselid where b.voyageID="+refno+" ";
             var list = db.Database.SqlQuery<Models.Class.dataPopulation>(query);
             return new JsonResult { Data = new { parent = list } };
         }
-
-
         public JsonResult saveFinalBill(Models.Class.saveBilloflading bill)
         {
             DbContextTransaction transaction = db.Database.BeginTransaction();
@@ -525,6 +620,25 @@ namespace AdminLteMvc.Controllers
                     infull.EIRIStatus = "Billed";
                     db.SaveChanges();
 
+                    var EIROUT = db.EirPullOut.Where(a => a.EIRONo == eirin.EIRIReferenceNo).Single();
+
+                    var voyNo = db.VoyageNo.Where(a => a.transactionNumber == EIROUT.EIROTransactionNo).ToList();
+                    if (voyNo.Count > 0)
+                    {
+                        if (voyNo.SingleOrDefault().voyageID != bill.datParent.voyageID)
+                        {
+                            var updateVoyageNo = voyNo.SingleOrDefault();
+                            updateVoyageNo.status = "Open";
+                            updateVoyageNo.transactionNumber = "-";
+                            db.SaveChanges();
+
+                            var updateSelectedVoyageNo = db.VoyageNo.Where(a => a.voyageID == bill.datParent.voyageID).First();
+                            updateSelectedVoyageNo.status = "Closed";
+                            updateSelectedVoyageNo.transactionNumber = EIROUT.EIROTransactionNo;
+                            db.SaveChanges();
+
+                        }
+                    }
 
                 }
                 catch (Exception ex)

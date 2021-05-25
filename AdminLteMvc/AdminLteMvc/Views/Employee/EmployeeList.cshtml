@@ -1,0 +1,392 @@
+﻿@model AdminLteMvc.Models.WEBSales.EmployeeMaster
+@{
+    ViewBag.Title = "Employee List";
+    Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-body">
+                <table id="example1" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Id Number</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Job Title</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @{
+                            foreach (var item in ViewBag.Employee)
+                            {
+                                <tr id="row_@item.ID">
+                                    <td>@item.IDNO</td>
+                                    <td>@item.FirstName</td>
+                                    <td>@item.LastName</td>
+                                    <td>@item.JobTitle</td>
+                                    <td>@item.Status</td>
+                                    <td>
+
+                                        @if (item.isUser == false && item.Status == "Active")
+                                        {
+                                            <a onclick="ConfirmDelete(@item.ID)" disabled><i class='fa fa-trash'></i></a>
+                                            <a onclick="setUser(@item.ID)"><i class='fa fa-user-plus'></i></a>
+                                        }
+                                        @if (item.isUser == true && item.Status == "Active")
+                                        {
+                                            <a onclick="ConfirmDelete(@item.ID)" disabled><i class='fa fa-trash'></i></a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+                <button type="button" id="addnew" class="btn btn-primary" data-toggle="modal" data-target="#modal-add"> <i class="fa fa-plus-circle fa-1x"></i> Add </button>
+            </div>
+        </div>
+
+        <!-- /.box -->
+    </div>
+    <!-- /.col -->
+</div>
+<!-- /.row -->
+<!-- /.content -->
+<!-- /.modal -->
+<div class="modal fade" id="modal-add" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">New Employee</h4>
+            </div>
+
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12" >
+                            <div style=" overflow-x: auto;">
+                                <table id="tblEmployee" class="table table-head-fixed text-nowrap" cellpadding="0" cellspacing="0" width="1000px">
+                                    <thead>
+                                        <tr>
+                                            <th>ID Number<span style="color:red">*</span></th>
+                                            <th>First Name<span style="color:red">*</span></th>
+                                            <th>Middle Name<span style="color:red">*</span></th>
+                                            <th>Last Name<span style="color:red">*</span></th>
+                                            <th>Contact #<span style="color:red">*</span></th>
+                                            <th>Email</th>
+                                            @*<th>Branch<span style="color:red">*</span></th>
+                                            <th>Department<span style="color:red">*</span></th>*@
+                                            <th>Job Title<span style="color:red">*</span></th>
+                                            @*<th>Action</th>*@
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td><input type="text" id="txtIDno" class="form-control" /></td>
+                                            <td><input type="text" id="txtFname" class="form-control" /></td>
+                                            <td><input type="text" id="txtMname" class="form-control" /></td>
+                                            <td><input type="text" id="txtLname"  class="form-control"/></td>
+                                            <td><input type="text" id="txtContact" class="form-control"/></td>
+                                            <td><input type="text" id="txtEmail" class="form-control"/></td>
+                                            @*<td>
+                                                <select id="Branch" class="form-control">
+                                                    <option value="0">Select</option>
+                                                    @{
+                                                        foreach (var item in ViewBag.BranchList)
+                                                        {
+                                                            <option value="@item.Value">@item.Text</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select id="Department" class="form-control">
+                                                    <option value="0">Select</option>
+                                                    @{
+                                                        foreach (var item in ViewBag.DepartmentList)
+                                                        {
+                                                            <option value="@item.Value">@item.Text</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </td>*@
+                                            <td>
+                                                <select id="JobTitle" class="form-control">
+                                                    <option value="0">Select</option>
+                                                    @{
+                                                        foreach (var item in ViewBag.JobTitleList)
+                                                        {
+                                                            <option value="@item.Value">@item.Text</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </td>
+                                            @*<td><a id="btnAdd"><i class="fa fa-plus-circle fa-1x"></i></a></td>*@
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            @*<div class="form-group">
+            <label for="convanSize"> Name</label>
+            @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", id = "cySa" } })
+        </div>*@
+                        </div>
+                        <!-- /.row -->
+                    </div>
+                </div>
+                <!-- /.box -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btnAdd" class="btn btn-success">Add New Row</button>
+                    <button type="submit" id="btnsubmit" class="btn btn-primary">Submit</button>
+                </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="myModal" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title">Delete</h3>
+            </div>
+            <div class="modal-body">
+                <h4>Are you sure you want to CONTINUE?</h4>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+                <a href="#" class="btn btn-success" onclick="DeleteIputtedBy()">Confirm</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="setasUser" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title">Set as User</h3>
+            </div>
+            <div class="modal-body">
+                <h4>Are you sure you want to CONTINUE?</h4>
+
+                <h5 style=" color:red;">If yes? Then select user type!</h5>
+                <select id="userType" class="form-control">
+                    <option value="0">Select</option>
+                    <option value="1">Employee</option>
+                    <option value="2">Admin</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+                <a href="#" class="btn btn-success" onclick="processUser()">Set</a>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="hiddenEmployeeId" />
+@{
+    var succ = TempData["Message"];
+    if (succ == "saved")
+    {
+        <script type="text/javascript">
+            $(function () {
+                $.notify("Saved successfully.", "success");
+            });
+        </script>
+    }
+    if (succ == "failed")
+    {
+        <script type="text/javascript">
+            $(function () {
+                $.notify("Data is already exist.", "error");
+            });
+        </script>
+    }
+}
+@section Scripts{
+    <script src="~/Scripts/bootstap-toggle.js"></script>
+    <!-- page script -->
+    <script>
+        $(function () {
+            $('#example1').DataTable({
+                'paging': true,
+                'lengthChange': true,
+                'searching': true,
+                'ordering': true,
+                'info': true,
+                'autoWidth': false
+            })
+        });
+        $("body").on("click", "#btnAdd", function () {
+            var Isvalid = true;
+            //Reference the Name and Country TextBoxes.
+            var txtIDno = $("#txtIDno").val();
+            var txtFname = $("#txtFname").val();
+            var txtMname = $("#txtMname").val();
+            var txtLname = $("#txtLname").val();
+            var txtContact = $("#txtContact").val();
+            var txtEmail = $("#txtEmail").val();
+            var ddlJobTitle = document.getElementById("JobTitle");
+            var ddlJobTitleselected = ddlJobTitle.options[ddlJobTitle.selectedIndex].text;
+            if (txtIDno.length == 0 || txtFname.length == 0 || txtMname.length == 0 || txtContact.length == 0 || ddlJobTitle.value == 0 ) {
+                Isvalid = false;
+                $.notify("All asterisk(*) are required! ","error");
+            }
+            if (Isvalid) {
+                //Get the reference of the Table's TBODY element.
+                var tBody = $("#tblEmployee > TBODY")[0];
+
+                //Add Row.
+                var row = tBody.insertRow(-1);
+
+                var cell = $(row.insertCell(-1));
+                cell.html(txtIDno);
+
+                cell = $(row.insertCell(-1));
+                cell.html(txtFname);
+
+                cell = $(row.insertCell(-1));
+                cell.html(txtMname);
+
+                cell = $(row.insertCell(-1));
+                cell.html(txtLname);
+
+                cell = $(row.insertCell(-1));
+                cell.html(txtContact);
+
+                cell = $(row.insertCell(-1));
+                cell.html(txtEmail);
+
+                cell = $(row.insertCell(-1));
+                cell.html(ddlJobTitleselected);
+
+                //Add Button cell.
+                cell = $(row.insertCell(-1));
+                var btnRemove = $("<a><i class='fa fa-trash'></i></a>");
+                btnRemove.attr("type", "button");
+                btnRemove.attr("onclick", "Remove(this);");
+                cell.append(btnRemove);
+
+
+                //Clear the TextBoxes.
+                $("#txtIDno").val("");
+                 $("#txtFname").val("");
+                 $("#txtMname").val("");
+                 $("#txtLname").val("");
+                $("#txtContact").val("");
+                $("#txtEmail").val("");
+                ddlJobTitle.value = "0";
+            }
+
+        });
+        function Remove(button) {
+            //Determine the reference of the Row using the Button.
+            var row = $(button).closest("TR");
+            //Get the reference of the Table.
+            var table = $("#tblEmployee")[0];
+            //Delete the Table row using it's Index.
+            table.deleteRow(row[0].rowIndex);
+        };
+
+        $("#btnsubmit").click(function () {
+            var data = new Array();
+            $("#tblEmployee TBODY TR").each(function (i) {
+                var row = $(this);
+                var dat = {
+                    IDNO: row.find("TD").eq(0).html(),
+                    FirstName: row.find("TD").eq(1).html(),
+                    MiddleName: row.find("TD").eq(2).html(),
+                    LastName: row.find("TD").eq(3).html(),
+                    Email: row.find("TD").eq(4).html(),
+                    Contact: row.find("TD").eq(5).html(),
+                    JobTitle: row.find("TD").eq(6).html()
+                }
+                data.push(dat);
+            });
+            $.ajax({
+                type: 'POST',
+                url: '../../../Employee/Save',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                success: function (data) {
+                    if (data.status) {
+                        window.location.href = "/Employee/EmployeeList";
+                    }
+                }
+            })
+        })
+
+
+        //delete row and set status to InActive
+        var ConfirmDelete = function (ID) {
+            $("#hiddenEmployeeId").val(ID);
+            $("#myModal").modal('show');
+        }
+        var DeleteIputtedBy = function () {
+            var empId = $("#hiddenEmployeeId").val();
+            $.ajax({
+                type: "POST",
+                url: "/Employee/cancelEmployee",
+                data: { Id: empId },
+                success: function (result) {
+                    $("#myModal").modal("hide");
+                    $("#row_" + empId).remove();
+                    $.notify("Deleted successfully.", "success");
+                }
+            })
+        }
+
+        //set as User
+        var setUser = function (ID) {
+            $("#hiddenEmployeeId").val(ID);
+            $("#setasUser").modal('show');
+        }
+        var processUser = function () {
+            var empId = $("#hiddenEmployeeId").val();
+            var ddlUSRType = document.getElementById("userType");
+            var ddlUSRTypeselected = ddlUSRType.options[ddlUSRType.selectedIndex].text;
+            $.ajax({
+                type: "POST",
+                url: "/Employee/setUser",
+                data: { Id: empId, usrType: ddlUSRTypeselected },
+                success: function (result) {
+                    $("#setasUser").modal("hide");
+                    window.location.href = "/Employee/EmployeeList";
+                    $.notify("Created successfully.", "success");
+                }
+            })
+        }
+
+    </script>
+}
+<style>
+    table.dataTable thead .sorting:after {
+        opacity: 0.2;
+        content: "";
+    }
+
+    table.dataTable thead .sorting_asc:after {
+        content: "";
+    }
+
+    .modal-lg {
+        width: 1200px;
+    }
+</style>
+
+

@@ -50,7 +50,7 @@ namespace AdminLteMvc.Models
     {
         [Required]
         [Display(Name = "User name")]
-        public string UserCode { get; set; }
+        public string UserName { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

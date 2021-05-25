@@ -65,6 +65,8 @@ namespace AdminLteMvc.Models.WEBSales
         public string consize { get; set; }
         public string chargee { get; set; }
         public string convanno { get; set; }
-
+        public int atwID { get; set; }
+        public string outStatus { get; set; }
+        public string confirmStatus { get; set; }
     }
 }

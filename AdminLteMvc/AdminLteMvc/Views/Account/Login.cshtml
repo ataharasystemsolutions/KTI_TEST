@@ -2,83 +2,65 @@
 @model LoginViewModel
 @{
     ViewBag.Title = "Log in";
+    Layout = null;
 }
-<title>Login</title>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
 
-<link href="~/Content/Login.css" rel="stylesheet" type="text/css" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>AdminLTE 2 | Log in</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="~/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/bower_components/font-awesome/css/font-awesome.min.css">
+    <!-- Theme style -->
+    <link href="~/Content/AdminLTE/AdminLTE.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+</head>
+<body class="hold-transition login-page">
+    <div class="login-box">
 
-@using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-{
-    @Html.AntiForgeryToken()
+        <div class="login-box-body">
+            <div class="form-group">
+                @*<a href="~/AdminLte/Index" class="logo"><b><h2>Logistics</h2></b><h4>Panel</h4></a>*@
+                <img src="../Content/logo/Logo.png" style="width:260px;height:50px" />
+            </div>
 
+            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="form-group has-feedback">
+                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "Username", id = "userid" })
+                    @*<input type="email" class="form-control" placeholder="Email">*@
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password", id = "passcode" })
+                    @*<input type="password" class="form-control" placeholder="Password">*@
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                </div>
+                <div class="row">
+                    <div class="col-xs-8">
 
-    <div id="login">
-                        
-                        <div class="form-horizontal">
-                            <div class="form-group">
-                                <img src="../Content/logo/logoedu.jpg" style="width:260px;height:50px" />
-                            </div>
-                            <div class="form-group">
-                                @Html.TextBoxFor(m => m.UserCode, new { @class = "form-control", @placeholder = "Username",id="userid" })
-                                
-                            </div>
-                            <div class="form-group">
-                                @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password",id="passcode" })
-                            
-                            </div>
-                        </div>
-                        <p><input type="submit" value="Login" class="btn btn-primary" id="logon"></p>
-
-                       @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                        
-    </div>
-
-
-
-}
-
-
-
-        <style>
-            #login {
-            padding: 25px 45px 45px;
-            width: 380px;
-            margin: 150px auto;
-                background-color: #fff;
-                border: 1px solid rgba(0,0,0,0.1);
-                border-radius: 10px;
-                background:rgba(255,255,255,1);
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-xs-4">
+                        <input type="submit" value="Login" class="btn btn-warning btn-block btn-flat" id="logon">
+                    </div>
+                    <!-- /.col -->
+                </div>
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             }
 
-        input[type="submit"] {
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            font-family: inherit;
-            height: 40px;
-            text-transform: uppercase;
-            width: 300px;
-            -webkit-appearance:none;
-        }
+        </div>
+        <!-- /.login-box-body -->
+    </div>
+    <!-- /.login-box -->
+</body>
+</html>
 
-        input[type="text"], input[type="password"] {
-            border-radius: 3px;
-            font-family: inherit;
-            font-size: 14px;
-            height: 40px;
-            outline: none;
-            padding: 0px 10px;
-            margin-left: 17px;
-            width: 300px;
-            -webkit-appearance: none;
-        }
-
-        img{
-            margin-left:17px;
-        }
-
-
-
-
-
-</style>

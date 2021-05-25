@@ -22,11 +22,11 @@ namespace AdminLteMvc.Controllers
         {
             return View(db.AccomInvoices.ToList());
         }
-
+        
         public ActionResult GetList(GridParams g, string search)
         {
             string user = User.Identity.Name;
-            var userbranch = db.Users.FirstOrDefault(o => o.UserID == user).Branch;
+            var userbranch = db.Users.FirstOrDefault(o => o.EmpID == user).Password;
 
             var list = db.AccomInvoices.Where(o => (o.CardCode.Contains(search) || o.CardName.Contains(search) || o.Project.Equals(search)) && o.Project == userbranch).AsQueryable();
             return Json(new GridModelBuilder<Models.WEBSales.AccomInvoice>(list, g)
@@ -516,22 +516,22 @@ namespace AdminLteMvc.Controllers
         public ActionResult Create()
         {
 
-            string user = User.Identity.Name;
-            var userbranch = db.Users.FirstOrDefault(o => o.UserID == user).Branch;
+            //string user = User.Identity.Name;
+            //var userbranch = db.Users.FirstOrDefault(o => o.UserID == user).Branch;
 
 
-            var branch_pricelst = db.PriceListBranches.Where(o => o.PrjCode == userbranch).Select(o => o.PriceListID).ToList();
+            //var branch_pricelst = db.PriceListBranches.Where(o => o.PrjCode == userbranch).Select(o => o.PriceListID).ToList();
 
-            var pricelist = (from n in db.PriceLists.Where(o => o.Validfrom <= DateTime.Today && o.Validto >= DateTime.Today && branch_pricelst.Contains(o.PriceListID)).DefaultIfEmpty()
-                             select n
-                            ).ToList();
+            //var pricelist = (from n in db.PriceLists.Where(o => o.Validfrom <= DateTime.Today && o.Validto >= DateTime.Today && branch_pricelst.Contains(o.PriceListID)).DefaultIfEmpty()
+            //                 select n
+            //                ).ToList();
 
-            ViewBag.PriceList = new SelectList(pricelist, "PriceListID", "PriceListName");
-            ViewBag.Branch = userbranch;
+            //ViewBag.PriceList = new SelectList(pricelist, "PriceListID", "PriceListName");
+            //ViewBag.Branch = userbranch;
 
-            int? docentry = 0;
-            docentry = db.AccomInvoices.Max(u => (int?)u.DocNum) == null ? 0 : db.AccomInvoices.Max(u => (int?)u.DocNum);
-            ViewBag.DocNum = docentry + 1;
+            //int? docentry = 0;
+            //docentry = db.AccomInvoices.Max(u => (int?)u.DocNum) == null ? 0 : db.AccomInvoices.Max(u => (int?)u.DocNum);
+            //ViewBag.DocNum = docentry + 1;
             return View();
         }
 

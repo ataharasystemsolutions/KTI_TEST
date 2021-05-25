@@ -127,42 +127,49 @@ namespace AdminLteMvc.Controllers
 
         public ActionResult EirPullOut(int ID, string cvno1, int counter, string cvno2)
         {
-            var atwupdate = db.ATW.Find(ID);
-            ViewBag.ATWID = ID;
-            var dateTime = DateTime.Now;
-            ViewBag.cn1 = cvno1;
-            ViewBag.cn2 = cvno2;
+            DbContextTransaction transaction = db.Database.BeginTransaction();
+            TempData["atwId"] = ID;
+            try {
+                ViewBag.ATWID = ID;
+                var dateTime = DateTime.Now;
+                ViewBag.cn1 = cvno1;
+                ViewBag.cn2 = cvno2;
 
-            if (cvno2.Length != 0)
-            {
-                var tran2 = atwupdate.transactionno2;
-                var gettran2ID = db.TransactionDetails.Where(s => s.transactionNo.Equals(tran2)).Select(s => s.tranID).Single();
-                var trn2update = db.TransactionDetails.Find(gettran2ID);
-                db.TransactionDetails.Attach(trn2update);
-                trn2update.convanno = cvno2;
-                db.Entry(trn2update).Property("convanno").IsModified = true;
+                // get atw transaction and update convanNo
+                var atwupdate = db.ATW.Find(ID);
+                if (cvno1 != "0" && cvno1!="***" && cvno1.Length!=0)
+                    atwupdate.convanno1 = cvno1;
+                if (cvno2 != "0" && cvno2 != "***" && cvno2.Length != 0)
+                    atwupdate.convanno2 = cvno2;
                 db.SaveChanges();
 
 
-                db.ATW.Attach(atwupdate);
-                atwupdate.convanno2 = cvno2;
-                db.Entry(atwupdate).Property("convanno2").IsModified = true;
-                db.SaveChanges();
+                //update transaction 2
+                if (cvno2!="0" && cvno2 != "***" && cvno2.Length != 0)
+                {
+                    var tran2 = atwupdate.transactionno2;
+                    var gettran2ID = db.TransactionDetails.Where(s => s.transactionNo.Equals(tran2)).Select(s => s.tranID).Single();
+                    var trn2update = db.TransactionDetails.Find(gettran2ID);
+                    trn2update.convanno = cvno2;
+                    trn2update.confirmStatus = "Confirmed";
+                    //trn2update.atwID = ID;
+                    db.SaveChanges();
+                }
 
-                db.ATW.Attach(atwupdate);
-                atwupdate.convanno1 = cvno1;
-                db.Entry(atwupdate).Property("convanno1").IsModified = true;
-                db.SaveChanges();
+
+                //update transaction 1
+                if (cvno1 != "0" && cvno1 != "***" && cvno1.Length != 0)
+                {
+                    var tran1 = atwupdate.transactionno1;
+                    var gettran1ID = db.TransactionDetails.Where(s => s.transactionNo.Equals(tran1)).Select(s => s.tranID).Single();
+                    var trn1update = db.TransactionDetails.Find(gettran1ID);
+                    trn1update.convanno = cvno1;
+                    trn1update.confirmStatus = "Confirmed";
+                    db.SaveChanges();
+                }
 
 
-                var tran1 = atwupdate.transactionno1;
-                var gettran1ID = db.TransactionDetails.Where(s => s.transactionNo.Equals(tran1)).Select(s => s.tranID).Single();
-                var trn1update = db.TransactionDetails.Find(gettran1ID);
-                db.TransactionDetails.Attach(trn1update);
-                trn1update.convanno = cvno1;
-                db.Entry(trn1update).Property("convanno").IsModified = true;
-                db.SaveChanges();
-
+                // update convanNo Monitoring
                 var cvn = db.ConVanNo.Where(a => a.convanNo == cvno2 || a.convanNo == cvno1).ToList();
                 if (cvn.Count() > 0)
                 {
@@ -173,6 +180,10 @@ namespace AdminLteMvc.Controllers
                         db.SaveChanges();
                     }
                 }
+                transaction.Commit();
+
+                //get transactionDetails
+                var tranDet = db.TransactionDetails.Where(a => a.atwID == ID && a.outStatus==null && a.confirmStatus=="Confirmed").ToList();
 
                 List<SelectListItem> trns = new List<SelectListItem>();
                 trns.Add(new SelectListItem
@@ -180,151 +191,54 @@ namespace AdminLteMvc.Controllers
                     Text = "Select below",
                     Value = "0"
                 });
-                trns.Add(new SelectListItem
+                foreach (TransactionDetails dt in tranDet)
                 {
-                    Text = tran1,
-                    Value = tran1
-                });
-                trns.Add(new SelectListItem
-                {
-                    Text = tran2,
-                    Value = tran2
-                });
+                    trns.Add
+                    (
+                        new SelectListItem
+                        {
+                            Text = dt.transactionNo,
+                            Value = dt.transactionNo
+                        }
+                    );
+                }
+
+                //assigned ViewBAG to populate data in every dropdown list
                 ViewBag.Trns = trns;
                 ViewBag.CounterNo = counter;
-            }
-            else
-            {
-                ViewBag.CounterNo = 3;
-                db.ATW.Attach(atwupdate);
-                atwupdate.convanno1 = cvno1;
-                db.Entry(atwupdate).Property("convanno1").IsModified = true;
-                db.SaveChanges();
 
+                ViewBag.ATWBkNo = atwupdate.atwBkNo;
+                ViewBag.DateToday = DateTime.Now.ToString("dd/MM/yyyy");
+                ViewBag.TimeToday = DateTime.Now.ToString("h:mm:ss tt");
 
-                var tran1 = atwupdate.transactionno1;
-                var gettran1ID = db.TransactionDetails.Where(s => s.transactionNo.Equals(tran1)).Select(s => s.tranID).Single();
-                var trn1update = db.TransactionDetails.Find(gettran1ID);
-                db.TransactionDetails.Attach(trn1update);
-                trn1update.convanno = cvno1;
-                db.Entry(trn1update).Property("convanno").IsModified = true;
-                db.SaveChanges();
+                List<Vessel> VesselList = db.Vessel.ToList();
+                ViewBag.VesselList = new SelectList(VesselList, "vesselID", "vesselName");
 
-                List<SelectListItem> trn = new List<SelectListItem>();
-                trn.Add(new SelectListItem
+                List<PortOfOrigin> portorgList = db.PortOfOrigin.ToList();
+                ViewBag.OriginList = new SelectList(portorgList, "poiID", "originport");
+
+                List<PortOfDestination> portdestList = db.PortOfDestination.ToList();
+                ViewBag.DestinationList = new SelectList(portdestList, "podID", "destinationport");
+
+                List<SealStatus> sealstatList = db.SealStatus.ToList();
+                ViewBag.SealStatusList = new SelectList(sealstatList, "sealID", "sealstatus");
+
+                var damages = db.DamagesCode.ToList();
+                List<SelectListItem> damageList = new List<SelectListItem>();
+                foreach (DamagesCode item in damages)
                 {
-                    Text = tran1,
-                    Value = tran1
-                });
-
-                ViewBag.Trns = trn;
-
-                ViewBag.IDPassed = ID;
-
-                List<string> ids = new List<string>();
-                var getNoOfEIR = db.EirPullOut.AsEnumerable().Select(r => r.EIRONo).ToList();
-                var idValue = "";
-                if (getNoOfEIR.Count() >= 1)
-                {
-                    List<int> idList = new List<int>();
-                    foreach (var a in getNoOfEIR)
+                    damageList.Add(new SelectListItem
                     {
-                        string eirno = a.Substring(9);
-                        idList.Add(Int32.Parse(eirno));
-                    }
-                    int[] IDS = idList.ToArray();
-                    var biggestID = IDS.Max() + 1;
-                    idValue = biggestID.ToString();
+                        Text = item.damage,
+                        Value = item.damage
+                    });
                 }
-                else
-                {
-                    idValue = "10001";
-                }
-
-                ViewBag.EIRNO = "OUT-" + dateTime.Year + "-" + idValue;
-
-                //var activityInDb = db.Yard.Find(ID);
-
-                ViewBag.ListofTrns = atwupdate.trns;
-
-                //This is for the first transaction
-
-                ViewBag.ConVanNo = trn1update.convanno;
-                //var getATW = db.ATW.Where(s => s.atwBkNo.Equals(activityInDb.yardATWBkNo)).Single();
-                var getBooking = db.Booking.Where(s => s.docNum.Equals(atwupdate.bkNo)).Single();
-
-                ViewBag.ConVanStatus = getBooking.cstatus;
-                ViewBag.ConvanSize = getBooking.csize;
-                ViewBag.Shipper = getBooking.cnameshpr;
-                ViewBag.Trucker = atwupdate.aTrucker;
-                ViewBag.DriversName = atwupdate.aDriver;
-                ViewBag.PlateNo = atwupdate.plateNo;
-
-                var trnfromyrd = atwupdate.trns.Split(',');
-                //List<string> stype = new List<string>();
-
-                ViewBag.ServiceType = db.TransactionDetails.Where(s => s.transactionNo.Equals(trn1update.transactionNo)).Select(s => s.serviceType).Single();
-                ViewBag.RelayPort = db.TransactionDetails.Where(s => s.transactionNo.Equals(trn1update.transactionNo)).Select(s => s.cyEPO).Single();
-                //List<string> cyEPO = new List<string>();
-                List<string> consign = new List<string>();
-                //for (int i = 0; i < 10; i++)
-                //{
-                //    var a = trnfromyrd[i];
-                //var st = db.TransactionDetails.Where(s => s.transactionNo.Equals(a)).Select(s => s.serviceType).Single();
-                //var cyepo = db.TransactionDetails.Where(s => s.transactionNo.Equals(a)).Select(s => s.cyEPO).Single();
-                var c = db.TransactionDetails.Where(s => s.transactionNo.Equals(trn1update.transactionNo)).Select(a => new { a.consignee1, a.consignee2, a.consignee3, a.consignee4, a.consignee5, a.consignee6, a.consignee7, a.consignee8, a.consignee9, a.consignee10 }).ToList();
-
-                consign.Add(c.Select(s => s.consignee1).Single());
-                consign.Add(c.Select(s => s.consignee2).Single());
-                consign.Add(c.Select(s => s.consignee3).Single());
-                consign.Add(c.Select(s => s.consignee4).Single());
-                consign.Add(c.Select(s => s.consignee5).Single());
-                consign.Add(c.Select(s => s.consignee6).Single());
-                consign.Add(c.Select(s => s.consignee7).Single());
-                consign.Add(c.Select(s => s.consignee8).Single());
-                consign.Add(c.Select(s => s.consignee9).Single());
-                consign.Add(c.Select(s => s.consignee10).Single());
-                //stype.Add(st);
-                //cyEPO.Add(cyepo);
-                //consign.Add(cnsgnee);
-                //}
-
-                //ViewBag.ServiceType = string.Join(",", stype);
-                //ViewBag.RelayPort = string.Join(",", cyEPO);
-                //ViewBag.RelayPort = string.Join(",", cyEPO);
-                //ViewBag.Consignee = string.Join(",", consign);
-
-                ViewBag.Consignee = string.Join(",", consign);
+                ViewBag.DamageList = damageList;
             }
-
-            ViewBag.ATWBkNo = atwupdate.atwBkNo;
-            ViewBag.DateToday = DateTime.Now.ToString("dd/MM/yyyy");
-            ViewBag.TimeToday = DateTime.Now.ToString("h:mm:ss tt");
-
-            List<Vessel> VesselList = db.Vessel.ToList();
-            ViewBag.VesselList = new SelectList(VesselList, "vesselID", "vesselName");
-
-            List<PortOfOrigin> portorgList = db.PortOfOrigin.ToList();
-            ViewBag.OriginList = new SelectList(portorgList, "poiID", "originport");
-
-            List<PortOfDestination> portdestList = db.PortOfDestination.ToList();
-            ViewBag.DestinationList = new SelectList(portdestList, "podID", "destinationport");
-
-            List<SealStatus> sealstatList = db.SealStatus.ToList();
-            ViewBag.SealStatusList = new SelectList(sealstatList, "sealID", "sealstatus");
-
-            var damages = db.DamagesCode.ToList();
-            List<SelectListItem> damageList = new List<SelectListItem>();
-            foreach (DamagesCode item in damages)
+            catch (Exception ex)
             {
-                damageList.Add(new SelectListItem
-                {
-                    Text = item.damage,
-                    Value = item.damage
-                });
+                transaction.Rollback();
             }
-            ViewBag.DamageList = damageList;
-
             return View();
         }
 
@@ -333,7 +247,7 @@ namespace AdminLteMvc.Controllers
         {
             var atwupdate = db.ATW.Find(ID);
             var dateTime = DateTime.Now;
-
+           
             ViewBag.CounterNo = 3;
             //db.ATW.Attach(atwupdate);
             //atwupdate.convanno1 = cvno1;
@@ -568,6 +482,11 @@ namespace AdminLteMvc.Controllers
 
         public JsonResult GetVesselNo(int vesselID)
         {
+            List<VoyageNo> VoyageNoList = db.VoyageNo.Where(s => s.vesselid.Equals(vesselID.ToString()) && s.status=="Open" && s.transactionNumber=="-").ToList();
+            return Json(VoyageNoList, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetVesselNoIN(int vesselID)
+        {
             List<VoyageNo> VoyageNoList = db.VoyageNo.Where(s => s.vesselid.Equals(vesselID.ToString())).ToList();
             return Json(VoyageNoList, JsonRequestBehavior.AllowGet);
         }
@@ -577,14 +496,49 @@ namespace AdminLteMvc.Controllers
         public JsonResult Save(EirPullOut data)
         {
             bool status = false;
-            var isValidModel = TryUpdateModel(data);
-            if (isValidModel)
+            int atwID =int.Parse(TempData["atwId"].ToString());
+            int flag = 0;
+            DbContextTransaction transaction = db.Database.BeginTransaction();
+            try
             {
-                db.EirPullOut.Add(data);
+                var isValidModel = TryUpdateModel(data);
+                if (isValidModel)
+                {
+                    //saving new data to EirPullOut table
+                    db.EirPullOut.Add(data);
+                    db.SaveChanges();
+
+                    status = true;
+                }
+                //update table TransactionDetails column outStatus and set to "Pull Out"
+                var trnDetails = db.TransactionDetails.Where(a => a.transactionNo == data.EIROTransactionNo).SingleOrDefault();
+                trnDetails.outStatus = "Pull Out";
                 db.SaveChanges();
-                status = true;
+
+                //trigger the voyage inventory
+
+                if (data.vesselID != 0 && data.voyageID != 0)
+                {
+                    var voyageNo = db.VoyageNo.Where(a => a.voyageID == data.voyageID).First();
+                    voyageNo.status = "Closed";
+                    voyageNo.transactionNumber = data.EIROTransactionNo;
+                    db.SaveChanges();
+                }
+
+                transaction.Commit();
             }
-            return new JsonResult { Data = new { status = status } };
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+            }
+
+            //setting up flaging to know the last item to pullout and it will redirect  into the EIROUT TAB
+            var chkTRNDETAILS = db.TransactionDetails.Where(a => a.atwID == atwID && a.outStatus==null).ToList();
+            if (chkTRNDETAILS.Count > 0)
+                flag = 1;
+
+
+            return new JsonResult { Data = new { status = status,flag=flag } };
         }
 
         public ActionResult EIRReturn(int ID)
@@ -593,8 +547,12 @@ namespace AdminLteMvc.Controllers
 
 
             EirPullOut eirDetails = db.EirPullOut.Find(ID);
+
+            ProformaBills proformaBill = db.ProformaBills.Where(a=>a.proformaBillRefNo==eirDetails.EIRONo).Single();
+            ViewBag.vesselID = proformaBill.proformaBillVesselID;
+            ViewBag.voyageID = proformaBill.proformaBillVoyageID;
+
             var dateTime = DateTime.Now;
-            //ViewBag.DateToday = DateTime.Now.ToString("dd/MM/yyyy");
             ViewBag.TimeToday = DateTime.Now.ToString("h:mm:ss tt");
 
             List<string> ids = new List<string>();
@@ -653,7 +611,7 @@ namespace AdminLteMvc.Controllers
                 vessellist.Add(new SelectListItem
                 {
                     Text = v.vesselName.Trim(),
-                    Value = v.vesselName.Trim()
+                    Value = v.vesselID.ToString()
                 });
             }
             ViewBag.vessellist = vessellist;
@@ -719,17 +677,39 @@ namespace AdminLteMvc.Controllers
                     eirout.EIROStatus = "In";
                     db.Entry(eirout).Property("EIROStatus").IsModified = true;
                     db.SaveChanges();
+
                     var mnc = db.ProformaBills.Where(x => x.proformaBillRefNo == eirout.EIRONo).FirstOrDefault();
                     mnc.proformaBillStatus = "In";
                     db.SaveChanges();
+
+                    var voyNo = db.VoyageNo.Where(a => a.transactionNumber == eirout.EIROTransactionNo).ToList();
+                    if (voyNo.Count > 0)
+                    {
+                        if (voyNo.SingleOrDefault().voyageID != data.voyageID)
+                        {
+                            var updateVoyageNo = voyNo.SingleOrDefault();
+                            updateVoyageNo.status = "Open";
+                            updateVoyageNo.transactionNumber = "-";
+                            db.SaveChanges();
+
+                            var updateSelectedVoyageNo = db.VoyageNo.Where(a => a.voyageID == data.voyageID).First();
+                            updateSelectedVoyageNo.status = "Closed";
+                            updateSelectedVoyageNo.transactionNumber = eirout.EIROTransactionNo;
+                            db.SaveChanges();
+
+                        }
+                    }
+
+
                     status = true;
                 }
                 transaction.Commit();
             }
             catch (Exception ex)
             {
-                return Json("Error occurred. Error details: " + ex.Message);
                 transaction.Rollback();
+                return Json("Error occurred. Error details: " + ex.Message);
+                
             }
             return new JsonResult { Data = new { status = status,   ff=ff } };
         }
@@ -817,6 +797,8 @@ namespace AdminLteMvc.Controllers
             stream.Seek(0, SeekOrigin.Begin);
 
             return File(stream, "application/pdf");
+            rd.Close();
+            rd.Dispose();
         }
 
         public FileResult DisplayEIRIReturnReport(string EIRINo)

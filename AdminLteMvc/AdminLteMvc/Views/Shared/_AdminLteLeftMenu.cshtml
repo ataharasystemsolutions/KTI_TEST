@@ -19,15 +19,16 @@
         <!-- Sidebar user panel -->
         <div class="user-panel">
             <div class="pull-left image">
-                <img src="~/Content/AdminLTE/img/default.png" class="img-circle" alt="User Image" />
+                <img src="~/Content/AdminLTE/img/avatar5.png" class="user-image" alt="User Image">
             </div>
             <div class="pull-left info">
-                @*@{
-                    var userid = User.Identity.GetUserName();
+                @{
+                    int userid = int.Parse(User.Identity.GetUserName());
                     AdminLteMvc.Models.ContextModel db = new AdminLteMvc.Models.ContextModel();
-                    var fullname = db.Users.Where(u => u.UserID == userid).First().UserName;
-                }*@
-                <p>Reymart Fernandez</p>
+                    int empid =int.Parse(db.Users.Where(u => u.ID == userid).First().EmpID);
+                    var emp = db.EmployeeMasters.Where(a => a.ID == empid).First();
+                }
+                <p style=" font-size:9px;">@emp.FirstName @emp.MiddleName @emp.LastName</p>
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
         </div>
@@ -92,17 +93,9 @@
                 <i class="fa fa-angle-left pull-right"></i>
             </a>
             <ul class="treeview-menu">
+                <li><a href="~/Employee/EmployeeList"><i class="fa fa-circle-o"></i> Employee</a></li>
                 <li><a href="~/Users/Index"><i class="fa fa-circle-o"></i> Users</a></li>
-                <li><a href="~/Users/Index"><i class="fa fa-circle-o"></i> Authorization</a></li>
-                <li><a href="~/Users/Index"><i class="fa fa-circle-o"></i> Employee</a></li>
-                <li><a href="~/Users/Index"><i class="fa fa-circle-o"></i> Service Type</a></li>
-                <li><a href="~/Users/Index"><i class="fa fa-circle-o"></i> Rates</a></li>
-                @*<li>
-                    <a href="#"><i class="fa fa-circle-o"></i> Setup <i class="fa fa-angle-left pull-right"></i></a>
-                    <ul class="treeview-menu">
-                        <li><a href="~/PriceLists/Index"><i class="fa fa-circle-o"></i> Price List</a></li>
-                    </ul>
-                </li>*@
+                <li><a href="~/SetUp/vesselVoyage"><i class="fa fa-circle-o"></i> Vessel Voyage Setup</a></li>
             </ul>
         </li>
 
@@ -115,8 +108,27 @@
             <ul class="treeview-menu">
                 <li><a href="~/Booking/Index"><i class="fa fa-circle-o"></i>Booking</a></li>
                 <li><a href="~/ATW/Index"><i class="fa fa-circle-o"></i>ATW</a></li>
-                @*<li><a href="~/Yard/Index"><i class="fa fa-circle-o"></i>YARD</a></li>*@
+                <li><a href="~/EIR/IndexOut"><i class="fa fa-circle"></i>EIR-OUT Empty(CV)</a></li>
+                <li><a href="~/Proforma/Index"><i class="fa fa-circle-o"></i>PROFORMA BL</a></li>
+                <li><a href="~/EIR/IndexIn"><i class="fa fa-circle"></i>EIR-IN Full(CV)</a></li>
+                <li><a href="~/BOL/BL"><i class="fa fa-circle-o"></i>Bill of Lading</a></li>
+                <li><a href="~/OnboardVessel/onboard"><i class="fa fa-circle-o"></i>Onboard Vessel</a></li>
+                <li><a href="~/RequestDelivery/rdSchedule"><i class="fa fa-circle-o"></i>Request Delivery Schedule</a></li>
                 <li>
+                    <a href="#">
+                        <i class="fa fa-circle-o"></i>
+                        <span>CRO</span>
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="~/cro/forapprovalList"><i class="fa fa-circle"></i>For Approval</a></li>
+                        <li><a href="~/cro/croList"><i class="fa fa-circle"></i>Approved</a></li>
+                    </ul>
+                </li>
+                <li><a href="~/EIRD/IndexOutLD"><i class="fa fa-circle"></i>EIR-Delivery</a></li>
+                <li><a href="~/EIRD/IndexInECV"><i class="fa fa-circle"></i>EIR-Return</a></li>
+                @*<li><a href="~/Yard/Index"><i class="fa fa-circle-o"></i>YARD</a></li>*@
+                @*<li>
                     <a href="#">
                         <i class="fa fa-circle-o"></i>
                         <span>EIR</span>
@@ -144,7 +156,7 @@
                     </ul>
                 </li>
             </ul>
-        </li>
+        </li>*@
         @*<li class="treeview">
             <a href="#">
                 <i class="fa fa-laptop"></i> <span>Sales A/R</span>

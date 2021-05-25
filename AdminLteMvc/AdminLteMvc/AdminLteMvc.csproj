@@ -54,9 +54,6 @@
     <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="CrystalDecisions.ReportSource, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="CrystalDecisions.Shared, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="Elmah, Version=1.2.14706.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
@@ -230,12 +227,16 @@
     <Compile Include="Controllers\croController.cs" />
     <Compile Include="Controllers\EIRController.cs" />
     <Compile Include="Controllers\EIRDController.cs" />
+    <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\OnboardVesselController.cs" />
     <Compile Include="Controllers\ProformaController.cs" />
     <Compile Include="Controllers\RequestDeliveryController.cs" />
+    <Compile Include="Controllers\SetUpController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\YardController.cs" />
+    <Compile Include="Functions\Hash.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -667,18 +668,41 @@
     <Compile Include="Migrations\202104150347136_create table cro.Designer.cs">
       <DependentUpon>202104150347136_create table cro.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202105190648558_Test.cs" />
+    <Compile Include="Migrations\202105190648558_Test.Designer.cs">
+      <DependentUpon>202105190648558_Test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202105190750047_Test1.cs" />
+    <Compile Include="Migrations\202105190750047_Test1.Designer.cs">
+      <DependentUpon>202105190750047_Test1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202105190757187_test2.cs" />
+    <Compile Include="Migrations\202105190757187_test2.Designer.cs">
+      <DependentUpon>202105190757187_test2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202105190831009_test3.cs" />
+    <Compile Include="Migrations\202105190831009_test3.Designer.cs">
+      <DependentUpon>202105190831009_test3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202105190853008_test31.cs" />
+    <Compile Include="Migrations\202105190853008_test31.Designer.cs">
+      <DependentUpon>202105190853008_test31.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\Class\ATWDisplay.cs" />
     <Compile Include="Models\Class\billoflading_pulled_data.cs" />
     <Compile Include="Models\Class\BookingTRN.cs" />
     <Compile Include="Models\Class\dataPopulation.cs" />
+    <Compile Include="Models\Class\DisplayonboardVessels.cs" />
     <Compile Include="Models\Class\forapprovalList.cs" />
     <Compile Include="Models\Class\getconsigneeDet.cs" />
     <Compile Include="Models\Class\get_alltrnforRDS.cs" />
+    <Compile Include="Models\Class\onboardVessel.cs" />
     <Compile Include="Models\Class\proformaBill.cs" />
     <Compile Include="Models\Class\pulledCRODATA.cs" />
+    <Compile Include="Models\Class\RequestDeliveryScheduleConsigneeDisplay.cs" />
     <Compile Include="Models\Class\saveBilloflading.cs" />
+    <Compile Include="Models\Class\saveProforma.cs" />
     <Compile Include="Models\Class\tmpBranchPriceList.cs" />
     <Compile Include="Models\Class\tmpIncomingLines.cs" />
     <Compile Include="Models\Class\tmpPriceList.cs" />
@@ -701,6 +725,7 @@
     <Compile Include="Models\WEBSales\Booking.cs" />
     <Compile Include="Models\WEBSales\BookingType.cs" />
     <Compile Include="Models\WEBSales\BPWithHolding.cs" />
+    <Compile Include="Models\WEBSales\Branch.cs" />
     <Compile Include="Models\WEBSales\BranchReceiving.cs" />
     <Compile Include="Models\WEBSales\BranchReceivingLines.cs" />
     <Compile Include="Models\WEBSales\BranchReceivingSN.cs" />
@@ -715,6 +740,7 @@
     <Compile Include="Models\WEBSales\ChangeUnitSN.cs" />
     <Compile Include="Models\WEBSales\ChargeTo.cs" />
     <Compile Include="Models\WEBSales\Comaker.cs" />
+    <Compile Include="Models\WEBSales\Company.cs" />
     <Compile Include="Models\WEBSales\Consignee.cs" />
     <Compile Include="Models\WEBSales\ContainerClass.cs" />
     <Compile Include="Models\WEBSales\ConVanNo.cs" />
@@ -733,6 +759,7 @@
     <Compile Include="Models\WEBSales\CYLocation.cs" />
     <Compile Include="Models\WEBSales\CYSA.cs" />
     <Compile Include="Models\WEBSales\DamagesCode.cs" />
+    <Compile Include="Models\WEBSales\Department.cs" />
     <Compile Include="Models\WEBSales\Destination.cs" />
     <Compile Include="Models\WEBSales\DPInvoice.cs" />
     <Compile Include="Models\WEBSales\DPInvoiceLines.cs" />
@@ -762,9 +789,13 @@
     <Compile Include="Models\WEBSales\InvTransferSN.cs" />
     <Compile Include="Models\WEBSales\ItemGroup.cs" />
     <Compile Include="Models\WEBSales\Items.cs" />
+    <Compile Include="Models\WEBSales\JobTitle.cs" />
     <Compile Include="Models\WEBSales\Mnemonics.cs" />
     <Compile Include="Models\WEBSales\Numbering.cs" />
     <Compile Include="Models\WEBSales\NumberingLines.cs" />
+    <Compile Include="Models\WEBSales\onboardVessel.cs" />
+    <Compile Include="Models\WEBSales\onboardVesselLoadItem.cs" />
+    <Compile Include="Models\WEBSales\onboardVesselVoyageRoute.cs" />
     <Compile Include="Models\WEBSales\Origin.cs" />
     <Compile Include="Models\WEBSales\OtherGoodsIssue.cs" />
     <Compile Include="Models\WEBSales\OtherGoodsIssueLines.cs" />
@@ -783,6 +814,7 @@
     <Compile Include="Models\WEBSales\PriceListBranch.cs" />
     <Compile Include="Models\WEBSales\PriceListLines.cs" />
     <Compile Include="Models\WEBSales\ProformaBills.cs" />
+    <Compile Include="Models\WEBSales\ProformaBillsItems.cs" />
     <Compile Include="Models\WEBSales\Project.cs" />
     <Compile Include="Models\WEBSales\Replacement.cs" />
     <Compile Include="Models\WEBSales\ReplacementLines.cs" />
@@ -859,7 +891,6 @@
     <Content Include="AppFiles\Images\container.PNG" />
     <Content Include="AppFiles\Images\default.png" />
     <Content Include="App_Data\Images\default.png" />
-    <Content Include="App_Readme\Elmah.txt" />
     <Content Include="bower_components\bootstrap-colorpicker\dist\css\bootstrap-colorpicker.css" />
     <Content Include="bower_components\bootstrap-colorpicker\dist\css\bootstrap-colorpicker.min.css" />
     <Content Include="bower_components\bootstrap-colorpicker\dist\img\bootstrap-colorpicker\alpha-horizontal.png" />
@@ -7060,6 +7091,7 @@
     <Content Include="Content\Login.css" />
     <Content Include="Content\logo\kargaminelogo.png" />
     <Content Include="Content\logo\loading_spinner.gif" />
+    <Content Include="Content\logo\Logo.png" />
     <Content Include="Content\logo\logoedu.jpg" />
     <Content Include="Content\themes\black-cab\awem.css" />
     <Content Include="Content\themes\black-cab\AwesomeMvc.css" />
@@ -8472,6 +8504,9 @@
     <Content Include="Views\cro\forapprovalList.cshtml" />
     <Content Include="Views\cro\croList.cshtml" />
     <Content Include="Views\cro\DisplayCRO.cshtml" />
+    <Content Include="Views\Employee\EmployeeList.cshtml" />
+    <Content Include="Views\SetUp\vesselVoyage.cshtml" />
+    <Content Include="Views\OnboardVessel\onboard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
@@ -8806,6 +8841,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202104150347136_create table cro.resx">
       <DependentUpon>202104150347136_create table cro.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105190648558_Test.resx">
+      <DependentUpon>202105190648558_Test.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105190750047_Test1.resx">
+      <DependentUpon>202105190750047_Test1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105190757187_test2.resx">
+      <DependentUpon>202105190757187_test2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105190831009_test3.resx">
+      <DependentUpon>202105190831009_test3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105190853008_test31.resx">
+      <DependentUpon>202105190853008_test31.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Report_Documents\ATWReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

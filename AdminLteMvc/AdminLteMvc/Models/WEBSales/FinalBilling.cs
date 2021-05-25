@@ -39,14 +39,10 @@ namespace AdminLteMvc.Models.WEBSales
         public string timeIssued { get; set; }
         public string placeIssued { get; set; }
         public string BillStatus { get; set; }
-
         public  int userID { get; set; }
         public int lastUserID { get; set; }
         public DateTime? lastdatechange { get; set; }
-
         public string billingReferenceNo { get; set; }
-
-
-
+        public int voyageID { get; set; }
     }
 }

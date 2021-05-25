@@ -178,8 +178,8 @@ namespace AdminLteMvc.Controllers
             var driver = db.EIRIn.Where(s => s.EIRINo.Equals(eirinno)).Select(s => s.EIRIDriversName).Single();
             var plate = db.EIRIn.Where(s => s.EIRINo.Equals(eirinno)).Select(s => s.EIRIPlateNo).Single();
             var relayport = db.EIRIn.Where(s => s.EIRINo.Equals(eirinno)).Select(s => s.EIRIRelayPort).Single();
-            var vessel = db.EIRIn.Where(s => s.EIRINo.Equals(eirinno)).Select(s => s.EIRIVessel).Single();
-            var voyageno = db.EIRIn.Where(s => s.EIRINo.Equals(eirinno)).Select(s => s.EIRIVoyageNo).Single();
+            var vessel = db.FinalBilling.Where(s => s.eirinNo.Equals(eirinno)).Select(s => s.vesselName).Single();
+            var voyageno = db.FinalBilling.Where(s => s.eirinNo.Equals(eirinno)).Select(s => s.voyageNumber).Single();
             var sealno = db.EIRIn.Where(s => s.EIRINo.Equals(eirinno)).Select(s => s.EIRISealNo).Single();
             var sealstatus = db.EIRIn.Where(s => s.EIRINo.Equals(eirinno)).Select(s => s.EIRISealStatus).Single();
             var pog = db.EIRIn.Where(s => s.EIRINo.Equals(eirinno)).Select(s => s.EIRIPortOfOrigin).Single();
@@ -404,72 +404,63 @@ namespace AdminLteMvc.Controllers
         [HttpPost]
         public JsonResult SaveReturnECV(EIRINECV data, int ID)
         {
-            DbContextTransaction transaction = db.Database.BeginTransaction();
             bool status = false;
-            try { 
-                    var isValidModel = TryUpdateModel(data);
-                    if (isValidModel)
-                    {
-                        db.EIRINECV.Add(data);
-                        db.SaveChanges();
 
-                        //Update status in EIR OUT LD
+            var isValidModel = TryUpdateModel(data);
+            if (isValidModel)
+            {
+                db.EIRINECV.Add(data);
+                db.SaveChanges();
 
-                        var eiroID = db.EIROutLD.Where(s => s.eirldno.Equals(data.eirinecvreferenceno)).Select(s => s.eiroID).Single();
-                        var outld = db.EIROutLD.Find(eiroID);
-                        db.EIROutLD.Attach(outld);
-                        outld.eirldstatus = "Returned";
-                        db.Entry(outld).Property("eirldstatus").IsModified = true;
-                        db.SaveChanges();
+                //Update status in EIR OUT LD
 
-                        //Update status in Bill of Lading
+                var eiroID = db.EIROutLD.Where(s => s.eirldno.Equals(data.eirinecvreferenceno)).Select(s => s.eiroID).Single();
+                var outld = db.EIROutLD.Find(eiroID);
+                db.EIROutLD.Attach(outld);
+                outld.eirldstatus = "Returned";
+                db.Entry(outld).Property("eirldstatus").IsModified = true;
+                db.SaveChanges();
 
-                        var bolID = db.FinalBilling.Where(s => s.transactionNo.Equals(data.eirinecvtransactionno)).Select(s => s.billID).Single();
-                        var fb = db.FinalBilling.Find(bolID);
-                        db.FinalBilling.Attach(fb);
-                        fb.BillStatus = "Returned";
-                        db.Entry(fb).Property("BillStatus").IsModified = true;
-                        db.SaveChanges();
+                //Update status in Bill of Lading
 
-                        //Update status in Proforma BL
+                var bolID = db.FinalBilling.Where(s => s.transactionNo.Equals(data.eirinecvtransactionno)).Select(s => s.billID).Single();
+                var fb = db.FinalBilling.Find(bolID);
+                db.FinalBilling.Attach(fb);
+                fb.BillStatus = "Returned";
+                db.Entry(fb).Property("BillStatus").IsModified = true;
+                db.SaveChanges();
 
-                        var pblID = db.ProformaBills.Where(s => s.proformaBillRefNo.Equals(fb.billingReferenceNo)).Select(s => s.proformaBillID).Single();
-                        var pb = db.ProformaBills.Find(pblID);
-                        db.ProformaBills.Attach(pb);
-                        pb.proformaBillStatus = "Returned";
-                        db.Entry(pb).Property("proformaBillStatus").IsModified = true;
-                        db.SaveChanges();
+                //Update status in Proforma BL
 
-                        //Update status in EIR In
+                var pblID = db.ProformaBills.Where(s => s.proformaBillRefNo.Equals(fb.billingReferenceNo)).Select(s => s.proformaBillID).Single();
+                var pb = db.ProformaBills.Find(pblID);
+                db.ProformaBills.Attach(pb);
+                pb.proformaBillStatus = "Returned";
+                db.Entry(pb).Property("proformaBillStatus").IsModified = true;
+                db.SaveChanges();
 
-                        var eirinID = db.EIRIn.Where(s => s.EIRITransactionNo.Equals(data.eirinecvtransactionno)).Select(s => s.EIRIID).Single();
-                        var eirin = db.EIRIn.Find(eirinID);
-                        db.EIRIn.Attach(eirin);
-                        eirin.EIRIStatus = "Returned";
-                        db.Entry(eirin).Property("EIRIStatus").IsModified = true;
-                        db.SaveChanges();
+                //Update status in EIR In
 
-                        //Update status in EIR Out
+                var eirinID = db.EIRIn.Where(s => s.EIRITransactionNo.Equals(data.eirinecvtransactionno)).Select(s => s.EIRIID).Single();
+                var eirin = db.EIRIn.Find(eirinID);
+                db.EIRIn.Attach(eirin);
+                eirin.EIRIStatus = "Returned";
+                db.Entry(eirin).Property("EIRIStatus").IsModified = true;
+                db.SaveChanges();
 
-                        var eiroutID = db.EirPullOut.Where(s => s.EIROTransactionNo.Equals(data.eirinecvtransactionno)).Select(s => s.EIROID).Single();
-                        var eirout = db.EirPullOut.Find(eiroutID);
-                        db.EirPullOut.Attach(eirout);
-                        eirout.EIROStatus = "Returned";
-                        db.Entry(eirout).Property("EIROStatus").IsModified = true;
-                        db.SaveChanges();
+                //Update status in EIR Out
 
-                        //Update Canvan Number Status to Open
-                        var cns = db.ConVanNo.Where(s => s.convanNo.Equals(data.eirinecvconvanno)).SingleOrDefault();
-                        cns.status = "Open";
-                        db.SaveChanges();
+                var eiroutID = db.EirPullOut.Where(s => s.EIROTransactionNo.Equals(data.eirinecvtransactionno)).Select(s => s.EIROID).Single();
+                var eirout = db.EirPullOut.Find(eiroutID);
+                db.EirPullOut.Attach(eirout);
+                eirout.EIROStatus = "Returned";
+                db.Entry(eirout).Property("EIROStatus").IsModified = true;
+                db.SaveChanges();
 
-                        status = true;
-                    }
-                transaction.Commit();
+
+                status = true;
             }
-            catch {
-                transaction.Rollback();
-            }
+
 
             return new JsonResult { Data = new { status = status, eirinno = data.eirinecvno } };
         }

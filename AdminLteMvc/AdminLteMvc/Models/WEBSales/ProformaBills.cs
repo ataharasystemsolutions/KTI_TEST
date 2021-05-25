@@ -50,5 +50,9 @@ namespace AdminLteMvc.Models.WEBSales
         public string PackedAs { get; set; }
         public DateTime? ShipmentDocumentDate { get; set; }
         public string ShipmentDocumentNumber { get; set; }
+
+        public int proformaBillVesselID { get; set; }
+        public int proformaBillVoyageID { get; set; }
+
     }
 }

@@ -91,12 +91,22 @@
                 <tr>
                     <td>
                         <b>VESSEL:</b>
-                        @Html.DropDownListFor(model => model.EIROVessel, (IEnumerable<SelectListItem>)ViewBag.vessellist, new { @class = "form-control select2", id= "EIROVessel" })
+                        <select id="EIROVessel" name="EIROVessel" class="form-control">
+                            @{
+                                foreach (var i in ViewBag.VesselList)
+                                {
+                                    <option value="@i.Value">@i.Text</option>
+                                }
+                            }
+                        </select>
+                        @*@Html.DropDownListFor(model => model.EIROVessel, (IEnumerable<SelectListItem>)ViewBag.vessellist, new { @class = "form-control select2", id = "EIROVessel" })*@
                     </td>
                     <td>
                         <b>VOYAGE NO:</b>
-                       
-                        @Html.EditorFor(model => model.EIROVoyageNo, new { htmlAttributes = new { @class = "form-control", id = "EIROVoyageNo" } })
+                        <select id="EIROVoyageNo" name="EIROVoyageNo" class="form-control select2">
+
+                        </select>
+                        @*@Html.EditorFor(model => model.EIROVoyageNo, new { htmlAttributes = new { @class = "form-control", id = "EIROVoyageNo" } })*@
                     </td>
                     <td>
                         <b><span style=" color:red">*</span>SEAL NO:</b>
@@ -202,27 +212,63 @@
     $("#damagecodes").chosen();
     var icodes = @Html.Raw(Json.Encode(Model.EIRODamagesCode));
     var arrRequire = icodes.split(',');
+    var vesselID = @Html.Raw(Json.Encode(ViewBag.vesselID));
+    var voyNoID = @Html.Raw(Json.Encode(ViewBag.voyageID));
     $("#damagecodes").val(arrRequire).trigger("chosen:updated");
 
+    console.log(vesselID);
+    document.getElementById("EIROVessel").value = vesselID;
+    populateVoyageNo(vesselID, voyNoID);
+
+    $("#EIROVessel").change(function () {
+        var a = document.getElementById("EIROVessel");
+        var vesselselected = a.options[a.selectedIndex].text;
+        var vesselselectedId = a.options[a.selectedIndex].value;
+        console.log(vesselselectedId);
+        populateVoyageNo(vesselselectedId, 0)
+    });
+
+    function populateVoyageNo(vesselID, voyNoID) {
+        $.get("../../../EIR/GetVesselNoIN", { vesselID: vesselID }, function (data) {
+            $("#EIROVoyageNo").empty();
+            $("#EIROVoyageNo").append("<option value='0'>Select</option>")
+            $.each(data, function (index, row) {
+                var status = row.status == "Closed" ? "disabled" : "";
+                var selectedData = row.voyageID == voyNoID ? "selected" : "";
+                $("#EIROVoyageNo").append("<option " + status + " " + selectedData + " value='" + row.voyageID + "'>" + row.voyageNo + "</option>")
+            });
+        });
+    }
     $('#return').click(function () {
-      
+
+        var vessel = document.getElementById("EIROVessel");
+        var vesselselected = vessel.options[vessel.selectedIndex].text;
+        var vesselselectedId = vessel.options[vessel.selectedIndex].value;
+
+
+
+        var voyage = document.getElementById("EIROVoyageNo");
+        var voyageselected = voyage.options[voyage.selectedIndex].text;
+        var voyageselectedId = voyage.options[voyage.selectedIndex].value;
+
+
         var cs = document.getElementById("EIROConvanStatus");
         var cs_text = cs.options[cs.selectedIndex].text;
-        
-      
+
+
         var dn_text = $("#EIRODriversName").val();
         var ET_text = $("#EIROTrucker").val();
         var ep_text = $("#EIROPlateNo").val();
-      
+
         var erp = document.getElementById("EIRORelayPort");
         var erp_text = erp.options[erp.selectedIndex].text;
         var ev = document.getElementById("EIROVessel");
         var ev_text = ev.options[ev.selectedIndex].text;
-      
+
 
         var evn_text = $("#EIROVoyageNo").val();
         var sn = $("#EIROSealNo").val();
-  
+
         var ss = document.getElementById("EIROSealStatus");
         var ss_text = ss.options[ss.selectedIndex].text;
 
@@ -284,11 +330,11 @@
                 var g= @Html.Raw(Json.Encode(@Model.EIROConvanSize));
                 var h= @Html.Raw(Json.Encode(@Model.EIROConsignee));
                 var i = @Html.Raw(Json.Encode(@Model.EIROShipper));
-             
+
                 var u = dn_text;
                 var j = ET_text;
                 var k = ep_text;
-            
+
                 var l = erp_text;
                 var m = ev_text;
                 var n = evn_text;
@@ -318,8 +364,8 @@
                     EIRITrucker: j,
                     EIRIPlateNo: k,
                     EIRIDriversName: u,
-                    EIRIVessel: m,
-                    EIRIVoyageNo: n,
+                    EIRIVessel: vesselselected,
+                    EIRIVoyageNo: voyageselected,
                     EIRIPortOfOrigin: q,
                     EIRIPortOfDestination: r,
                     EIRISealNo: o,
@@ -333,7 +379,8 @@
 
                     triptype: $('#ddl_trip :selected').text(),
                     waybillno: $('#txt_waybillno').val(),
-
+                    vesselID: vesselselectedId,
+                    voyageID: voyageselectedId
 
                 }
 

@@ -4,164 +4,271 @@
     Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
 }
 
-<div class="box box-success">
-    <div class="box-body">
-        <div class="container">
+    <div class="box box-success">
+        <div class="box-body">
             <div class="row">
-                <div class="col-md-4"></div>
-                <div class="col-md-4"><span style="font-size:25px;"><b>PROFORMA BILL OF LADING</b></span></div>
-                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="lbl"><i>*Please select pulled out EIR to bill.*<br /></i></label>
+                        @Html.DropDownListFor(model => model.proformaBillRefNo, ViewBag.ReferenceNos as SelectList, "-- Select --", new { @class = "form-control select2", id = "proformaBillRefNo" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                </div>
+                <div class="col-md-4">
+                </div>
             </div>
+            <br />
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="date"><span style="color:red">*</span>DATE:</label>
+                        @Html.EditorFor(model => model.proformaBillDate, new { htmlAttributes = new { @type = "date", @class = "form-control", id = "billdate" } })
+                    </div>
+                    <div class="form-group">
+                        <label for="vessel">Vessel</label>
+                        <select id="proformaBillVesselName" name="proformaBillVesselName" class="form-control">
+                            @{
+                                foreach (var i in ViewBag.VesselList)
+                                {
+                                    <option value="@i.Value">@i.Text</option>
+                                }
+                            }
+                        </select>
+                        @*@Html.DropDownListFor(model => model.proformaBillVesselName, ViewBag.VesselList as SelectList, "Select", new { @class = "form-control", id = "billvesselname" })*@
+                        @*@Html.DropDownListFor(model => model.proformaBillVesselName, ViewBag.VesselList as SelectList, "Select", new { @class = "form-control", id = "proformaBillVesselName" })*@
+                        @*@Html.EditorFor(model => model.proformaBillVesselName, new { htmlAttributes = new { @class = "form-control", id = "billvesselname", @readonly = true } })*@
+                    </div>
+                    <div class="form-group">
+                        <label for="voyageNo">Voyage Number</label>
+                        <select id="proformaBillVoyageNo" name="proformaBillVoyageNo" class="form-control select2">
+                            @*@{
+                                foreach (var i in ViewBag.VesselList)
+                                {
+                                    <option value="@i.Value">@i.Text</option>
+                                }
+                            }*@
+                        </select>
+                        @*@Html.EditorFor(model => model.proformaBillVoyageNo, new { htmlAttributes = new { @class = "form-control", id = "billvoyageno", @readonly = true } })*@
+                    </div>
+                    <div class="form-group">
+                        <label for="destination">Destination</label>
+                        @Html.EditorFor(model => model.proformaBillDestination, new { htmlAttributes = new { @class = "form-control", id = "billdestination", @readonly = true } })
+                    </div>
+                    <div class="form-group">
+                        <label for="value"><span style=" color:red">*</span>Value</label>
+                        @Html.EditorFor(model => model.proformaBillValue, new { htmlAttributes = new { @class = "form-control", id = "billvalue", @type = "number", @min = "0", @value = "0" } })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="Shipper">Shipper</label>
+                        @Html.EditorFor(model => model.proformaBillShipper, new { htmlAttributes = new { @class = "form-control", id = "billshipper", @readonly = true } })
+                    </div>
+                    <div class="form-group">
+                        <label for="shipperAddress">Sipper Address</label>
+                        @Html.EditorFor(model => model.proformaBillShippersAddress, new { htmlAttributes = new { @class = "form-control", id = "billshippersaddress", @readonly = true } })
+                    </div>
+                    <div class="form-group">
+                        <label for="shipperTELNO">Shipper Tel. No.</label>
+                        @Html.EditorFor(model => model.proformaBillShippersTelNo, new { htmlAttributes = new { @class = "form-control", id = "billshipperstel", @readonly = true } })
+                    </div>
+                    <div class="form-group">
+                        <label for="serviceType">Service Type</label>
+                        @Html.EditorFor(model => model.proformaBillServiceType, new { htmlAttributes = new { @class = "form-control", id = "billservicetype", @readonly = true } })
+                    </div>
+                    <div class="form-group">
+                        <label for="weight"><span style=" color:red">*</span>Weight</label>
+                        @Html.EditorFor(model => model.proformaBillWeight, new { htmlAttributes = new { @class = "form-control", id = "billweight", @type = "number", @min = "0", @value = "0" } })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="consignee">Consignee</label>
+                        @Html.EditorFor(model => model.proformaBillConsignee, new { htmlAttributes = new { @class = "form-control", id = "billconsignee", @readonly = true } })
+                    </div>
+                    <div class="form-group">
+                        <label for="consigneeAddress">Consignee Address</label>
+                        @Html.EditorFor(model => model.proformaBillConsigneesAddress, new { htmlAttributes = new { @class = "form-control", id = "billconsigneesaddress", @readonly = true } })
+                    </div>
+                    <div class="form-group">
+                        <label for="consigneeTelNO">Consignee Tel. No.</label>
+                        @Html.EditorFor(model => model.proformaBillConsigneesTelNo, new { htmlAttributes = new { @class = "form-control", id = "billconsigneestel", @readonly = true } })
+                    </div>
+                    <div class="form-group">
+                        <label for="pbln"><span style=" color:red">*</span>Proforma B/L No.</label>
+                        @Html.EditorFor(model => model.proformaBillNo, new { htmlAttributes = new { @class = "form-control", id = "proformaBillNo" } })
+                        @*@ViewBag.ProformaNo*@
+                    </div>
+                    <div class="form-group">
+                        <label for="measurement"><span style=" color:red">*</span>Measurement</label>
+                        @Html.EditorFor(model => model.proformaBillMeasurement, new { htmlAttributes = new { @class = "form-control", id = "billmeasurement" } })
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
+                        <!-- /.box-header -->
+                        <div class="box-body table-responsive no-padding">
+                            <table id="tblItems" class="table table-mailbox" cellpadding="0" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>MARKS</th>
+                                        <th><span style="color:red">*</span>QUANTITY</th>
+                                        <th><span style="color:red">*</span>UNIT</th>
+                                        <th><span style="color:red">*</span>DESCRIPTION OF CARGO</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td>@Html.TextAreaFor(model => model.proformaBillMarks, new { @class = "form-control", @id = "billmarks", @Style = " resize:none; height:33px;" })</td>
+                                        <td>@Html.EditorFor(model => model.proformaBillQty, new { htmlAttributes = new { @class = "form-control", id = "billquantity", @type = "number", @min = "0", @value = "0" } })</td>
+                                        <td>@Html.EditorFor(model => model.proformaBillUnit, new { htmlAttributes = new { @class = "form-control", id = "billunit" } })</td>
+                                        <td>@Html.TextAreaFor(model => model.proformaBillDescriptionOfCargo, new { @class = "form-control", @id = "billdescription", @Style = " resize:none; height:33px;" })</td>
+                                        <td><a id="btnAdd"><i class="fa fa-plus-circle fa-1x"></i></a></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label for="remarks">Remarks</label>
+                        @Html.TextAreaFor(m => m.proformaBillRemarks, new { @class = "form-control", @id = "proformaBillRemarks" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="measuredBy"><span style="color:red">*</span>MEASURED BY</label>
+                        @Html.EditorFor(model => model.proformaBillMeasuredBy, new { htmlAttributes = new { @class = "form-control", id = "billmeasuredby" } })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="Trucker's Name">TRUCKER'S NAME</label>
+                        @Html.EditorFor(model => model.proformaBillTruckersName, new { htmlAttributes = new { @class = "form-control", id = "billtruckersname", @readonly = true } })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="measuredBy"><span style="color:red">*</span>Shipper's Representative</label>
+                        @Html.EditorFor(model => model.proformaBillShippersName, new { htmlAttributes = new { @class = "form-control", id = "billshippersname" } })
+                    </div>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="box box-warning">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Additional Details</h3>
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        @*<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>*@
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="TNCP">Total No. of Cases / Packages</label>
+                                <input id="totalnoofcasespackages" name="totalnoofcasespackages" class="form-control" type="number" min="1" value="0" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="UCP"><span style="color:red">*</span>Unit of Cases / Packages</label>
+                                <select id="unitofcasespackages" name="unitofcasespackages" class="form-control select2">
+                                    @{
+                                        foreach (var i in ViewBag.unit)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    }
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="cargoType"><span style="color:red">*</span> Cargo Type / Content</label>
+                                <select id="CargoTypeContent" name="CargoType/Content" class="form-control select2">
+                                    @{
+                                        foreach (var i in ViewBag.CargoTypeList)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    }
+                                </select>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="cargoDetails"><span style="color:red">*</span>Cargo Details (for Loose Cargoes & Other Cargo Details)</label>
+                                <input id="CargoDetails" name="CargoDetails" class="form-control" />
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="packedas"><span style="color:red">*</span>Packed As</label>
+                                <select id="PackedAs" name="PackedAs" class="form-control select2">
+                                    @{
+                                        foreach (var i in ViewBag.packedASS)
+                                        {
+                                            <option value="@i.Value">@i.Text</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="sdd"><span style="color:red">*</span>Shipment Document Date</label>
+                                <input id="ShipmentDocumentDate" name="ShipmentDocumentDate" type="date" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="sdn"><span style="color:red">*</span>Shipment Document No.</label>
+                                <input id="ShipmentDocumentNumber" name="ShipmentDocumentNumber" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+
+
+
         </div>
-        <span style="font-size:13px;"><i>*Please select pulled out EIR to bill.*</i></span><br />
-        @Html.DropDownListFor(model => model.proformaBillRefNo, ViewBag.ReferenceNos as SelectList, "-- Select --", new { htmlAttributes = new { @class = "form-control", id = "refno" } })
-        <br /><br />
-        <table class="table table-bordered">
-            <tbody>
-                <tr>
-                    <td><b><span style="color:red">*</span>DATE:</b> @Html.EditorFor(model => model.proformaBillDate, new { htmlAttributes = new { @type = "date", @class = "form-control", id = "billdate" } })</td>
-                    <td><b>SHIPPER:</b>  @Html.EditorFor(model => model.proformaBillShipper, new { htmlAttributes = new { @class = "form-control", id = "billshipper", @readonly = true } })</td>
-                    <td><b>CONSIGNEE:</b> @Html.EditorFor(model => model.proformaBillConsignee, new { htmlAttributes = new { @class = "form-control", id = "billconsignee", @readonly = true } })</td>
-                </tr>
-                <tr>
-                    <td><b>VESSEL NAME:</b> @Html.EditorFor(model => model.proformaBillVesselName, new { htmlAttributes = new { @class = "form-control", id = "billvesselname", @readonly = true } })</td>
-                    <td><b>SHIPPER'S ADDRESS:</b> @Html.EditorFor(model => model.proformaBillShippersAddress, new { htmlAttributes = new { @class = "form-control", id = "billshippersaddress", @readonly = true } })</td>
-                    <td><b>CONSIGNEE'S ADDRESS:</b> @Html.EditorFor(model => model.proformaBillConsigneesAddress, new { htmlAttributes = new { @class = "form-control", id = "billconsigneesaddress", @readonly = true } })</td>
-                </tr>
-                <tr>
-                    <td><b>VOYAGE NO:</b> @Html.EditorFor(model => model.proformaBillVoyageNo, new { htmlAttributes = new { @class = "form-control", id = "billvoyageno", @readonly = true } })</td>
-                    <td><b>SHIPPER'S TEL. NO:</b> @Html.EditorFor(model => model.proformaBillShippersTelNo, new { htmlAttributes = new { @class = "form-control", id = "billshipperstel", @readonly = true } })</td>
-                    <td><b>CONSIGNEE'S TEL. NO:</b> @Html.EditorFor(model => model.proformaBillConsigneesTelNo, new { htmlAttributes = new { @class = "form-control", id = "billconsigneestel", @readonly = true } })</td>
-                </tr>
-                <tr>
-                    <td><b>DESTINATION:</b> @Html.EditorFor(model => model.proformaBillDestination, new { htmlAttributes = new { @class = "form-control", id = "billdestination", @readonly = true } })</td>
-                    <td><b>SERVICE TYPE:</b> @Html.EditorFor(model => model.proformaBillServiceType, new { htmlAttributes = new { @class = "form-control", id = "billservicetype", @readonly = true } })</td>
-                    <td><b>Proforma B/L NO:</b> @ViewBag.ProformaNo</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <table class="table table-bordered">
-            <tr>
-                <th>MARKS</th>
-                <th><span style="color:red">*</span>QUANTITY</th>
-                <th><span style="color:red">*</span>UNIT</th>
-                <th><span style="color:red">*</span>DESCRIPTION OF CARGO</th>
-                <th><span style="color:red">*</span>VALUE</th>
-                <th><span style="color:red">*</span>WEIGHT</th>
-                <th>MEASUREMENT</th>
-            </tr>
-            <tr>
-                <td>@Html.TextAreaFor(model => model.proformaBillMarks, new { @class = "form-control", @id = "billmarks", @Style = " resize:none; height:33px;" })</td>
-                <td>@Html.EditorFor(model => model.proformaBillQty, new { htmlAttributes = new { @class = "form-control", id = "billquantity", @type = "number", @min = "0", @value = "0" } })</td>
-                <td>@Html.EditorFor(model => model.proformaBillUnit, new { htmlAttributes = new { @class = "form-control", id = "billunit" } })</td>
-                <td>@Html.TextAreaFor(model => model.proformaBillDescriptionOfCargo, new { @class = "form-control", @id = "billdescription", @Style = " resize:none; height:33px;" })</td>
-                <td>@Html.EditorFor(model => model.proformaBillValue, new { htmlAttributes = new { @class = "form-control", id = "billvalue", @type = "number", @min = "0", @value = "0" } })</td>
-                <td>@Html.EditorFor(model => model.proformaBillWeight, new { htmlAttributes = new { @class = "form-control", id = "billweight", @type = "number", @min = "0", @value = "0" } })</td>
-                <td>@Html.EditorFor(model => model.proformaBillMeasurement, new { htmlAttributes = new { @class = "form-control", id = "billmeasurement" } })</td>
-            </tr>
-        </table>
-
-        <table class="table table-bordered">
-            <tbody>
-                <tr>
-                    <td><b>REMARKS:</b> @Html.TextAreaFor(m => m.proformaBillRemarks, new { @class = "form-control", @id = "billremarks" })</td>
-                    <td><b><span style="color:red">*</span>MEASURED BY:</b> @Html.EditorFor(model => model.proformaBillMeasuredBy, new { htmlAttributes = new { @class = "form-control", id = "billmeasuredby" } })</td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="table table-bordered">
-            <tbody>
-                <tr>
-                    <td><b>TRUCKER'S NAME:</b> @Html.EditorFor(model => model.proformaBillTruckersName, new { htmlAttributes = new { @class = "form-control", id = "billtruckersname", @readonly = true } })</td>
-                    <td><b><span style="color:red">*</span>SHIPPER'S REPRESENTATIVE:</b> @Html.EditorFor(model => model.proformaBillShippersName, new { htmlAttributes = new { @class = "form-control", id = "billshippersname" } })</td>
-                    <td><b>SHIPPER'S SIGNATURE:</b></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <table class="table table-bordered">
-        <tr>
-            <td>
-                <div class="form-group">
-                    <label for="convanSize"> Total No. of Cases / Packages</label>
-                    <input id="totalnoofcasespackages" name="totalnoofcasespackages" class="form-control" type="number" min="1" value="0" />
+                <div class="box-footer">
+                    <button type="button" class="btn btn-primary" id="bill"> <i class="fa fa-pencil fa-1x"></i> Bill </button>
+                    <button type="button" class="btn btn-default" onclick="location.href='@Url.Action("Index", "Proforma")"> <i class="fa fa-trash fa-1x"></i> Cancel</button>
                 </div>
-            </td>
-            <td>
-                <div class="form-group">
-                    <label for="convanSize"> Unit of Cases / Packages</label>
-                    <select id="unitofcasespackages" name="unitofcasespackages" class="form-control">
-                        @{
-                            foreach (var i in ViewBag.unit)
-                            {
-                                <option value="@i.Value">@i.Text</option>
-                            }
-                        }
-                    </select>
-                    @*<input id="unitofcasespackages" name="unitofcasespackages" class="form-control"  />*@
-                </div>
-            </td>
-            <td>
-                <div class="form-group">
-                    <label for="convanSize"> Cargo Type / Content</label>
-                    <select id="CargoTypeContent" name="CargoType/Content" class="form-control">
-                        @{
-                            foreach (var i in ViewBag.CargoTypeList)
-                            {
-                                <option value="@i.Value">@i.Text</option>
-                            }
-                        }
-                    </select>
-
-                    @*<input id="CargoTypeContent" name="CargoType/Content" class="form-control" />*@
-                </div>
-            </td>
-            <td>
-                <div class="form-group">
-                    <label for="convanSize"> Cargo Details (for Loose Cargoes & Other Cargo Details)</label>
-                    <input id="CargoDetails" name="CargoDetails" class="form-control" />
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div class="form-group">
-                    <label for="convanSize"> Packed As</label>
-
-                    <select id="PackedAs" name="PackedAs" class="form-control">
-                        @{
-                            foreach (var i in ViewBag.packedASS)
-                            {
-                                <option value="@i.Value">@i.Text</option>
-                            }
-                        }
-                    </select>
-
-                    @*<input id="PackedAs" name="PackedAs" class="form-control" />*@
-                </div>
-            </td>
-            <td>
-                <div class="form-group">
-                    <label for="convanSize"> Shipment Document Date</label>
-                    <input id="ShipmentDocumentDate" name="ShipmentDocumentDate" type="date" class="form-control" />
-                </div>
-            </td>
-            <td>
-                <div class="form-group">
-                    <label for="convanSize"> Shipment Document Number</label>
-                    <input id="ShipmentDocumentNumber" name="ShipmentDocumentNumber" class="form-control" />
-                </div>
-            </td>
-        </tr>
-    </table>
-
-    <div class="box-footer">
-        <button type="button" class="btn btn-primary" id="bill"> <i class="fa fa-pencil fa-1x"></i> Bill </button>
-        <button type="button" class="btn btn-default" onclick="location.href='@Url.Action("Index", "Proforma")"> <i class="fa fa-trash fa-1x"></i> Cancel</button>
-    </div>
-</div>
+            </div>
 <link href="~/Content/bootstrap-toggle.css" rel="stylesheet" />
 <script src="~/Scripts/bootstap-toggle.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -171,9 +278,10 @@
     @Scripts.Render("~/bundles/jqueryui")
 
 <script type="text/javascript">
-        $("#proformaBillRefNo").chosen();
-
-        $(document).ready(function () {
+  /*  $("#proformaBillRefNo").chosen();*/
+    
+         $(document).ready(function () {
+           $('.select2').select2()
             $("#proformaBillRefNo").change(function () {
                 var refno = $("#proformaBillRefNo").val();
                 $.ajax({
@@ -182,9 +290,9 @@
                     data: { refno: refno },
                     contenttype: "application/json",
                     success: function (data) {
-                        console.log(data);
-                        $("#billvesselname").val(data.ven);
-                        $("#billvoyageno").val(data.von);
+                        console.log(data.ven);
+                        document.getElementById('proformaBillVesselName').value = data.ven
+                        populateVoyageNo(data.ven, data.von)
                         $("#billdestination").val(data.des);
                         $("#billshipper").val(data.shpr);
                         $("#billshippersaddress").val(data.shpra);
@@ -201,7 +309,22 @@
                 });
             });
 
-
+            function populateVoyageNo(vesselID,voyNoID) {
+                
+                $.get("../../../Proforma/GetVesselNo", { vesselID: vesselID }, function (data) {
+                    $("#proformaBillVoyageNo").empty();
+                    $("#proformaBillVoyageNo").append("<option value='0'>Select</option>")
+                    $.each(data, function (index, row) {
+                        var status = row.status == "Closed" ? "disabled" : "";
+                        var selectedData = row.voyageID == voyNoID ? "selected" : "";
+                        $("#proformaBillVoyageNo").append("<option " + status + " " + selectedData+" value='" + row.voyageID + "'>" + row.voyageNo + "</option>")
+                    });
+                });
+            }
+            $("#proformaBillVesselName").change(function () {
+                var ves = $("#proformaBillVesselName").val();
+                populateVoyageNo(ves,0)
+            });
             $('#bill').click(function () {
                 var isAllValid = true;
 
@@ -214,14 +337,19 @@
                     $.notify("Date is required.", "error");
                     isAllValid = false;
                 }
-                if ($('#billmarks').val().trim() == '') {
-                    $.notify("Put NONE if no marks.", "error");
+                //if ($('#billmarks').val().trim() == '') {
+                //    $.notify("Put NONE if no marks.", "error");
+                //    isAllValid = false;
+                //}
+                //if ($('#billdescription').val().trim() == '') {
+                //    $.notify("Description of the cargo is required.", "error");
+                //    isAllValid = false;
+                //}
+                if ($('#proformaBillNo').val().trim() == '') {
+                    $.notify("Proforma B/L No. is required.", "error");
                     isAllValid = false;
                 }
-                if ($('#billdescription').val().trim() == '') {
-                    $.notify("Description of the cargo is required.", "error");
-                    isAllValid = false;
-                }
+                
                 if ($('#billweight').val().trim() == '') {
                     $.notify("Weight is required.", "error");
                     isAllValid = false;
@@ -230,7 +358,7 @@
                     $.notify("Measurement is required.", "error");
                     isAllValid = false;
                 }
-                if ($('#billremarks').val().trim() == '') {
+                if ($('#proformaBillRemarks').val().trim() == '') {
                     $.notify("Remarks is required.", "error");
                     isAllValid = false;
                 }
@@ -242,7 +370,6 @@
                     $.notify("Shipper's Name is required.", "error");
                     isAllValid = false;
                 }
-
 
                 if ($('#totalnoofcasespackages').val().trim() == '') {
                     $.notify("Number of cases / packages is required.", "error");
@@ -272,19 +399,38 @@
                     $.notify("Shippment Document Number is required.", "error");
                     isAllValid = false;
                 }
-
-
-
-
                 if (isAllValid) {
-
                     var billno = @Html.Raw(Json.Encode(ViewBag.ProformaNo));
-                    var billdata = {
+
+                    var a = document.getElementById("proformaBillVesselName");
+                    var vesselselected = a.options[a.selectedIndex].text;
+                    var vesselselectedId = a.options[a.selectedIndex].value;
+
+                    var b = document.getElementById("proformaBillVoyageNo");
+                    var voyageselected = b.options[b.selectedIndex].text;
+                    var voyageselectedId = b.options[b.selectedIndex].value;
+
+
+                    console.log(voyageselected);
+                    console.log(voyageselectedId);
+
+                    console.log(vesselselected);
+                    console.log(vesselselectedId);
+
+                    var datParent = {
                         proformaBillRefNo: $('#proformaBillRefNo').val(),
                         proformaBillDate: $('#billdate').val(),
-                        proformaBillVesselName: $('#billvesselname').val(),
-                        proformaBillVoyageNo: $('#billvoyageno').val(),
+
+                        proformaBillVesselName: vesselselected,
+                        proformaBillVoyageNo: voyageselected,
+
+                        proformaBillVesselID: vesselselectedId,
+                        proformaBillVoyageID: voyageselectedId,
+
                         proformaBillDestination: $('#billdestination').val(),
+
+
+
                         proformaBillShipper: $('#billshipper').val(),
                         proformaBillShippersAddress: $('#billshippersaddress').val(),
                         proformaBillShippersTelNo: $('#billshipperstel').val(),
@@ -292,7 +438,7 @@
                         proformaBillConsignee: $('#billconsignee').val(),
                         proformaBillConsigneesAddress: $('#billconsigneesaddress').val(),
                         proformaBillConsigneesTelNo: $('#billconsigneestel').val(),
-                        proformaBillNo: billno,
+                        proformaBillNo: $('#proformaBillNo').val(),
                         proformaBillMarks: $('#billmarks').val(),
                         proformaBillQty: $('#billquantity').val(),
                         proformaBillUnit: $('#billunit').val(),
@@ -300,11 +446,10 @@
                         proformaBillValue: $('#billvalue').val(),
                         proformaBillWeight: $('#billweight').val(),
                         proformaBillMeasurement: $('#billmeasurement').val(),
-                        proformaBillRemarks: $('#billremarks').val(),
+                        proformaBillRemarks: $('#proformaBillRemarks').val(),
                         proformaBillMeasuredBy: $('#billmeasuredby').val(),
                         proformaBillTruckersName: $('#billtruckersname').val(),
                         proformaBillShippersName: $('#billshippersname').val(),
-
 
                         totalnoofcasespackages: $('#totalnoofcasespackages').val(),
                         unitofcasespackages: $('#unitofcasespackages option:selected').text(),
@@ -313,16 +458,31 @@
                         PackedAs: $('#PackedAs option:selected').text(),
                         ShipmentDocumentDate: $('#ShipmentDocumentDate').val(),
                         ShipmentDocumentNumber: $('#ShipmentDocumentNumber').val()
+                    }
 
+                    var data = new Array();
+                    $("#tblItems TBODY TR").each(function (i) {
+                        var row = $(this);
+                        var add = row.find("TD").eq(2).html() + ', ' + row.find("TD").eq(1).html() + ' ' + row.find("TD").eq(0).html(), i = i + 1;
+                        console.log(i);
+                        var dat = {
+                            marks: row.find("TD").eq(0).html(),
+                            quantity: row.find("TD").eq(1).html(),
+                            unit: row.find("TD").eq(2).html(),
+                            description: row.find("TD").eq(2).html(),
+                        }
+                        data.push(dat);
+                    });
+                    var consolidate = {
+                        datParent: datParent,
+                        data: data,
+                    }
 
-                   }
-
-                    console.log(billdata);
-
+                    //console.log(billdata);
                     $.ajax({
                         type: 'POST',
                         url: '../../../Proforma/SaveBill',
-                        data: JSON.stringify(billdata),
+                        data: JSON.stringify(consolidate),
                         contentType: 'application/json',
                         success: function (dataHdr) {
                             if (dataHdr.status) {
@@ -342,6 +502,52 @@
                 }
             });
         });
+
+        $("body").on("click", "#btnAdd", function () {
+        var isValid = true;
+        var billmarks = $("#billmarks");
+        var billquantity = $("#billquantity");
+        var billunit = $("#billunit");
+            var billdescription = $("#billdescription");
+            console.log(billmarks.val());
+            if ( billquantity.val().length == 0 || billunit.val().length == 0 || billdescription.val().length == 0)
+            {
+                isValid = false;
+                $.notify("All fields has asterisk(*) are required!","error");
+            }
+            if (isValid) {
+                //Get the reference of the Table's TBODY element.
+                var tBody = $("#tblItems > TBODY")[0];
+                //Add Row.
+                var row = tBody.insertRow(-1);
+                var cell = $(row.insertCell(-1));
+                cell.html(billmarks.val());
+                cell = $(row.insertCell(-1));
+                cell.html(billquantity.val());
+                cell = $(row.insertCell(-1));
+                cell.html(billunit.val());
+                cell = $(row.insertCell(-1));
+                cell.html(billdescription.val());
+                cell = $(row.insertCell(-1));
+                var btnRemove = $("<a><i class='fa fa-trash'></i></a>");
+                btnRemove.attr("type", "button");
+                btnRemove.attr("onclick", "Remove(this);");
+                cell.append(btnRemove);
+
+                billmarks.val('');
+                billquantity.val('');
+                billunit.val('');
+                billdescription.val('');
+            }
+    })
+    function Remove(button) {
+        //Determine the reference of the Row using the Button.
+        var row = $(button).closest("TR");
+        //Get the reference of the Table.
+        var table = $("#tblItems")[0];
+        //Delete the Table row using it's Index.
+        table.deleteRow(row[0].rowIndex);
+    };
 </script>
 }
 <style>
@@ -349,12 +555,13 @@
         width:150px;
     }
 
-    textarea#billmarks.form-control, textarea#billremarks, textarea#billdescription {
-        width: 300px;
+    textarea#proformaBillRemarks.form-control, textarea#billremarks, textarea#billdescription {
+        resize: none;
+        height:32px;
     }
 
     .table th {
-        text-align: center;
+        text-align: left;
     }
     label {
         display: inline-block;
@@ -374,5 +581,22 @@
         font-weight: bold;
         text-align: -internal-center;
         font-size:12px;
+    }
+    thead {
+        display: table-header-group;
+        vertical-align: middle;
+        border-color: inherit;
+        background-color:antiquewhite;
+    }
+    table {
+    border:inherit;
+    }
+    .select2-container .select2-selection--single {
+        box-sizing: border-box;
+        cursor: pointer;
+        display: block;
+        height: 35px;
+        user-select: none;
+        -webkit-user-select: none;
     }
 </style>

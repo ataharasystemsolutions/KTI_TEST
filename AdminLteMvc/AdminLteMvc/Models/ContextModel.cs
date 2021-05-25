@@ -9,9 +9,11 @@ namespace AdminLteMvc.Models
 {
     public class ContextModel : DbContext
     {
-        public ContextModel()
-            : base("DefaultConnection")
+
+        public ContextModel(): base("DefaultConnection") 
         {
+            Database.SetInitializer(new NullDatabaseInitializer<ContextModel>());
+           // Database.SetInitializer<DbContext>(null);
         }
 
         public DbSet<WEBSales.Users> Users { get; set; }
@@ -180,5 +182,17 @@ namespace AdminLteMvc.Models
         public DbSet<WEBSales.UnitCases> UnitCases { get; set; }
         public DbSet<WEBSales.packedAs> packedAs { get; set; }
         public DbSet<WEBSales.HandlingRequirements> HandlingRequirements { get; set; }
+
+        public DbSet<WEBSales.ProformaBillsItems> ProformaBillsItems { get; set; }
+
+        public DbSet<WEBSales.Branch> Branch { get; set; }
+        public DbSet<WEBSales.JobTitle> JobTitle { get; set; }
+        public DbSet<WEBSales.Department> Department { get; set; }
+        public DbSet<WEBSales.Company> Company { get; set; }
+
+        public DbSet<WEBSales.onboardVessel> onboardVessel { get; set; }
+        public DbSet<WEBSales.onboardVesselLoadItem> onboardVesselLoadItem { get; set; }
+        public DbSet<WEBSales.onboardVesselVoyageRoute> onboardVesselVoyageRoute { get; set; }
+
     }
 }

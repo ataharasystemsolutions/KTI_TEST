@@ -21,7 +21,6 @@ namespace AdminLteMvc.Models.Class
         public string EIRIPortOfDestination { get; set; }
         public string destination { get; set; }
         public string EIRIServiceType { get; set; }
-
         public string proformaBillMarks { get; set; }
         public string proformaBillQty { get; set; }
         public string proformaBillUnit { get; set; }
@@ -30,8 +29,14 @@ namespace AdminLteMvc.Models.Class
         public string proformaBillWeight { get; set; }
         public string proformaBillMeasurement { get; set; }
 
-       
 
+        public string totalnoofcasespackages { get; set; }
+        public string unitofcasespackages { get; set; }
+        public string CargoType { get; set; }
+        public string CargoDetails { get; set; }
+        public int voyageID { get; set; }
+        public string EIRIVoyageNo { get; set; }
+        public string EIRIVessel { get; set; }
 
 
 

@@ -44,5 +44,8 @@ namespace AdminLteMvc.Models.WEBSales
         public string triptype { get; set; }
         public string waybillno { get; set; }
         public string waybillattachment { get; set; }
+
+        public int vesselID { get; set; }
+        public int voyageID { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -16,9 +17,17 @@ namespace AdminLteMvc
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "AdminLte", action = "Index", id = UrlParameter.Optional },
+                //defaults: new { controller = "AdminLte", action = "Index", id = UrlParameter.Optional },
+                defaults: new { controller = "Account", action = "Login", id = UrlParameter.Optional },
                 namespaces:  new[] {"AdminLteMvc.Controllers"}
             );
+        }
+        protected void Application_Start()
+        {
+            AreaRegistration.RegisterAllAreas();
+            RegisterRoutes(RouteTable.Routes);
+            //...
+            Database.SetInitializer<AdminLteMvc.Models.ContextModel>(null);
         }
     }
 }
