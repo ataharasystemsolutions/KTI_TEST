@@ -13,6 +13,9 @@ namespace AdminLteMvc.Models.Class
         public string vesselname { get; set; }
         public string voyageNo { get; set; }
         public string status { get; set; }
+        public string category { get; set; }
+        public string portOrigin { get; set; }
+        public string portDestination { get; set; }
 
 
     }

@@ -268,6 +268,7 @@
                         success: function (data) {
                             console.log(data.parent[0].voyageID);
                             populateVoyageNo(data.parent[0].voyageID);
+                            populateVoyageLeg(data.parent[0].voyageID)
 
                             $("#bookingNo").val(data.parent[0].docNum);
                             $("#trnNumber").val(data.parent[0].transactionNo);
@@ -325,6 +326,32 @@
                     },
                 });
             });
+            //use for selecting voyageLeg
+            $("#voyageLeg").change(function () {
+                var b = document.getElementById("voyageLeg");
+                var voyageLegselected = b.options[b.selectedIndex].text;
+                var voyageLegselectedId = b.options[b.selectedIndex].value;
+                var refno = voyageLegselectedId;
+                var category = voyageLegselected;
+                $.ajax({
+                    url: '../../../Proforma/getVoyageLegCategory',
+                    type: 'post',
+                    data: { refno: refno, category: category },
+                    contenttype: "application/json",
+                    success: function (data) {
+                       // parent = list, portOrigin = portOrigin
+                        $("#portoforigin").val(data.portOrigin);
+                        $("#portofdestination").empty();
+                        $("#portofdestination").append("<option value='0'>Select</option>")
+                        $.each(data.parent, function (index, row) {
+                            $("#portofdestination").append("<option  value='" + row.voyageID + "'>" + row.portDestination + "</option>")
+                        });
+
+                        //$("#vesselname").val(data.parent[0].vesselname);
+                        //$("#voyageno").val(data.parent[0].voyageNo);
+                    },
+                });
+            });
             //save bill
             $("#bill").click(function () {
                 var b = document.getElementById("vesselvoyage");
@@ -343,6 +370,9 @@
 
                 var vv = document.getElementById("vesselvoyage");
                 var vv_text = vv.options[vv.selectedIndex].text;
+
+                var vl = document.getElementById("voyageLeg");
+                var vl_text = vl.options[vl.selectedIndex].text;
 
 
                 var ctc = document.getElementById("cargotypecontent");
@@ -465,13 +495,11 @@
                 });
             }
             function populateVoyageLeg(voyNoID) {
-                $.get("../../../Proforma/selectvesselvoyage", { refno: voyNoID }, function (data) {
-                    $("#vesselvoyage").empty();
-                    $("#vesselvoyage").append("<option value='0'>Select</option>")
+                $.get("../../../Proforma/getVoyageLeg", { refno: voyNoID }, function (data) {
+                    $("#voyageLeg").empty();
+                    $("#voyageLeg").append("<option value='0'>Select</option>")
                     $.each(data, function (index, row) {
-                        var status = row.status == "Closed" ? "disabled" : "";
-                        var selectedData = row.voyageID == voyNoID ? "selected" : "";
-                        $("#vesselvoyage").append("<option " + status + " " + selectedData + " value='" + row.voyageID + "'>" + row.vesselvoyage + "</option>")
+                        $("#voyageLeg").append("<option  value='" + row.voyageID + "'>" + row.category + "</option>")
                     });
                 });
             }

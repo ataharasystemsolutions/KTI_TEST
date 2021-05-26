@@ -44,5 +44,7 @@ namespace AdminLteMvc.Models.WEBSales
         public DateTime? lastdatechange { get; set; }
         public string billingReferenceNo { get; set; }
         public int voyageID { get; set; }
+        public string voyageLeg { get; set; }
+
     }
 }

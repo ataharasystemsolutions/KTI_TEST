@@ -562,6 +562,22 @@ namespace AdminLteMvc.Controllers
             
             return new JsonResult { Data = new { parent = list } };
         }
+        public ActionResult getVoyageLeg(int refno)
+        {
+            string query = "select voyageID,category,portOrigin from VoyageNoCategories where voyageID=" + refno + " group by voyageID,category,portOrigin ";
+            var list = db.Database.SqlQuery<Models.Class.dataPopulation>(query);
+            return Json(list, JsonRequestBehavior.AllowGet);
+            //return new JsonResult { Data = new { parent = list } };
+        }
+        [HttpPost]
+        public ActionResult getVoyageLegCategory(string refno, string category)
+        {
+            string query = "select voyageID,category,portOrigin,portDestination from VoyageNoCategories where voyageID="+refno+" and category='"+ category + "' and (portOrigin is not null or portDestination is not null)";
+            var list = db.Database.SqlQuery<Models.Class.dataPopulation> (query);
+            var portOrigin = list.First();
+            return new JsonResult { Data = new { parent = list, portOrigin= portOrigin.portOrigin } };
+        }
+
         public JsonResult saveFinalBill(Models.Class.saveBilloflading bill)
         {
             DbContextTransaction transaction = db.Database.BeginTransaction();
