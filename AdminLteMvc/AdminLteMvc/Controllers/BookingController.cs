@@ -10,6 +10,7 @@ using AdminLteMvc.Models;
 using AdminLteMvc.Models.WEBSales;
 using Omu.AwesomeMvc;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
 
 namespace AdminLteMvc.Controllers
 {
@@ -86,6 +87,36 @@ namespace AdminLteMvc.Controllers
                 }
             }.Build());
         }
+
+        public void GetAccountExecutiveCSR()
+        {
+            string query = "SELECT * FROM EmployeeMasters WHERE JobTitle IN('Account Executive');";
+            var list = db.Database.SqlQuery<Models.WEBSales.EmployeeMaster>(query);
+            List<SelectListItem> aeList = new List<SelectListItem>();
+            foreach (Models.WEBSales.EmployeeMaster acc in list)
+            {
+                aeList.Add(new SelectListItem
+                {
+                    Text = acc.FirstName +" "+ acc.MiddleName +" "+ acc.LastName,
+                    Value = acc.FirstName.ToString() +" "+ acc.MiddleName.ToString() +" "+ acc.LastName.ToString()
+                });
+            }
+            ViewBag.aeList = aeList;
+
+            string qquery = "SELECT * FROM EmployeeMasters WHERE JobTitle IN('CSR');";
+            var Llist = db.Database.SqlQuery<Models.WEBSales.EmployeeMaster>(qquery);
+            List<SelectListItem> csrList = new List<SelectListItem>();
+            foreach (Models.WEBSales.EmployeeMaster csr in Llist)
+            {
+                csrList.Add(new SelectListItem
+                {
+                    Text = csr.FirstName + " " + csr.MiddleName + " " + csr.LastName,
+                    Value = csr.FirstName.ToString() + " " + csr.MiddleName.ToString() + " " + csr.LastName.ToString()
+                });
+            }
+            ViewBag.csrList = csrList;
+
+        }
         public ActionResult Create()
         {
             var checkYear = db.Booking.AsEnumerable().Select(r => r.docID).FirstOrDefault();
@@ -95,15 +126,11 @@ namespace AdminLteMvc.Controllers
             var convanSizes = db.ConVanSizes.ToList();
             var convanStatus = db.ConVanStatus.ToList();
             var inBy = db.InputtedBy.ToList();
-            var csrs = db.CSR.ToList();
-            var executives = db.AccountExecutive.ToList();
             List<SelectListItem> mnemonicList = new List<SelectListItem>();
             List<SelectListItem> customerShipperList = new List<SelectListItem>();
             List<SelectListItem> ConVanSizeList = new List<SelectListItem>();
             List<SelectListItem> ConVanStatList = new List<SelectListItem>();
             List<SelectListItem> InByList = new List<SelectListItem>();
-            List<SelectListItem> CSRList = new List<SelectListItem>();
-            List<SelectListItem> ExecutiveList = new List<SelectListItem>();
             foreach (Mnemonics item in mnemonic)
             {
                 mnemonicList.Add(new SelectListItem
@@ -147,31 +174,14 @@ namespace AdminLteMvc.Controllers
                     Value = item.firstname + " " + item.lastname
                 });
             }
-            foreach (CSR item in csrs)
-            {
-                CSRList.Add(new SelectListItem
-                {
-                    Text = item.csrname,
-                    Value = item.csrname
-                });
-            }
-            foreach (AccountExecutive item in executives)
-            {
-                ExecutiveList.Add(new SelectListItem
-                {
-                    Text = item.executivename,
-                    Value = item.executivename
-                });
-            }
-
 
             ViewBag.MnemonicList = mnemonicList;
             ViewBag.CustomerShipperList = customerShipperList;
             ViewBag.ConVanSizesList = ConVanSizeList;
             ViewBag.ConVanStatusList = ConVanStatList;
             ViewBag.InByList = InByList;
-            ViewBag.CSRSList = CSRList;
-            ViewBag.AccountExecutiveList = ExecutiveList;
+
+            GetAccountExecutiveCSR();
             return View();
         }
 
@@ -337,11 +347,13 @@ namespace AdminLteMvc.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Booking bk)
         {
+          
             if (ModelState.IsValid)
             {
                 db.Booking.Add(bk);
                 db.SaveChanges();
                 return RedirectToAction("Index");
+                
             }
 
             return View(bk);
@@ -350,12 +362,15 @@ namespace AdminLteMvc.Controllers
         [HttpPost]
         public JsonResult Save(Booking data)
         {
+            int userid = int.Parse(User.Identity.GetUserName());
             bool status = false;
 
             var isValidModel = TryUpdateModel(data);
             if (isValidModel)
             {
-                db.Booking.Add(data);
+              var saveBooking=  db.Booking.Add(data);
+                saveBooking.userId = userid;
+                db.Booking.Add(saveBooking);
                 db.SaveChanges();
 
                 status = true;
