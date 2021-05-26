@@ -692,6 +692,10 @@
     <Compile Include="Migrations\202105260213209_addvoyageLegTBLEfinalBillings.Designer.cs">
       <DependentUpon>202105260213209_addvoyageLegTBLEfinalBillings.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202105260158577_202105260154473_AutomaticMigration.cs" />
+    <Compile Include="Migrations\202105260158577_202105260154473_AutomaticMigration.Designer.cs">
+      <DependentUpon>202105260158577_202105260154473_AutomaticMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Class\billoflading_pulled_data.cs" />
@@ -8860,9 +8864,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202105190853008_test31.resx">
       <DependentUpon>202105190853008_test31.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202105260213209_addvoyageLegTBLEfinalBillings.resx">
-      <DependentUpon>202105260213209_addvoyageLegTBLEfinalBillings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Report_Documents\ATWReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
