@@ -11,9 +11,9 @@
             <div class="box box-warning">
                 <div class="box-header with-border">
                     <button type="button" id="addnew" data-toggle="modal" data-target="#modal-add" class="btn btn-primary"> <i class="fa fa-plus-circle fa-1x"></i> New</button>
-                    
-    
-    @*<h3 class="box-title">Select2</h3>
+
+
+                    @*<h3 class="box-title">Select2</h3>
 
                         <div class="box-tools pull-right">
                             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -24,7 +24,7 @@
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                
+
                                 <th>No.</th>
                                 <th>Total Item Count</th>
                                 <th>Date</th>
@@ -40,24 +40,25 @@
                                 int cnt = 1;
                                 foreach (var item in ViewBag.onloadVesselList)
                                 {
-                                    var classss = item.status == "For Departure" ? "label label-success": item.status=="Departure"? "label label-warning" : item.status == "Arrival" ? "label label-primary" : "label label - danger";
+                                    var classss = item.status == "For Departure" ? "label label-success" : item.status == "Departed" ? "label label-warning" : item.status == "Arrived" ? "label label-primary" : "label label - danger";
+                                    <tr id="row_@item.onboardID">
+                                        <td>@cnt.</td>
+                                        <td><a title="Load List" onclick="getLoadList(@item.onboardID);" data-toggle="modal" data-target="#modal-vesselloadlist" tooltip="Load List"><span class='label label-warning'>(@item.itemCount)</span></a></td>
+                                        <td>@item.dateCreated</td>
+                                        <td>@item.vesselMnemonic</td>
+                                        <td>@item.vessleName</td>
+                                        <td>@item.voyageNo</td>
+                                        <td><a onclick="click_status(@item.onboardID,'@item.status');"><span class="@classss">@item.status</span></a></td>
+                                        <td>
 
+                                            <a title="Voyage Route" data-toggle="modal" data-target="#modal-voyageRoute" onclick="getvoyageRoute(@item.onboardID);"><span class='label label-primary'>Voyage Route</span></a>
+                                            @*<i class='fa  fa-location-arrow'></i>*@
+                                            @*<a title="Load List" onclick="getLoadList(@item.onboardID);"><i class='fa fa-list-ol' data-toggle="modal" data-target="#modal-vesselloadlist" tooltip="Load List"></i></a>*@
+                                        </td>
+                                        @*<td>
 
-                                                        <tr id="row_@item.onboardID">
-                                                            
-                                                            <td>@cnt.</td>
-                                                            <td>@item.itemCount</td>
-                                                            <td>@item.dateCreated</td>
-                                                            <td>@item.vesselMnemonic</td>
-                                                            <td>@item.vessleName</td>
-                                                            <td>@item.voyageNo</td>
-                                                            <td><a><span class="@classss">@item.status</span></a></td>
-                                                            <td>
-                                                                <a title="Voyage Route"><i class='fa  fa-location-arrow'></i></a>
-                                                                <a title="Load List"><i class='fa fa-list-ol' tooltip="Load List"></i></a>
-
-                                                            </td>
-                                                        </tr>
+                                            </td>*@
+                                    </tr>
                                     cnt++;
                                 }
                             }
@@ -95,72 +96,301 @@
                                     }
                                 </select>
                             </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="dNum">Vessel Name</label>
+                                <input id="vesselname" type="text" class="form-control" readonly="readonly" />
                             </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="dNum">Vessel Name</label>
-                                    <input id="vesselname" type="text" class="form-control" readonly="readonly" />
-                                </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="dNum">Voyage Number</label>
+                                <input id="voyageNo" type="text" class="form-control" readonly="readonly" />
                             </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="dNum">Voyage Number</label>
-                                    <input id="voyageNo" type="text" class="form-control" readonly="readonly" />
+
+                        </div>
+                        @*<div class="form-group">
+                                <button type="submit" id="btnAdd" class="btn btn-success btn-block">Search</button>
+                            </div>*@
+
+
+                        <div class="col-md-12">
+                            <div class="box box-default">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Load List</h3>
+
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                        @*<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>*@
                                     </div>
-
                                 </div>
-                                @*<div class="form-group">
-                                    <button type="submit" id="btnAdd" class="btn btn-success btn-block">Search</button>
-                                </div>*@
-               
-                            <div class="col-md-12">
-                                <table id="example2" class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th> <input type="checkbox" id="selectAll"></th>
-                                            <th>No.</th>
-                                            <th>Vessel</th>
-                                            <th>Voyage No.</th>
-                                            <th>Bill of Lading No.</th>
-                                            <th>Transaction No.</th>
-                                            <th style=" display:none;">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td colspan="6">No Data Found!</td>
-                                        </tr>
-                                        
-                                    </tbody>
-                                </table>
+                                <!-- /.box-header -->
+                                <div class="box-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+
+                                            <div class="box-body table-responsive no-padding">
+                                                <table id="example2" class="table table-bordered table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th> <input type="checkbox" id="selectAll"></th>
+                                                            <th>No.</th>
+                                                            <th>Vessel</th>
+                                                            <th>Voyage No.</th>
+                                                            <th>Voyage Leg</th>
+                                                            <th>Port of Origin</th>
+                                                            <th>Port of Destination</th>
+                                                            <th>Bill of Lading No.</th>
+                                                            <th>Transaction No.</th>
+                                                            <th style=" display:none;">Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td colspan="9">No Data Found!</td>
+                                                        </tr>
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <!-- /.col -->
+
+                                    </div>
+                                    <!-- /.row -->
+                                </div>
+                                <!-- /.box-body -->
 
                             </div>
-                            <!-- /.row -->
                         </div>
-                        </div>
-                        <!-- /.box -->
-                        <div class="modal-footer">
-                            <button type="button" id="btnClose" onclick="closePOPUP(this);" class="btn btn-default pull-left" >Close</button>
-                            <button type="submit" id="btnsubmit" onclick="submitOnboardVessel(this);" class="btn btn-primary">Submit</button>
+                        <div class="col-md-12">
+                            <div class="box box-default">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Voyage Route</h3>
+
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                        @*<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>*@
+                                    </div>
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="box-body table-responsive no-padding">
+                                                <table id="example3" class="table table-bordered table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>No.</th>
+                                                            <th>Vessel</th>
+                                                            <th>Voyage No.</th>
+                                                            <th>Voyage Leg</th>
+                                                            <th>Port of Origin</th>
+                                                            <th>Port of Destination</th>
+                                                            <th><span style=" color:red;">*</span>ATD</th>
+                                                            <th><span style=" color:red;">*</span>ATA</th>
+                                                            <th style=" display:none;">Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td colspan="9">No Data Found!</td>
+                                                        </tr>
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <!-- /.col -->
+
+                                    </div>
+                                    <!-- /.row -->
+                                </div>
+                                <!-- /.box-body -->
+
+                            </div>
                         </div>
                     </div>
+                </div>
+                <!-- /.box -->
+                <div class="modal-footer">
+                    <button type="button" id="btnClose" onclick="closePOPUP(this);" class="btn btn-default pull-left">Close</button>
+                    <button type="submit" id="btnsubmit" onclick="submitOnboardVessel(this);" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
             <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
     </div>
+    <div class="modal fade in" id="modal-voyageRoute" data-backdrop="static">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" onclick="closePOPUP(this);" id="btnminiClose" class="close" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title">Voyage Route</h4>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box-body table-responsive no-padding">
+                                <table id="example4" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Mnemonic</th>
+                                            <th>Vessel</th>
+                                            <th>Voyage No.</th>
+                                            <th>Voyage Leg</th>
+                                            <th>Port of Origin</th>
+                                            <th>Port of Destination</th>
+                                            <th>ATD</th>
+                                            <th>ATA</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="11">No Data Found!</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <div class="modal fade in" id="modal-vesselloadlist" data-backdrop="static">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" onclick="closePOPUP(this);" id="btnminiClose" class="close" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title">Vessel Load List</h4>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box-body table-responsive no-padding">
+                                <table id="example5" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th style=" display:none;"></th>
+                                            <th>No.</th>
+                                            <th>Vessel</th>
+                                            <th>Voyage No.</th>
+                                            <th>Bill of lading No.</th>
+                                            <th>ConVan No.</th>
+                                            <th>Seal No.</th>
+                                            <th>Customer</th>
+                                            <th>Port of Origin</th>
+                                            <th>Port of Destination</th>
+                                            <th>Final Destination</th>
+                                            <th>Consignee</th>
+                                            <th>Service Type</th>
+                                            <th>Other Cargo Details</th>
+                                            <th>ConVan Status</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="15">No Data Found!</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    @*<button type="button" id="btnClose" onclick="closePOPUP(this);" class="btn btn-default pull-left">Close</button>*@
+                    @*<button type="submit" id="btnsubmit" onclick="submitOnboardVessel(this);" class="btn btn-primary">Submit</button>*@
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-warning dropdown-toggle pull-left" data-toggle="dropdown" aria-expanded="false">
+                            Action
+                            <span class="fa fa-caret-down"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a onclick="clickYardVessel()">Yard & Vessel Loadlist</a></li>
+                            <li><a href="#">Coasting Manifest</a></li>
+                            <li><a href="#">For Coast Guard</a></li>
+                            @*<li><a href="#">For KTI Billing</a></li>*@
+                            <li><a href="#">For Roma Nessa FT</a></li>
+                            <li><a href="#">For Trigo</a></li>
+                            <li><a href="#">For Roma Nessa FT</a></li>
+                            <li><a href="#">For Trigo</a></li>
+                            <li><a href="#">For Cherry & Roselyn (CV Coron)</a></li>
+                            <li><a href="#">For Accounting</a></li>
+
+
+                            @*<li class="divider"></li>
+                                <li><a href="#">Separated link</a></li>*@
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <div class="modal fade" id="changeStatusDeparted" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                    <h3 class="modal-title">Change Status</h3>
+                </div>
+                <div class="modal-body">
+                    <h4>Are you sure you want to change the status into "Departed"?</h4>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+                    <a href="#" class="btn btn-success" onclick="changestatusDeparted()">Confirm</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="changeROUTEStatusArrived" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                    <h3 class="modal-title">Change Status</h3>
+                </div>
+                <div class="modal-body">
+                    <h4>Are you sure you want to change the status into "Arrived"?</h4>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+                    <a href="#" class="btn btn-success" onclick="changestatusArrived()">Confirm</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input id='hdn_onboardID' type='hidden' class='form-control' />
+    <input id='hdn_routeID' type='hidden' class='form-control' />
+
 </section>
 @section Scripts{
     <script src="~/Scripts/bootstap-toggle.js"></script>
     <!-- page script -->
     <script>
         //intialization
-        $(document).ready(function () {
-            
-        });
         $(function () {
 
             $('.select2').select2();
-            //$('#example1').DataTable()
+          //  $('#example2').DataTable()
             $('#example1').DataTable({
                 'paging': true,
                 'lengthChange': true,
@@ -184,17 +414,19 @@
                         if (data.voyageDetails.length > 0 || data.getBOL.length > 0) {
                             tbl.empty();
                             var cnt = 1;
-
                             $("#vesselname").val(data.voyageDetails[0].vesselname);
                             $("#voyageNo").val(data.voyageDetails[0].voyageNo);
                             $.each(data.getBOL, function (index, row) {
-
                                 var tr = "<tr> " +
+                                    "<td style=' display:none;'>" + row.voyageID + "</td>" +
                                     "<td style=' display:none;'>" + row.billID + "</td>" +
-                                    "<td><input type=checkbox id="+row.billID+" /></td> " +
+                                    "<td><input type='checkbox' id=" + row.billID + " /></td> " +
                                     "<td>" + cnt + ".</td>" +
                                     "<td>" + row.vesselName + "</td>" +
                                     "<td>" + row.voyageNumber + "</td>" +
+                                    "<td>" + row.voyageLeg + "</td>" +
+                                    "<td>" + row.portoforigin + "</td>" +
+                                    "<td>" + row.portofDestination + "</td>" +
                                     "<td>" + row.billofladingNo + "</td>" +
                                     "<td>" + row.transactionNo + "</td>" +
                                     "<td style=' display:none;'><a type='button' onclick='Remove(this);'><i class='fa fa-trash'></i></a></td>" +
@@ -210,7 +442,7 @@
                             // Select or deselect all checkboxes depending on main checkbox change
                             $selectAll.on('click', function () {
                                 $tdCheckbox.prop('checked', this.checked);
-                            });
+                           });
 
                             // Toggle main checkbox state to checked when all checkboxes inside tbody tag is checked
                             $tdCheckbox.on('change', function (e) {
@@ -218,11 +450,67 @@
                                 // if all checkboxes are checked, then set property of main checkbox to "true", else set to "false"
                                 $selectAll.prop('checked', (tdCheckboxChecked === $tdCheckbox.length));
                             })
+
+
+                            $('#example2').find('input:checkbox').on('change', function () {
+                                var tbl = $("#example3 > tbody");
+                                 tbl.empty();
+                                var cntt = 1;
+                                $("#example2 > tbody tr").each(function (i) {
+                                    var $table = $('#example2'); // table selector
+                                    var row = $(this);
+                                    var getvalCHK = row.find("TD").eq(2).find("input:checkbox:checked").length;
+                                    if (getvalCHK == 1) {
+
+                                        var voyageID = row.find("TD").eq(0).html();
+                                        var billID = row.find("TD").eq(1).html();
+                                        var vessel = row.find("TD").eq(4).html();
+                                        var voyageNO = row.find("TD").eq(5).html();
+                                        var voyageLeg = row.find("TD").eq(6).html();
+                                        var poo = row.find("TD").eq(7).html();
+                                        var pod = row.find("TD").eq(8).html();
+
+                                        var flag = 0;
+                                        $("#example3 > tbody").find("tr").each(function () { //iterate through rows
+                                            var td0 = $(this).find("td:eq(0)").text(); //get value of first td in row
+                                            var td1 = $(this).find("td:eq(1)").text(); //get value of second td in row
+
+                                            var td3 = $(this).find("td:eq(3)").text();
+                                            var td4 = $(this).find("td:eq(4)").text();
+                                            var td5 = $(this).find("td:eq(5)").text();
+                                            var td6 = $(this).find("td:eq(6)").text();
+                                            var td7 = $(this).find("td:eq(7)").text();
+                                            if ((voyageID == td0) &&  (vessel == td3) && (voyageNO == td4) && (voyageLeg == td5) && (poo == td6) && (pod == td7)) {
+                                                flag = 1;
+                                            }
+                                        });
+
+                                        if (flag == 0) {
+                                            var tr = "<tr> " +
+                                                "<td style=' display:none;'>" + voyageID + "</td>" +
+                                                "<td style=' display:none;'>" + billID + "</td>" +
+                                                "<td>" + cntt + ".</td>" +
+                                                "<td>" + vessel + "</td>" +
+                                                "<td>" + voyageNO + "</td>" +
+                                                "<td>" + voyageLeg + "</td>" +
+                                                "<td>" + poo + "</td>" +
+                                                "<td>" + pod + "</td>" +
+                                                "<td><input id='atd_" + cntt + "'  type='date' class='form-control' /></td>" +
+                                                "<td><input id='ata_" + cntt + "'  type='date' class='form-control' /></td>" +
+                                                "<td style=' display:none;'><a type='button' onclick='Remove(this);'><i class='fa fa-trash'></i></a></td>" +
+                                                "</tr > ";
+                                            tbl.append(tr);
+                                            cntt++;
+                                        }
+                                    } 
+                                    
+                                });
+                            });
                         }
                         else
                         {
                             tbl.empty();
-                            tbl.append("<tr> <td colspan='6'>No Data Found!</td></tr>");
+                            tbl.append("<tr> <td colspan='9'>No Data Found!</td></tr>");
                             $("#vesselname").val("");
                             $("#voyageNo").val("");
                         }
@@ -267,39 +555,209 @@
             $("#example2 > tbody tr").each(function (i) {
                 var $table = $('#example2'); // table selector
                 var $tdCheckbox = $table.find('tbody input:checkbox:checked').length;
-                //var $tdCheckbox = $table.find('tbody input:checkbox').checked; // checboxes inside table body
-               
                 var row = $(this);
-
-                var getvalCHK = row.find("TD").eq(1).find("input:checkbox:checked").length;
+                var getvalCHK = row.find("TD").eq(2).find("input:checkbox:checked").length;
                 console.log(getvalCHK);
                 if (getvalCHK == 1) {
                     var dat = {
-                        billID: row.find("TD").eq(0).html(),
-                        billofLadingNo: row.find("TD").eq(5).html()
+                        billID: row.find("TD").eq(1).html(),
+                        billofLadingNo: row.find("TD").eq(9).html()
                     }
                     data.push(dat);
                 }
             });
 
+            var voyageRoute = new Array();
+            var dateFlag = 0;
+            $("#example3 > tbody tr").each(function (i) {
+                // table selector
+                var row = $(this);
+                if (row.find("TD").eq(8).find("input").val().length == 0 || row.find("TD").eq(9).find("input").val().length == 0) {
+                    dateFlag = 1;
+                }
+                
+               
+                var datvoyageRoute = {
+                    voyageID: row.find("TD").eq(0).html(),
+                    vesselName: row.find("TD").eq(3).html(),
+                    voyageNo: row.find("TD").eq(4).html(),
+                    voyageLegName: row.find("TD").eq(5).html(),
+                    portofOrigin: row.find("TD").eq(6).html(),
+                    portofDestination: row.find("TD").eq(7).html(),
+                    ATD: GetFormattedDate(row.find("TD").eq(8).find("input").val()) ,
+                    ATA: GetFormattedDate(row.find("TD").eq(9).find("input").val())
+                }
+                voyageRoute.push(datvoyageRoute);
+            });
+
             var consolidate = {
                 datParent: datParent,
                 data: data,
+                voyageRoute: voyageRoute,
+            }
+            console.log(consolidate);
+            var IsValid = true;
+            if (dateFlag == 1) {
+                $.notify("Actual time of departure and Actual time of arrival are required!", "error");
+                IsValid = false;
+            }
+            if (IsValid) {
+                $.ajax({
+                    type: "POST",
+                    url: "../../../OnboardVessel/SaveOnboardVessel",
+                    data: JSON.stringify(consolidate),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (r) {
+                        if (r.status == true) {
+                            window.location.href = '/OnboardVessel/onboard';
+                        }
+                        if (r.errmsg == "has pending") {
+                            $.notify("There is a pending transaction that the same voyage number in the onboard vessel list.","error");
+                        }
+                    }
+                });
             }
 
+        }
+        //passing date format "yyyy-mm-dd"
+        function GetFormattedDate(dd) {
+            var todayTime = new Date(dd);
+            var month = todayTime.getMonth() + 1;
+            var day = todayTime.getDate();
+            var year = todayTime.getFullYear();
+            return month + "/" + day + "/" + year;
+        }
+
+
+
+        //viewing details
+
+        //voyageRoute detaials
+        function getvoyageRoute(dd) {
+            $.get("../../../OnboardVessel/getvoyageRoute", { onboardID: dd }, function (data) {
+                var tbl = $("#example4 > tbody");
+                tbl.empty();
+                var cntt=1;
+                $.each(data, function (index, row) {
+                    console.log(row.vesselMnemonic);
+                    var tr = "<tr> " +
+                                "<td style='display:none;'>" + row.routeID + "</td>" +
+                                "<td>" + cntt + ".</td>" +
+                                "<td>" + row.vesselMnemonic + "</td>" +
+                                "<td>" + row.vesselName + "</td>" +
+                                "<td>" + row.voyageNo + "</td>" +
+                                "<td>" + row.voyageLegName + "</td>" +
+                                "<td>" + row.portofOrigin + "</td>" +
+                                "<td>" + row.portofDestination + "</td>" +
+                                "<td>" + row.ATD + "</td>" +
+                                "<td>" + row.ATA + "</td>" +
+                        "<td><a type='button' onclick=click_statusArrived(" + row.routeID + ",'"+ row.status+"')><span class='label label-danger'>" + row.status +"</span></a></td>" +
+                                "<td><a type='button' title='Coasting Manifest'><i class='fa fa-ship'></i></a></td>" +
+                            "</tr > ";
+                    tbl.append(tr);
+                    cntt++;
+                });
+            });
+        }
+        //LoadList detaials
+        function getLoadList(dd) {
+            $("#hdn_onboardID").val(dd);
+            $.get("../../../OnboardVessel/getLoadList", { onboardID: dd }, function (data) {
+                var tbl = $("#example5 > tbody");
+                tbl.empty();
+                var cntt = 1;
+                $.each(data, function (index, row) {
+                    console.log(row.vesselMnemonic);
+             
+                    var tr = "<tr> " +
+                        "<td style='display:none;'>" + row.itemID + "</td>" +
+                        "<td>" + cntt + ".</td>" +
+                        "<td>" + row.vessleName + "</td>" +
+                        "<td>" + row.voyageNo + "</td>" +
+                        "<td>" + row.billofladingNo + "</td>" +
+                        "<td>" + row.EIRIConvanNo + "</td>" +
+                        "<td>" + row.EIRISealNo + "</td>" +
+                        "<td>" + row.shipperName + "</td>" +
+                        "<td>" + row.portoforigin + "</td>" +
+                        "<td>" + row.portofDestination + "</td>" +
+                        "<td>" + row.finalDestination + "</td>" +
+                        "<td>" + row.consigneeName + "</td>" +
+                        "<td>" + row.serviceMode + "</td>" +
+                        "<td>" + row.CargoDetails + "</td>" +
+                        "<td>" + row.EIRIConvanStatus + "</td>" +
+                        "</tr > ";
+                    tbl.append(tr);
+                    cntt++;
+                });
+            });
+        }
+
+
+        //changestatusDeparted
+        var click_status = function (ID,status) {
+            $("#hdn_onboardID").val(ID);
+            console.log($(this.status));
+            if (status == "For Departure")
+            {
+                $("#changeStatusDeparted").modal('show');
+            }
+        }
+        var changestatusDeparted = function () {
+            var onboardID = $("#hdn_onboardID").val();
             $.ajax({
                 type: "POST",
-                url: "../../../OnboardVessel/SaveOnboardVessel",
-                data: JSON.stringify(consolidate),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (r)
-                {
-
+                url: "/OnboardVessel/updatestatusDeparted",
+                data: { Id: onboardID },
+                success: function (result) {
+                    if (result.msg == 'saved') {
+                        window.location.href = '/OnboardVessel/onboard';
+                        $("#changeStatusDeparted").modal("hide");
+                        $.notify("Updated successfully.", "success");
+                    }
+                    else
+                        $.notify("Data not successfully posted! Please try again.", "error");
                 }
-            });
-
+            })
         }
+
+        //changestatusArrived
+        var click_statusArrived = function (ID, status) {
+            $("#hdn_routeID").val(ID);
+            console.log($(this.status));
+            if (status == "Departed") {
+                $("#changeROUTEStatusArrived").modal('show');
+            }
+        }
+        var changestatusArrived = function () {
+            var onboardID = $("#hdn_routeID").val();
+            $.ajax({
+                type: "POST",
+                url: "/OnboardVessel/updatestatusArrived",
+                data: { Id: onboardID },
+                success: function (result) {
+                    if (result.msg == 'saved') {
+                        getvoyageRoute(result.onboardID);
+                    $("#changeROUTEStatusArrived").modal("hide");
+                        $.notify("Updated successfully.", "success");
+                    }
+                    else
+                        $.notify("Data not successfully posted! Please try again.", "error");
+                }
+            })
+        }
+
+        //Yard and Vessel List
+        var clickYardVessel = function () {
+            var onboardID = $("#hdn_onboardID").val();
+            console.log(onboardID);
+            //window.location.href = '/OnboardVessel/onboard';
+            var redirectWindow = window.open('/OnboardVessel/yardvesselllistPrintable', '_blank');
+            redirectWindow.location;
+        }
+
+
+
     </script>
 }
 <style type="text/css">
@@ -316,4 +774,55 @@
         user-select: none;
         -webkit-user-select: none;
     }
+
+    element.style {
+    }
+
+    * {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    user agent stylesheet
+    tr {
+        display: table-row;
+        vertical-align: inherit;
+        border-color: inherit;
+    }
+
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+
+    user agent stylesheet
+    table {
+        border-collapse: separate;
+        text-indent: initial;
+        border-spacing: 2px;
+    }
+    .box-header > .fa, .box-header > .glyphicon, .box-header > .ion, .box-header .box-title {
+        display: inline-block;
+        font-size: 12px;
+        margin: 0;
+        line-height: 1;
+    }
+    body {
+        font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+        font-size: 10px;
+        line-height: 1.42857143;
+        color: #333;
+        background-color: #fff;
+    }
+    .box {
+        position: relative;
+        border-radius: 3px;
+        background: #ffffff;
+        border-top: 1px solid #d2d6de;
+        margin-bottom: 20px;
+        width: 100%;
+        box-shadow: 0 1px 1px rgb(0 0 0 / 10%);
+    }
+   
 </style>

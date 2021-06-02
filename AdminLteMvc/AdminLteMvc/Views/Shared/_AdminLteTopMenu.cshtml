@@ -32,13 +32,18 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="~/Content/AdminLTE/img/avatar5.png" class="user-image" alt="User Image">
                         @{
+                            var ii = User.Identity.GetUserName().Count();
+                            if (User.Identity.GetUserName().Count() == 0)
+                            {
+                                @Url.Action("LogOff", "Account");
+                            }
+
                             int userid = int.Parse(User.Identity.GetUserName());
                             AdminLteMvc.Models.ContextModel db = new AdminLteMvc.Models.ContextModel();
                             var usr = db.Users.Where(u => u.ID == userid).SingleOrDefault();
                             var fullname = AdminLteMvc.Functions.Hash.Decrypt(usr.UserName, true);
                             int empid = int.Parse(usr.EmpID);
                             var emp = db.EmployeeMasters.Where(a => a.ID == empid).First();
-
                             var status = usr.active == true ? "Active" : "InActive";
                         }
                         <span class="hidden-xs">@emp.FirstName @emp.MiddleName @emp.LastName</span>

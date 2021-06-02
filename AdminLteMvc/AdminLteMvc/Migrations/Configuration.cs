@@ -11,7 +11,7 @@ namespace AdminLteMvc.Migrations
         {
             
 
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
             //AutomaticMigrationDataLossAllowed = false;
         }
        

@@ -120,9 +120,10 @@ namespace AdminLteMvc.Controllers
         public ActionResult GetDetails(string refno)
         {
             var getEIR = db.EirPullOut.Where(s => s.EIRONo.Equals(refno)).Single();
-            var getbkno = db.ATW.Where(s=>s.atwBkNo.Equals(getEIR.EIROAtwBkNo)).Select(s=>s.bkNo).Single();
-            var bkdtls = db.Booking.Where(s=>s.docNum.Equals(getbkno)).Single();
-            var trndetails = db.TransactionDetails.Where(s=>s.docNumber.Equals(getbkno)).SingleOrDefault();
+            //var getbkno = db.ATW.Where(s=>s.atwBkNo.Equals(getEIR.EIROAtwBkNo)).Select(s=>s.bkNo).ToList();
+            var trnDetails = db.TransactionDetails.Where(s => s.transactionNo == getEIR.EIROTransactionNo).SingleOrDefault();
+            var bkdtls = db.Booking.Where(s=>s.docNum.Equals(trnDetails.docNumber)).Single();
+            //var trndetails = db.TransactionDetails.Where(s=>s.docNumber.Equals(getbkno)).SingleOrDefault();
             //var ctel = db.TransactionDetails.Where(s => s.docNumber.Equals(getbkno)).Select(s => s.consigneetelno).First();
 
             var VesselName = getEIR.vesselID;
@@ -193,23 +194,23 @@ namespace AdminLteMvc.Controllers
                     db.SaveChanges();
 
 
-                    var voyNo = db.VoyageNo.Where(a => a.transactionNumber == outeir.EIROTransactionNo).ToList();
-                    if (voyNo.Count > 0)
-                    {
-                        if (voyNo.SingleOrDefault().voyageID != bill.datParent.proformaBillVoyageID)
-                        {
-                            var updateVoyageNo = voyNo.SingleOrDefault();
-                            updateVoyageNo.status = "Open";
-                            updateVoyageNo.transactionNumber = "-";
-                            db.SaveChanges();
+                    //var voyNo = db.VoyageNo.Where(a => a.transactionNumber == outeir.EIROTransactionNo).ToList();
+                    //if (voyNo.Count > 0)
+                    //{
+                    //    if (voyNo.SingleOrDefault().voyageID != bill.datParent.proformaBillVoyageID)
+                    //    {
+                    //        var updateVoyageNo = voyNo.SingleOrDefault();
+                    //        updateVoyageNo.status = "Open";
+                    //        updateVoyageNo.transactionNumber = "-";
+                    //        db.SaveChanges();
 
-                            var updateSelectedVoyageNo = db.VoyageNo.Where(a => a.voyageID == bill.datParent.proformaBillVoyageID).First();
-                            updateSelectedVoyageNo.status = "Closed";
-                            updateSelectedVoyageNo.transactionNumber = outeir.EIROTransactionNo;
-                            db.SaveChanges();
+                    //        var updateSelectedVoyageNo = db.VoyageNo.Where(a => a.voyageID == bill.datParent.proformaBillVoyageID).First();
+                    //        updateSelectedVoyageNo.status = "Closed";
+                    //        updateSelectedVoyageNo.transactionNumber = outeir.EIROTransactionNo;
+                    //        db.SaveChanges();
 
-                        }
-                    }
+                    //    }
+                    //}
 
 
                     var isValidModel = TryUpdateModel(bill);
@@ -637,25 +638,25 @@ namespace AdminLteMvc.Controllers
                     infull.EIRIStatus = "Billed";
                     db.SaveChanges();
 
-                    var EIROUT = db.EirPullOut.Where(a => a.EIRONo == eirin.EIRIReferenceNo).Single();
+                    //var EIROUT = db.EirPullOut.Where(a => a.EIRONo == eirin.EIRIReferenceNo).Single();
 
-                    var voyNo = db.VoyageNo.Where(a => a.transactionNumber == EIROUT.EIROTransactionNo).ToList();
-                    if (voyNo.Count > 0)
-                    {
-                        if (voyNo.SingleOrDefault().voyageID != bill.datParent.voyageID)
-                        {
-                            var updateVoyageNo = voyNo.SingleOrDefault();
-                            updateVoyageNo.status = "Open";
-                            updateVoyageNo.transactionNumber = "-";
-                            db.SaveChanges();
+                    //var voyNo = db.VoyageNo.Where(a => a.transactionNumber == EIROUT.EIROTransactionNo).ToList();
+                    //if (voyNo.Count > 0)
+                    //{
+                    //    if (voyNo.SingleOrDefault().voyageID != bill.datParent.voyageID)
+                    //    {
+                    //        var updateVoyageNo = voyNo.SingleOrDefault();
+                    //        updateVoyageNo.status = "Open";
+                    //        updateVoyageNo.transactionNumber = "-";
+                    //        db.SaveChanges();
 
-                            var updateSelectedVoyageNo = db.VoyageNo.Where(a => a.voyageID == bill.datParent.voyageID).First();
-                            updateSelectedVoyageNo.status = "Closed";
-                            updateSelectedVoyageNo.transactionNumber = EIROUT.EIROTransactionNo;
-                            db.SaveChanges();
+                    //        var updateSelectedVoyageNo = db.VoyageNo.Where(a => a.voyageID == bill.datParent.voyageID).First();
+                    //        updateSelectedVoyageNo.status = "Closed";
+                    //        updateSelectedVoyageNo.transactionNumber = EIROUT.EIROTransactionNo;
+                    //        db.SaveChanges();
 
-                        }
-                    }
+                    //    }
+                    //}
 
                 }
                 catch (Exception ex)
