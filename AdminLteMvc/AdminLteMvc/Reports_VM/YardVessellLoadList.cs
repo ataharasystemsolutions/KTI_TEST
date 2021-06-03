@@ -46,8 +46,5 @@ namespace AdminLteMvc.Reports_VM
         public string proformaBillMeasurement { get; set; }
         public string ATA { get; set; }
         public string ATD { get; set; }
-
-
-
     }
 }
