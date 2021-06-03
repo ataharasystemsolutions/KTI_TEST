@@ -13,9 +13,11 @@ namespace AdminLteMvc.Models.WEBSales
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int routeID { get; set; }
         public int onboardID { get; set; }
-        public int voyageLegID { get; set; }
+        public int voyageID { get; set; }
         public int userID { get; set; }
         public DateTime? dateCreated { get; set; }
+        public string vesselName { get; set; }
+        public string voyageNo { get; set; }
         public string voyageLegName { get; set; }
         public string portofOrigin { get; set; }
         public string portofDestination { get; set; }
@@ -24,5 +26,6 @@ namespace AdminLteMvc.Models.WEBSales
         public string status { get; set; }
         public int lastuserID { get; set; }
         public DateTime? lastdateChanged { get; set; }
+        public string action { get; set; }
     }
 }

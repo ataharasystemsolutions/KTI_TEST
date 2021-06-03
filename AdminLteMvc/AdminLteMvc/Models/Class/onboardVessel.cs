@@ -10,5 +10,6 @@ namespace AdminLteMvc.Models.Class
     {
         public AdminLteMvc.Models.WEBSales.onboardVessel datParent { get; set; }
         public List<onboardVesselLoadItem> data { get; set; }
+        public List<onboardVesselVoyageRoute> voyageRoute { get; set; }
     }
 }

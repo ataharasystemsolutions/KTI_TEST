@@ -515,15 +515,7 @@ namespace AdminLteMvc.Controllers
                 trnDetails.outStatus = "Pull Out";
                 db.SaveChanges();
 
-                //trigger the voyage inventory
-
-                if (data.vesselID != 0 && data.voyageID != 0)
-                {
-                    var voyageNo = db.VoyageNo.Where(a => a.voyageID == data.voyageID).First();
-                    voyageNo.status = "Closed";
-                    voyageNo.transactionNumber = data.EIROTransactionNo;
-                    db.SaveChanges();
-                }
+              
 
                 transaction.Commit();
             }
@@ -682,23 +674,23 @@ namespace AdminLteMvc.Controllers
                     mnc.proformaBillStatus = "In";
                     db.SaveChanges();
 
-                    var voyNo = db.VoyageNo.Where(a => a.transactionNumber == eirout.EIROTransactionNo).ToList();
-                    if (voyNo.Count > 0)
-                    {
-                        if (voyNo.SingleOrDefault().voyageID != data.voyageID)
-                        {
-                            var updateVoyageNo = voyNo.SingleOrDefault();
-                            updateVoyageNo.status = "Open";
-                            updateVoyageNo.transactionNumber = "-";
-                            db.SaveChanges();
+                    //var voyNo = db.VoyageNo.Where(a => a.transactionNumber == eirout.EIROTransactionNo).ToList();
+                    //if (voyNo.Count > 0)
+                    //{
+                    //    if (voyNo.SingleOrDefault().voyageID != data.voyageID)
+                    //    {
+                    //        var updateVoyageNo = voyNo.SingleOrDefault();
+                    //        updateVoyageNo.status = "Open";
+                    //        updateVoyageNo.transactionNumber = "-";
+                    //        db.SaveChanges();
 
-                            var updateSelectedVoyageNo = db.VoyageNo.Where(a => a.voyageID == data.voyageID).First();
-                            updateSelectedVoyageNo.status = "Closed";
-                            updateSelectedVoyageNo.transactionNumber = eirout.EIROTransactionNo;
-                            db.SaveChanges();
+                    //        var updateSelectedVoyageNo = db.VoyageNo.Where(a => a.voyageID == data.voyageID).First();
+                    //        updateSelectedVoyageNo.status = "Closed";
+                    //        updateSelectedVoyageNo.transactionNumber = eirout.EIROTransactionNo;
+                    //        db.SaveChanges();
 
-                        }
-                    }
+                    //    }
+                    //}
 
 
                     status = true;
