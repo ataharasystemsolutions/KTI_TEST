@@ -34,6 +34,7 @@ namespace AdminLteMvc.Models.WEBSales
         public string inputtedby { get; set; }
         public string csr { get; set; }
         public string accountexecutive { get; set; }
+        public int userId { get; set; }
 
         public IEnumerable<System.Web.Mvc.SelectListItem> TransactionNumbers { get; set; }
     }   

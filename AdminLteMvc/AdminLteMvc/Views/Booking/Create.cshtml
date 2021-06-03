@@ -1,4 +1,5 @@
 ﻿@model AdminLteMvc.Models.WEBSales.Booking
+@using Microsoft.AspNet.Identity
 
 @{
     ViewBag.Title = "Booking";
@@ -7,111 +8,116 @@
 
 <div class="box box-success">
     <div class="box-body">
-        <div class="container">
-            @*<div class="row" id="kargalogo">
-            <img src="~/Content/logo/kargaminelogo.png" />
-        </div>
-        <br/>*@
-            <form>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label for="dNum" class="col-sm-3 col-form-label">Booking Number</label>
-                            <div class="col-sm-9    ">
-                                @Html.EditorFor(model => model.docNum, new { htmlAttributes = new { @class = "form-control", id = "dNum", @readonly = true } })
-                            </div>
+        @*<div class="row" id="kargalogo">
+                <img src="~/Content/logo/kargaminelogo.png" />
+            </div>
+            <br/>*@
+        <form>
+            @{
+                int userid = int.Parse(User.Identity.GetUserName());
+                AdminLteMvc.Models.ContextModel db = new AdminLteMvc.Models.ContextModel();
+                int empid = int.Parse(db.Users.Where(u => u.ID == userid).First().EmpID);
+                var emp = db.EmployeeMasters.Where(a => a.ID == empid).First();
+            }
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <label for="dNum" class="col-sm-3 col-form-label">Booking Number</label>
+                        <div class="col-sm-9    ">
+                            @Html.EditorFor(model => model.docNum, new { htmlAttributes = new { @class = "form-control", id = "dNum", @readonly = true } })
                         </div>
-                        <div class="form-group row">
-                            <label for="ddate" class="col-sm-3 col-form-label">Booking Date</label>
-                            <div class="col-sm-9    ">
-                                @Html.EditorFor(model => model.docDate, new { htmlAttributes = new { @class = "form-control", @type = "date", id = "ddate" } })
-                            </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="ddate" class="col-sm-3 col-form-label">Booking Date</label>
+                        <div class="col-sm-9    ">
+                            @Html.EditorFor(model => model.docDate, new { htmlAttributes = new { @class = "form-control", @type = "date", id = "ddate" } })
                         </div>
-                        @*<div class="form-group row">
+                    </div>
+                    @*<div class="form-group row">
                             <label for="inhousedate" class="col-sm-3 col-form-label">In-House Booking Date</label>
                             <div class="col-sm-9    ">
                                 @Html.EditorFor(model => model.inhouseBookingDate, new { htmlAttributes = new { @class = "form-control", @type = "date", id = "inhousedate" } })
                             </div>
                         </div>*@
-                        <div class="form-group row">
-                            <label for="mnemonic" class="col-sm-3 col-form-label">Mnemonic</label>
-                            <div class="col-sm-9    ">
-                                <select id="mnemonic" class="form-control">
-                                    <option value="0">-- Select mnemonic --</option>
-                                    @{
-                                        foreach (var item in ViewBag.MnemonicList)
-                                        {
-                                            <option value="@item.Value">@item.Text</option>
-                                        }
+                    <div class="form-group row">
+                        <label for="mnemonic" class="col-sm-3 col-form-label">Mnemonic</label>
+                        <div class="col-sm-9    ">
+                            <select id="mnemonic" class="form-control">
+                                <option value="0">-- Select mnemonic --</option>
+                                @{
+                                    foreach (var item in ViewBag.MnemonicList)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
                                     }
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="cnmshpr" class="col-sm-3 col-form-label">Customer/Shipper Name</label>
-                            <div class="col-sm-9    ">
-                                <select id="cnmshpr" class="form-control" disabled="disabled">
-                                    <option value="0">-- Select name or shipper --</option>
-                                    @{
-                                        foreach (var item in ViewBag.CustomerShipperList)
-                                        {
-                                            <option value="@item.Value">@item.Text</option>
-                                        }
-                                    }
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="shipperaddress" class="col-sm-3 col-form-label">Customer/Shipper Address</label>
-                            <div class="col-sm-9    ">
-                                <select id="shipperaddress" class="form-control">
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="contactperson" class="col-sm-3 col-form-label">Customer/Shipper Contact Person</label>
-                            <div class="col-sm-9    ">
-                                @Html.EditorFor(model => model.contactperson, new { htmlAttributes = new { @class = "form-control", id = "contactperson", @readonly = true } })
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="contactno" class="col-sm-3 col-form-label">Customer/Shipper Contact No.</label>
-                            <div class="col-sm-9    ">
-                                @Html.EditorFor(model => model.contactno, new { htmlAttributes = new { @class = "form-control", id = "contactno", @readonly = true } })
-                            </div>
+                                }
+                            </select>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label for="noofcvs" class="col-sm-3 col-form-label">
-                                No. of ConVans
-                            </label>
-                            <div class="col-sm-9    ">
-                                @Html.EditorFor(model => model.noofcvs, new { htmlAttributes = new { @class = "form-control", id = "noofcvs", @type="number",@min="0", @max="2",@value="0" } })
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="csize" class="col-sm-3 col-form-label">
-                                ConVan Size
-                            </label>
-                            <div class="col-sm-9    ">
-                                <select id="csize" class="form-control">
-                                    <option value="0">-- Select size --</option>
-                                    @{
-                                        foreach (var item in ViewBag.ConVanSizesList)
-                                        {
-                                            <option value="@item.Value">@item.Text</option>
-                                        }
+                    <div class="form-group row">
+                        <label for="cnmshpr" class="col-sm-3 col-form-label">Customer/Shipper Name</label>
+                        <div class="col-sm-9    ">
+                            <select id="cnmshpr" class="form-control" disabled="disabled">
+                                <option value="0">-- Select name or shipper --</option>
+                                @{
+                                    foreach (var item in ViewBag.CustomerShipperList)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
                                     }
-                                </select>
-                            </div>
+                                }
+                            </select>
                         </div>
-                        <div class="form-group row">
-                            <label for="cstatus" class="col-sm-3 col-form-label">
-                                ConVan Status
-                            </label>
-                            <div class="col-sm-9    ">
-                                @*<select id="cstatus" class="form-control">
+                    </div>
+                    <div class="form-group row">
+                        <label for="shipperaddress" class="col-sm-3 col-form-label">Customer/Shipper Address</label>
+                        <div class="col-sm-9    ">
+                            <select id="shipperaddress" class="form-control">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="contactperson" class="col-sm-3 col-form-label">Customer/Shipper Contact Person</label>
+                        <div class="col-sm-9    ">
+                            @Html.EditorFor(model => model.contactperson, new { htmlAttributes = new { @class = "form-control", id = "contactperson", @readonly = true } })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="contactno" class="col-sm-3 col-form-label">Customer/Shipper Contact No.</label>
+                        <div class="col-sm-9    ">
+                            @Html.EditorFor(model => model.contactno, new { htmlAttributes = new { @class = "form-control", id = "contactno", @readonly = true } })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <label for="noofcvs" class="col-sm-3 col-form-label">
+                            No. of ConVans
+                        </label>
+                        <div class="col-sm-9    ">
+                            @Html.EditorFor(model => model.noofcvs, new { htmlAttributes = new { @class = "form-control", id = "noofcvs", @type = "number", @min = "0", @max = "2", @value = "0" } })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="csize" class="col-sm-3 col-form-label">
+                            ConVan Size
+                        </label>
+                        <div class="col-sm-9    ">
+                            <select id="csize" class="form-control">
+                                <option value="0">-- Select size --</option>
+                                @{
+                                    foreach (var item in ViewBag.ConVanSizesList)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="cstatus" class="col-sm-3 col-form-label">
+                            ConVan Status
+                        </label>
+                        <div class="col-sm-9    ">
+                            @*<select id="cstatus" class="form-control">
                                     <option value="0">-- Select status --</option>
                                     @{
                                         foreach (var item in ViewBag.ConVanStatusList)
@@ -120,66 +126,67 @@
                                         }
                                     }
                                 </select>*@
-                                @Html.EditorFor(model => model.cstatus, new { htmlAttributes = new { @Value="Empty", @class = "form-control", id = "cstatus", @readonly = true } })
-                            </div>
+                            @Html.EditorFor(model => model.cstatus, new { htmlAttributes = new { @Value = "Empty", @class = "form-control", id = "cstatus", @readonly = true } })
                         </div>
-                        <div class="form-group row">
-                            <label for="inputtedby" class="col-sm-3 col-form-label">
-                                Inputted By
-                            </label>
-                            <div class="col-sm-9">
-                                <select id="inputtedby" class="form-control">
-                                    <option value="0">-- Select --</option>
-                                    @{
-                                        foreach (var item in ViewBag.InByList)
-                                        {
-                                            <option value="@item.Value">@item.Text</option>
-                                        }
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputtedby" class="col-sm-3 col-form-label">
+                            Inputted By
+                        </label>
+                        <div class="col-sm-9">
+                            <input class="form-control" id="inputtedby" value="@emp.FirstName @emp.LastName" disabled>
+                            @*<select id="inputtedby" class="form-control">
+                                <option value="0">-- Select --</option>
+                                @{
+                                    foreach (var item in ViewBag.InByList)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
                                     }
-                                </select>
-                                @*<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"class="btn btn-inverse" title="Help"><i class="fa fa-plus-square"></i></button>*@
-                            </div>
+                                }
+                            </select>*@
+                            @*<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"class="btn btn-inverse" title="Help"><i class="fa fa-plus-square"></i></button>*@
                         </div>
-                        <div class="form-group row">
-                            <label for="csr" class="col-sm-3 col-form-label">
-                                Customer Service Representative
-                            </label>
-                            <div class="col-sm-9    ">
+                    </div>
+                    <div class="form-group row">
+                        <label for="csr" class="col-sm-3 col-form-label">
+                            Customer Service Representative
+                        </label>
+                        <div class="col-sm-9    ">
                                 <select id="csr" class="form-control">
                                     <option value="0">-- Select --</option>
                                     @{
-                                        foreach (var item in ViewBag.CSRSList)
+                                        foreach (var item in ViewBag.csrList)
                                         {
-                                            <option value="@item.Value">@item.Text</option>
+                                    <option value="@item.Value">@item.Text</option>
                                         }
-                                    }
+                                     }
                                 </select>
-                            </div>
                         </div>
-                        <div class="form-group row">
-                            <label for="accountexecutive" class="col-sm-3 col-form-label">
-                                Account Executive
-                            </label>
-                            <div class="col-sm-9    ">
-                                <select id="accountexecutive" class="form-control">
-                                    <option value="0">-- Select --</option>
+                    </div>
+                    <div class="form-group row">
+                        <label for="accountexecutive" class="col-sm-3 col-form-label">
+                            Account Executive
+                        </label>
+                        <div class="col-sm-9    ">
+                            <select id="accountexecutive" class="form-control">
+                                <option value="0">-- Select --</option>
                                     @{
-                                        foreach (var item in ViewBag.AccountExecutiveList)
+                                        foreach (var item in ViewBag.aeList)
                                         {
-                                            <option value="@item.Value">@item.Text</option>
+                                <option value="@item.Value">@item.Text</option>
                                         }
                                     }
-                                </select>
-                            </div>
+                            </select>
                         </div>
                     </div>
                 </div>
-            </form>
-            <div>
-                @Html.EditorFor(model => model.docYear, new { htmlAttributes = new { @class = "form-control", id = "docYear", @readonly = true } })
-                @Html.EditorFor(model => model.docID, new { htmlAttributes = new { @class = "form-control", id = "docID", @readonly = true } })
             </div>
+        </form>
+        <div>
+            @Html.EditorFor(model => model.docYear, new { htmlAttributes = new { @class = "form-control", id = "docYear", @readonly = true } })
+            @Html.EditorFor(model => model.docID, new { htmlAttributes = new { @class = "form-control", id = "docID", @readonly = true } })
         </div>
+
     </div>
     <div class="box-footer">
         <button type="button" class="btn btn-primary" id="submit"> <i class="fa fa-plus fa-1x"></i> Submit </button>
@@ -193,7 +200,7 @@
 @section Scripts{
     @Scripts.Render("~/bundles/jqueryui")
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
         $(function () {
             $("#mnemonic").chosen();
@@ -227,6 +234,7 @@
                     document.getElementById("dNum").value = docFormatted;
                     document.getElementById("docYear").value = yearInput;
                     document.getElementById("docID").value = ids;
+                    
                 },
             });
         });
@@ -406,7 +414,7 @@
             });//end
 
         });
-</script>
+    </script>
 }
 
 <style>

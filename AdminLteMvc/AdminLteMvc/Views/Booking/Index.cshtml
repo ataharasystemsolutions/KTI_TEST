@@ -1,5 +1,6 @@
 ﻿@model AdminLteMvc.Models.WEBSales.Booking
 
+
 @{
     ViewBag.Title = "Booking";
     Layout = "~/Views/Shared/_AdminLteLayout.cshtml";
@@ -78,7 +79,7 @@
 
             var lastSelectedIds;
             $('#ApiDemoGrid').on('aweselect', function () {
-                lastSelectedIds = $.map($(this).data('api').getSelection(), function (val) { return val.ID; });
+                lastSelectedIds = $.map($(this).data('api').getSelection(), function (val) { return val.ID); });
                 lastSelectedIdStat = $.map($(this).data('api').getSelection(), function (val) { return val.trnStatus; });
                 console.log(lastSelectedIds);
                 console.log(lastSelectedIdStat);
@@ -136,7 +137,7 @@
                 }
             });
 
-            
+
 
             $('#cancel').click(function () {
                 if (lastSelectedIds != null) {
