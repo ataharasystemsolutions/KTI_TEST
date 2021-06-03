@@ -862,6 +862,7 @@
     <Compile Include="Reports_VM\fbRpt.cs" />
     <Compile Include="Reports_VM\ProformaVm.cs" />
     <Compile Include="Reports_VM\EIROVm.cs" />
+    <Compile Include="Reports_VM\YardVessellLoadList.cs" />
     <Compile Include="Report_Documents\ATWReport.cs">
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
@@ -7795,6 +7796,13 @@
     <Content Include="Report_Documents\EIRIReturnInReport.rpt" />
     <Content Include="Report_Documents\fbRpt.rpt" />
     <Content Include="Report_Documents\CRO.rpt" />
+    <Content Include="Report_Documents\forCoastGuard.rpt" />
+    <Content Include="Report_Documents\Yard_VesselLoadList.rpt" />
+    <Content Include="Report_Documents\Accounting.rpt" />
+    <Content Include="Report_Documents\Cherry_Roselyn.rpt" />
+    <Content Include="Report_Documents\Trigo.rpt" />
+    <Content Include="Report_Documents\Roma_Nessa_FT.rpt" />
+    <Content Include="Report_Documents\coastingManifest.rpt" />
     <None Include="Scripts\jquery-2.1.3.intellisense.js" />
     <Content Include="Icon.png" />
     <Content Include="Scripts\AdminLTE\app.js" />
@@ -8511,6 +8519,7 @@
     <Content Include="Views\Employee\EmployeeList.cshtml" />
     <Content Include="Views\SetUp\vesselVoyage.cshtml" />
     <Content Include="Views\OnboardVessel\onboard.cshtml" />
+    <Content Include="Views\OnboardVessel\DisplayLoadListReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

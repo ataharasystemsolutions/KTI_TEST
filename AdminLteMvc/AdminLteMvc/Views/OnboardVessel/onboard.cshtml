@@ -197,7 +197,6 @@
                                                         <tr>
                                                             <td colspan="9">No Data Found!</td>
                                                         </tr>
-
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -320,20 +319,16 @@
                             <span class="fa fa-caret-down"></span>
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a onclick="clickYardVessel()">Yard & Vessel Loadlist</a></li>
-                            <li><a href="#">Coasting Manifest</a></li>
-                            <li><a href="#">For Coast Guard</a></li>
-                            @*<li><a href="#">For KTI Billing</a></li>*@
-                            <li><a href="#">For Roma Nessa FT</a></li>
-                            <li><a href="#">For Trigo</a></li>
-                            <li><a href="#">For Roma Nessa FT</a></li>
-                            <li><a href="#">For Trigo</a></li>
-                            <li><a href="#">For Cherry & Roselyn (CV Coron)</a></li>
-                            <li><a href="#">For Accounting</a></li>
+                            <li><a onclick="clickYardVessel('Yard_VesselLoadList')">Yard & Vessel Loadlist</a></li>
+                            <li><a onclick="clickYardVessel('forCoastGuard')">For Coast Guard</a></li>
+                            <li><a  onclick="clickYardVessel('Roma_Nessa_FT')">For Roma Nessa FT</a></li>
+                            <li><a onclick="clickYardVessel('Trigo')">For Trigo</a></li>
+                            <li><a onclick="clickYardVessel('Cherry_Roselyn')">For Cherry & Roselyn (CV Coron)</a></li>
+                            <li><a onclick="clickYardVessel('Accounting')">For Accounting</a></li>
 
 
                             @*<li class="divider"></li>
-                                <li><a href="#">Separated link</a></li>*@
+        <li><a href="#">Separated link</a></li>*@
                         </ul>
                     </div>
                 </div>
@@ -652,8 +647,8 @@
                                 "<td>" + row.portofDestination + "</td>" +
                                 "<td>" + row.ATD + "</td>" +
                                 "<td>" + row.ATA + "</td>" +
-                        "<td><a type='button' onclick=click_statusArrived(" + row.routeID + ",'"+ row.status+"')><span class='label label-danger'>" + row.status +"</span></a></td>" +
-                                "<td><a type='button' title='Coasting Manifest'><i class='fa fa-ship'></i></a></td>" +
+                                "<td><a type='button' onclick=click_statusArrived(" + row.routeID + ",'"+ row.status+"')><span class='label label-danger'>" + row.status +"</span></a></td>" +
+                                "<td><a onclick=clickCoastingManifest(" + row.routeID + ") type='button' title='Coasting Manifest'><i class='fa fa-ship'></i></a></td>" +
                             "</tr > ";
                     tbl.append(tr);
                     cntt++;
@@ -748,13 +743,17 @@
         }
 
         //Yard and Vessel List
-        var clickYardVessel = function () {
+        var clickYardVessel = function (type) {
             var onboardID = $("#hdn_onboardID").val();
             console.log(onboardID);
-            //window.location.href = '/OnboardVessel/onboard';
-            var redirectWindow = window.open('/OnboardVessel/yardvesselllistPrintable', '_blank');
+            var redirectWindow = window.open('/OnboardVessel/DisplayLoadListReport?onboardID=' + onboardID + '&type=' + type + '', '_blank');
             redirectWindow.location;
         }
+        var clickCoastingManifest = function (routeID) {
+            var redirectWindow = window.open('/OnboardVessel/DisplayLoadListReport?onboardID=' + routeID + '&type=coastingManifest', '_blank');
+            redirectWindow.location;
+        }
+       
 
 
 

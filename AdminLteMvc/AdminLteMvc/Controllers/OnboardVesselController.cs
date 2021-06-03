@@ -7,6 +7,8 @@ using System.Web;
 using System.Web.Mvc;
 using AdminLteMvc.Models.WEBSales;
 using Microsoft.AspNet.Identity;
+using CrystalDecisions.CrystalReports.Engine;
+using System.IO;
 
 namespace AdminLteMvc.Controllers
 {
@@ -267,6 +269,51 @@ namespace AdminLteMvc.Controllers
             
         }
 
+        public ActionResult DisplayLoadListReport(string onboardID,string type)
+        {
+            ViewBag.onboardID = onboardID;
+            ViewBag.type = type;
+            return View("DisplayLoadListReport");
+        }
+        public FileResult LoadlistReport(string onboardID,string type)
+        {
+            ReportDocument rd = new ReportDocument();
+            rd.Load(Path.Combine(Server.MapPath(@"~/Report_Documents/"+ type + ".rpt")));
+            string query = "";
 
+            if(type== "Yard_VesselLoadList")
+                query = String.Format("select * from Yard_VesselLoadlist_Format where onboardID="+ onboardID + "");
+            
+            if(type== "forCoastGuard")
+                query = String.Format("select * from For_CoastGuard where onboardID=" + onboardID + "");
+
+            if (type == "Cherry_Roselyn")
+                query = String.Format("select * from cherry_roselyn_coron where onboardID=" + onboardID + "");
+
+            if (type == "Roma_Nessa_FT")
+                query = String.Format("select * from Roma_Nessa_FT where onboardID=" + onboardID + "");
+
+            if (type == "Trigo")
+                query = String.Format("select * from Trigo where onboardID=" + onboardID + "");
+
+            if (type == "Accounting")
+                query = String.Format("select * from Accounting where onboardID=" + onboardID + "");
+
+            if (type == "coastingManifest")
+                query = String.Format("select * from Coasting_Manifest where routeID=" + onboardID + "");
+
+
+            var list = db.Database.SqlQuery<Reports_VM.YardVessellLoadList>(query).ToList();
+            if (list.Count > 0)
+            {
+                rd.SetDataSource(list);
+                Response.Buffer = false;
+                Response.ClearContent();
+                Response.ClearHeaders();
+            }
+            Stream stream = rd.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+            stream.Seek(0, SeekOrigin.Begin);
+            return File(stream, "application/pdf");
+        }
     }
 }
