@@ -178,6 +178,9 @@ UpgradeLog*.htm
 *.mdf
 *.ldf
 
+# config
+*.config
+
 # Business Intelligence projects
 *.rdl.data
 *.bim.layout
